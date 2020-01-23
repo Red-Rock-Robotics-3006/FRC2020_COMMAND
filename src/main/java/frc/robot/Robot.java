@@ -25,7 +25,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private ADXRS450_Gyro gyro;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,9 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    gyro = new ADXRS450_Gyro();
-    gyro.calibrate();
-    gyro.reset();
+   
   }
 
   /**
@@ -104,8 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    System.out.println(gyro.getAngle());
-    
+  
   }
 
   @Override

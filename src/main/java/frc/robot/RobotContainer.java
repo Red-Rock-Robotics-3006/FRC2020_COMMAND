@@ -41,8 +41,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_driveSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_driveSubsystem.tankDrive(driver.getRawAxis(JoystickConstants.leftYAxis), driver.getRawAxis(JoystickConstants.rightYAxis)))
-    );
+      new RunCommand(() -> m_driveSubsystem.tankDrive(.8*driver.getRawAxis(JoystickConstants.leftYAxis), .8 * driver.getRawAxis(JoystickConstants.rightYAxis)), m_driveSubsystem)
+    ); 
 
   }
 

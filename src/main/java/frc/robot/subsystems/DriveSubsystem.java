@@ -38,7 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   
   // The gyro sensor
-  private final Gyro m_gyro = new ADXRS450_Gyro();
+  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
 
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
