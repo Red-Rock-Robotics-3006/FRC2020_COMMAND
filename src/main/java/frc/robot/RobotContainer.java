@@ -7,14 +7,24 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.JoystickConstants;
 
@@ -63,6 +73,35 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    Trajectory trajectory;
+    try
+    {
+      trajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("C:\\First.wpilib.json"));
+    }
+    catch(IOException e)
+    {
+      trajectory = null;
+      System.out.println("none");
+     e.printStackTrace(); 
+    }
+    RamseteCommand ramseteCommand = new RamseteCommand(
+        trajectory,
+        m_driveSubsystem::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        m_driveSubsystem::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_driveSubsystem::tankDriveVolts,
+        m_driveSubsystem
+    );
+
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
+   
   }
 }
