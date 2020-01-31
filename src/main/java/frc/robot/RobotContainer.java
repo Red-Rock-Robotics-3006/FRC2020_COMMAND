@@ -7,9 +7,23 @@
 
 package frc.robot;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
+import javax.print.DocFlavor.READER;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,15 +38,17 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.JoystickConstants;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -42,29 +58,27 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Joystick driver = new Joystick(0);
 
-
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
     m_driveSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_driveSubsystem.tankDrive(.8*driver.getRawAxis(JoystickConstants.leftYAxis), .8 * driver.getRawAxis(JoystickConstants.rightYAxis)), m_driveSubsystem)
-    ); 
+        new RunCommand(() -> m_driveSubsystem.tankDrive(.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            .8 * driver.getRawAxis(JoystickConstants.rightYAxis)), m_driveSubsystem));
 
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -72,18 +86,19 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+   // return new InstantCommand(() -> m_driveSubsystem.tankDrive(.1, .1), m_driveSubsystem);
     // An ExampleCommand will run in autonomous
     Trajectory trajectory;
-    try
-    {
-      trajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("C:\\First.wpilib.json"));
-    }
-    catch(IOException e)
-    {
+    String trajectoryJSON = "/home/lvuser/deploy/PathWeaver/output/test.wpilib.json";
+    try {
+      Path trajectoryPath = Paths.get(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+     
+    } catch (IOException ex) {
       trajectory = null;
-      System.out.println("none");
-     e.printStackTrace(); 
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
+  
     RamseteCommand ramseteCommand = new RamseteCommand(
         trajectory,
         m_driveSubsystem::getPose,
@@ -98,10 +113,11 @@ public class RobotContainer {
         // RamseteCommand passes volts to the callback
         m_driveSubsystem::tankDriveVolts,
         m_driveSubsystem
-    );
+    ); 
 
     // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
+   return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
+   // return null;
    
   }
 }
