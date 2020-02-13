@@ -26,13 +26,14 @@ public final class Constants {
     public static final int kLeftMotor2Port = 1;
     public static final int kRightMotor1Port = 2;
     public static final int kRightMotor2Port = 3;
+   
 
     public static final int[] kLeftEncoderPorts = new int[]{0, 1};
     public static final int[] kRightEncoderPorts = new int[]{2, 3};
     public static final boolean kLeftEncoderReversed = false;
     public static final boolean kRightEncoderReversed = true;
 
-    public static final double kTrackwidthMeters = .66;//0.5588;
+    public static final double kTrackwidthMeters = .58;//0.5588;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
@@ -44,11 +45,12 @@ public final class Constants {
 
     public static final boolean kGyroReversed = true;
 
-    public static final double ksVolts = 0.96;
-    public static final double kvVoltSecondsPerMeter = 3.13;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.355;
+    public static final double ksVolts = 1.01;
+    public static final double kvVoltSecondsPerMeter = 3.03;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.697;
 
-    public static final double kPDriveVel = 31.2;
+    public static final double kPDriveVel = 5.14;
+    
   }
 
   public static final class OIConstants {
@@ -56,8 +58,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAccelerationMetersPerSecondSquared = .3;
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;
@@ -66,10 +68,11 @@ public final class Constants {
 
   public static final class JoystickConstants
   {
-    int buttonA = 1;
+   // int buttonA = 1;
     public static final int buttonY = 4;
     public static final int buttonX = 3;
     public static final int buttonB = 2;
+    public static final int buttonA = 1;
     public static final int buttonLeftBumper = 5;
     public static final int buttonRightBumper = 6; 
     public static final int leftXAxis = 0;
@@ -80,6 +83,27 @@ public final class Constants {
     public static final int rightTrigger = 3;
     public static final double triggerDeadZone = 0.05;
 
+  }
+  public static final class MechanismConstants
+  {
+    public static final int kIntakeVictor = 0;
+    public static final int kIntakeSolenoid= 0;
+
+    public static final int kTurretMotorPort = 0;
+    public static final double kStopTurretRight = 0;
+    public static final double kStopTurretLeft = 2048;
+
+    public static final double kIntakeSpin = 0.5;
+
+    public static final double kShoot = -0.3;
+
+    public static final double kClimbUp = 0.5;
+    public static final double kClimbDown = -0.5;
+	  public static int kConveyorPort = 0;
+	  public static int kFeederPort = 0;
+	  public static double kConveyorSpeed = 0.5;
+	  public static double kFeederSpeed = 0.5;
+  	public static double kReverseFeederSpeed = -0.5;
   }
  }
 

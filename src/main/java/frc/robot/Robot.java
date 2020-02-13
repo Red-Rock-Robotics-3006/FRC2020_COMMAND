@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -28,9 +31,13 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  //private WPI_VictorSPX motor1 = new WPI_VictorSPX(0);
+  //private WPI_VictorSPX motor2 = new WPI_VictorSPX(1);
+  //private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
+
  // private DriveSubsystem drive = new DriveSubsystem();
 
- // private Joystick joystick = new Joystick(0);
+  private Joystick joystick = new Joystick(0);
 
 
 
@@ -95,7 +102,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-    
+    //drive.arcadeDrive(.5, 0);
    
   }
 
@@ -115,6 +122,29 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    /*if (joystick.getRawButton(JoystickConstants.buttonA)) {
+      motor2.set(-.2);
+      if (joystick.getRawButton(JoystickConstants.buttonB)) {
+        motor1.set(-.2);
+      } else {
+        motor1.set(.2);
+      }
+    } else {
+      motor1.set(0);
+      motor2.set(0);
+    }
+    if (joystick.getRawButton(JoystickConstants.buttonX)) {
+      linearSlideMotor.set(-0.3);
+    } else {
+      linearSlideMotor.set(0);
+    }*/
+
+/*
+    if (joystick.getRawButton(JoystickConstants.buttonB)) {
+      motor1.set(-.2);
+    } else {
+      motor1.set(0);
+    }*/
   
   }
 
