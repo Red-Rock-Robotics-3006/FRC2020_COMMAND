@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 /**
@@ -37,11 +38,11 @@ public final class Constants {
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
-    public static final int kEncoderCPR = 4096;
+    public static final int kEncoderCPR = 2048;
     public static final double kWheelDiameterMeters = 0.15;
     public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+        (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR * 10.71);
 
     public static final boolean kGyroReversed = true;
 
@@ -86,8 +87,8 @@ public final class Constants {
   }
   public static final class MechanismConstants
   {
-    public static final int kIntakeVictor = 0;
-    public static final int kIntakeSolenoid= 0;
+    public static final int kIntakeVictorPort = 0;
+    public static final int kIntakeSolenoidPort= 0;
 
     public static final int kTurretMotorPort = 0;
     public static final double kStopTurretRight = 0;
@@ -95,7 +96,7 @@ public final class Constants {
 
     public static final double kIntakeSpin = 0.5;
 
-    public static final double kShoot = -0.3;
+    public static final double kShoot = -0.2;
 
     public static final double kClimbUp = 0.5;
     public static final double kClimbDown = -0.5;
@@ -103,7 +104,13 @@ public final class Constants {
 	  public static int kFeederPort = 0;
 	  public static double kConveyorSpeed = 0.5;
 	  public static double kFeederSpeed = 0.5;
-  	public static double kReverseFeederSpeed = -0.5;
+    public static double kReverseFeederSpeed = -0.5;
+    public static int kColorWheelPort = 0;
+	public static int kColorSensorPort;
+  public static double kColorWheelSpeed = 0.5;
+  public static double kTurretPower = 0.15;
+  public static int kShooterMotorPort;
+public static int kClimberMotorPort;
   }
  }
 

@@ -18,8 +18,7 @@ import frc.robot.Constants.MechanismConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
  // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
-  private WPI_TalonFX shooter = new WPI_TalonFX(1);
-  private double motorPower = 1;
+  private WPI_TalonFX shooter = new WPI_TalonFX(MechanismConstants.kShooterMotorPort);
 
   public ShooterSubsystem() {
 
@@ -30,10 +29,6 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   
-  public void setPower(double power) {
-      motorPower = power;
-  }
-
   public void shoot() {
       shooter.set(MechanismConstants.kShoot);
   }

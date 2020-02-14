@@ -2,8 +2,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
@@ -15,16 +17,17 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
 
-  WPI_TalonSRX frontRight = new WPI_TalonSRX(7);
-  WPI_VictorSPX backRight = new WPI_VictorSPX(8);
-  WPI_TalonSRX frontLeft = new WPI_TalonSRX(9);
-  WPI_VictorSPX backLeft = new WPI_VictorSPX(10);
+  WPI_TalonFX frontRight = new WPI_TalonFX(DriveConstants.kRightMotor1Port);
+  WPI_TalonFX backRight = new WPI_TalonFX(DriveConstants.kRightMotor2Port);
+  WPI_TalonFX frontLeft = new WPI_TalonFX(DriveConstants.kLeftMotor1Port);
+  WPI_TalonFX backLeft = new WPI_TalonFX(DriveConstants.kLeftMotor2Port);
 /*
   private final SpeedControllerGroup m_leftMotors =
       new SpeedControllerGroup(frontLeft, backLeft);
@@ -38,7 +41,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   
   // The gyro sensor
-  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
+  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
@@ -102,10 +105,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    frontLeft.getSensorCollection().setQuadraturePosition(0, 0);
-    //backLeft.getSensorCollection().setQuadraturePosition(0, 0);
-    frontRight.getSensorCollection().setQuadraturePosition(0, 0);
-    //backRight.getSensorCollection().setQuadraturePosition(0, 0);
+    frontLeft.getSensorCollection().setIntegratedSensorPosition(0,0);
+    
+    frontRight.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    
   }
 
  /* public double getAverageEncoderDistance() {
@@ -114,13 +117,13 @@ public class DriveSubsystem extends SubsystemBase {
   */
 
   public double getLeftEncoderDistance() {
-      double frontLeftEncoder = frontLeft.getSensorCollection().getQuadraturePosition() * DriveConstants.kWheelDiameterMeters * Math.PI / 4096;
+      double frontLeftEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
       return frontLeftEncoder * -1;
     //return ((frontLeft.getSensorCollection().getQuadraturePosition() + backLeft.getSensorCollection().getQuadraturePosition())/2);
   }
 
   public double getRightEncoderDistance() {
-    double frontRightEncoder = frontRight.getSensorCollection().getQuadraturePosition()* DriveConstants.kWheelDiameterMeters * Math.PI / 4096;
+    double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition()* DriveConstants.kEncoderDistancePerPulse;
     return frontRightEncoder;
    //return ((frontRight.getSensorCollection().getQuadraturePosition() + backRight.getSensorCollection().getQuadraturePosition())/2);
   }
@@ -143,14 +146,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getLeftEncoderVelocity()
   {
-    double frontLeftEncoder = frontLeft.getSensorCollection().getQuadratureVelocity() * DriveConstants.kWheelDiameterMeters * Math.PI / 4096;
+    double frontLeftEncoder = frontLeft.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
     return frontLeftEncoder * -1;
      // return (frontLeft.getSensorCollection().getQuadratureVelocity() + backLeft.getSensorCollection().getQuadratureVelocity())/2.0;
   }
 
   public double getRightEncoderVelocity()
   {
-    double frontRightEncoder = frontRight.getSensorCollection().getQuadratureVelocity() * DriveConstants.kWheelDiameterMeters * Math.PI / 4096;
+    double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
       return frontRightEncoder;
      // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;
   }

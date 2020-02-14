@@ -7,8 +7,12 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -30,10 +34,12 @@ import frc.robot.subsystems.DriveSubsystem;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  //private RobotContainer m_robotContainer;
   //private WPI_VictorSPX motor1 = new WPI_VictorSPX(0);
   //private WPI_VictorSPX motor2 = new WPI_VictorSPX(1);
-  //private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
+  private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
+  ArrayList<TalonFX> instruments = new ArrayList<TalonFX>();
+  private Orchestra orchestra = new Orchestra(instruments);
 
  // private DriveSubsystem drive = new DriveSubsystem();
 
@@ -49,8 +55,12 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+   // m_robotContainer = new RobotContainer();
     //drive.resetEncoders();
+    instruments.add(linearSlideMotor);
+    orchestra = new Orchestra(instruments);
+    String music = "/home/lvuser/deploy/rasputin.chrp";
+    orchestra.loadMusic(music);
    
   }
 
@@ -86,14 +96,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+/*
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-   
+   */
   }
 
   /**
@@ -122,6 +132,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    orchestra.play();
     /*if (joystick.getRawButton(JoystickConstants.buttonA)) {
       motor2.set(-.2);
       if (joystick.getRawButton(JoystickConstants.buttonB)) {

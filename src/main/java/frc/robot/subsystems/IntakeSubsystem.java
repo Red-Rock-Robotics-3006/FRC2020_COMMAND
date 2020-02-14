@@ -19,8 +19,9 @@ public class IntakeSubsystem extends SubsystemBase
   /**
    * Creates a new ExampleSubsystem.
    */
-  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(MechanismConstants.kIntakeVictor);
-  Solenoid solenoid = new Solenoid(MechanismConstants.kIntakeSolenoid);
+  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(MechanismConstants.kIntakeVictorPort);
+  Solenoid oneSolenoid = new Solenoid(MechanismConstants.kIntakeOneSolenoidPort);
+  Solenoid twoSolenoid = new Solenoid(MechanismConstants.kIntakeTwoSolenoidPort);
   public IntakeSubsystem()
   {
 
@@ -33,14 +34,15 @@ public class IntakeSubsystem extends SubsystemBase
   }
   public void extend(boolean enabled)
   {
-      this.solenoid.set(enabled);
+       oneSolenoid.set(enabled);
+       twoSolenoid.set(enabled);
   }
   public void spin()
   {
-      this.intakeVictor.set(MechanismConstants.kIntakeSpin);
+      intakeVictor.set(MechanismConstants.kIntakeSpin);
   }
   public void stop()
   {
-      this.intakeVictor.set(0);
+      intakeVictor.set(0);
   }
 }

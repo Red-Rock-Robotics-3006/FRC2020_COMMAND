@@ -14,7 +14,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.MechanismConstants;
 
 public class TurretSubsystem extends SubsystemBase {
-  private WPI_TalonFX turret = new WPI_TalonFX(1);
+  private WPI_TalonFX turret = new WPI_TalonFX(MechanismConstants.kTurretMotorPort);
 
   public TurretSubsystem() {
 
@@ -33,7 +33,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public void turn(boolean direction)
   {
-      double power = direction ? 0.15 : -0.15;
+      double power = direction ? MechanismConstants.kTurretPower : -1 * MechanismConstants.kTurretPower;
       turret.set(power);
   }
 

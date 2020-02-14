@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-    private WPI_VictorSPX motor = new WPI_VictorSPX(0);
-    private double motorPower = 0;
+    private WPI_VictorSPX motor = new WPI_VictorSPX(MechanismConstants.kClimberMotorPort);
+
     /**
    * Creates a new ClimbingSubsystem
    */
@@ -27,9 +27,6 @@ public class ClimberSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setPower(double p) {
-    this.motorPower = p;
-  }
 
   public void climb() {
       this.motor.set(MechanismConstants.kClimbUp);

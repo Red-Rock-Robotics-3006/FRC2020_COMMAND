@@ -46,12 +46,15 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.JoystickConstants;
 
@@ -68,12 +71,12 @@ public class RobotContainer {
  // private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
  // private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private double m_shooterPower = -.5;
+  //private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
+
+  private ShootCommand e = new ShootCommand(m_shooterSubsystem/*, m_storageSubsystem*/);
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Joystick driver = new Joystick(0);
-
-  private final ShootCommand shootCommand = new ShootCommand(m_shooterSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -112,7 +115,7 @@ public class RobotContainer {
     */
 
     new JoystickButton(driver, JoystickConstants.buttonX)
-      .whenPressed(new ShootCommand(m_shooterSubsystem));
+      .whenHeld(e);
       //.whenReleased(new InstantCommand(() -> m_turretSubsystem.stop(), m_turretSubsystem));
   
 
@@ -202,7 +205,7 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
    */
-    return shootCommand;
+    return e;
    
   }
 }
