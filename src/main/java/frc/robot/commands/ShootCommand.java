@@ -7,37 +7,27 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.StorageSubsystem;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
-/**
- * An example command that uses an example subsystem.
- */
 public class ShootCommand extends ParallelCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private ShooterSubsystem m_shooterSubsystem;
   //private StorageSubsystem m_storageSubsystem;
 
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
   public ShootCommand(ShooterSubsystem shooterSubsystem/*, StorageSubsystem storageSubsystem*/) {
     super(
         new PrintCommand("Running"),
-        new RunCommand(() -> shooterSubsystem.shoot())
+        new RunCommand(() -> shooterSubsystem.shoot()),
+        new PIDCommand(
+          new PIDController(0, 0, 0), 
+          measurementSource, setpointSource, useOutput, requirements)
        // new RunCommand(() -> storageSubsystem.reverseFeed(), storageSubsystem)
     );
     

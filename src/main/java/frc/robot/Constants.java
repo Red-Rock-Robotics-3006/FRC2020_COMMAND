@@ -21,19 +21,12 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class DriveConstants 
-    {
-        public static final int kLeftMotor1Port = 0;
+  public static final class DriveConstants {
+    public static final int kLeftMotor1Port = 0;
     public static final int kLeftMotor2Port = 1;
     public static final int kRightMotor1Port = 2;
     public static final int kRightMotor2Port = 3;
-   
-
-    public static final int[] kLeftEncoderPorts = new int[]{0, 1};
-    public static final int[] kRightEncoderPorts = new int[]{2, 3};
-    public static final boolean kLeftEncoderReversed = false;
-    public static final boolean kRightEncoderReversed = true;
-
+  
     public static final double kTrackwidthMeters = .58;//0.5588;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
@@ -51,6 +44,14 @@ public final class Constants {
     public static final double kaVoltSecondsSquaredPerMeter = 0.697;
 
     public static final double kPDriveVel = 5.14;
+
+    public static final double kTurnP = 0;
+    public static final double kTurnI = 0;
+    public static final double kTurnD = 0;
+
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 10;
+    
     
   }
 
@@ -106,11 +107,11 @@ public final class Constants {
 	  public static double kFeederSpeed = 0.5;
     public static double kReverseFeederSpeed = -0.5;
     public static int kColorWheelPort = 0;
-	public static int kColorSensorPort;
-  public static double kColorWheelSpeed = 0.5;
-  public static double kTurretPower = 0.15;
-  public static int kShooterMotorPort;
-public static int kClimberMotorPort;
+	  public static int kColorSensorPort;
+    public static double kColorWheelSpeed = 0.5;
+    public static double kTurretPower = 0.15;
+    public static int kShooterMotorPort;
+    public static int kClimberMotorPort;
   }
  }
 
