@@ -34,16 +34,16 @@ import frc.robot.subsystems.DriveSubsystem;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  //private RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
   //private WPI_VictorSPX motor1 = new WPI_VictorSPX(0);
   //private WPI_VictorSPX motor2 = new WPI_VictorSPX(1);
-  private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
-  ArrayList<TalonFX> instruments = new ArrayList<TalonFX>();
-  private Orchestra orchestra = new Orchestra(instruments);
+  //private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
+  //ArrayList<TalonFX> instruments = new ArrayList<TalonFX>();
+  //private Orchestra orchestra = new Orchestra(instruments);
 
  // private DriveSubsystem drive = new DriveSubsystem();
 
-  private Joystick joystick = new Joystick(0);
+  //private Joystick joystick = new Joystick(0);
 
 
 
@@ -55,12 +55,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-   // m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer();
     //drive.resetEncoders();
-    instruments.add(linearSlideMotor);
+
+    /*instruments.add(linearSlideMotor);
     orchestra = new Orchestra(instruments);
     String music = "/home/lvuser/deploy/rasputin.chrp";
-    orchestra.loadMusic(music);
+    orchestra.loadMusic(music); */
    
   }
 
@@ -96,14 +97,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-/*
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-   */
+   
   }
 
   /**
@@ -132,7 +133,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    orchestra.play();
+    //orchestra.play();
     /*if (joystick.getRawButton(JoystickConstants.buttonA)) {
       motor2.set(-.2);
       if (joystick.getRawButton(JoystickConstants.buttonB)) {

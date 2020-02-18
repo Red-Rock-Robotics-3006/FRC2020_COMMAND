@@ -23,8 +23,8 @@ public class StorageSubsystem extends SubsystemBase {
   }
   public void feed()
   {
-      conveyor.set(MechanismConstants.kConveyorSpeed);
-      feeder.set(MechanismConstants.kFeederSpeed);
+      conveyor.set(MechanismConstants.kConveyorPower);
+      feeder.set(MechanismConstants.kFeederPower);
   }
 
   public void stop()

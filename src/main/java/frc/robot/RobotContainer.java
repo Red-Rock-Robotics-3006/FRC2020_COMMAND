@@ -67,15 +67,15 @@ import frc.robot.Constants.JoystickConstants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+<<<<<<< HEAD
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+=======
+>>>>>>> 6831e1a35a18b75474d771672134efe8abc90037
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
  // private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   //private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
 
-  private ShootCommand e = new ShootCommand(m_shooterSubsystem/*, m_storageSubsystem*/);
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Joystick driver = new Joystick(0);
 
   /**
@@ -85,7 +85,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+<<<<<<< HEAD
    m_driveSubsystem.setDefaultCommand(
+=======
+    m_driveSubsystem.setDefaultCommand(
+>>>>>>> 6831e1a35a18b75474d771672134efe8abc90037
         new RunCommand(() -> m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
             -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)), m_driveSubsystem));
 
@@ -114,14 +118,6 @@ public class RobotContainer {
         .whenReleased(new InstantCommand(() -> m_shooterSubsystem.stop(), m_shooterSubsystem));
     */
 
-    new JoystickButton(driver, JoystickConstants.buttonX)
-      .whenHeld(e);
-      //.whenReleased(new InstantCommand(() -> m_turretSubsystem.stop(), m_turretSubsystem));
-  
-
-    
-    
-    //new JoystickButton(driver, JoystickConstants.buttonA).when
   }
 
   /**
@@ -205,7 +201,7 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
    */
-    return e;
+    return null;
    
   }
 }

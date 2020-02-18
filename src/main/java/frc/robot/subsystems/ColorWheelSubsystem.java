@@ -88,7 +88,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     }
     public void spin()
     {
-        colorWheel.set(MechanismConstants.kColorWheelSpeed);
+        colorWheel.set(ColorWheelConstants.kColorWheelPower);
     }
     public void stop()
     {
