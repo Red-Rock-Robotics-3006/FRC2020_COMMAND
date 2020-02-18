@@ -10,11 +10,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants.StorageConstants;
 
 public class StorageSubsystem extends SubsystemBase {
-  WPI_VictorSPX conveyor = new WPI_VictorSPX(MechanismConstants.kConveyorPort);
-  WPI_VictorSPX feeder = new WPI_VictorSPX(MechanismConstants.kFeederPort);
+  WPI_VictorSPX conveyor = new WPI_VictorSPX(StorageConstants.kConveyorMotorPort);
+  WPI_VictorSPX feeder = new WPI_VictorSPX(StorageConstants.kFeederMotorPort);
   
 
   @Override
@@ -23,8 +23,8 @@ public class StorageSubsystem extends SubsystemBase {
   }
   public void feed()
   {
-      conveyor.set(MechanismConstants.kConveyorSpeed);
-      feeder.set(MechanismConstants.kFeederSpeed);
+      conveyor.set(StorageConstants.kConveyorPower);
+      feeder.set(StorageConstants.kFeederPower);
   }
 
   public void stop()
@@ -35,6 +35,6 @@ public class StorageSubsystem extends SubsystemBase {
 
   public void reverseFeed()
   {
-      feeder.set(MechanismConstants.kReverseFeederSpeed);
+      feeder.set(StorageConstants.kReverseFeederSpeed);
   }
 }

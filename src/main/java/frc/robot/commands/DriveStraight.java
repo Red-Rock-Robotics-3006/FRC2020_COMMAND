@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 public class DriveStraight extends PIDCommand {
 
   public DriveStraight(DriveSubsystem driveSubsystem) {
-    super(new PIDController(DriveConstants.kTurnP, DriveConstants.kTurnI, DriveConstants.kTurnI),
+    super(new PIDController(DriveConstants.kPDriveVel, DriveConstants.kTurnI, DriveConstants.kTurnI),
         driveSubsystem::getHeading,
         0,
         output -> driveSubsystem.arcadeDrive(.4, output),

@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants.IntakeConstants;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -19,9 +19,9 @@ public class IntakeSubsystem extends SubsystemBase
   /**
    * Creates a new ExampleSubsystem.
    */
-  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(MechanismConstants.kIntakeVictorPort);
-  Solenoid oneSolenoid = new Solenoid(MechanismConstants.kIntakeOneSolenoidPort);
-  Solenoid twoSolenoid = new Solenoid(MechanismConstants.kIntakeTwoSolenoidPort);
+  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(IntakeConstants.kIntakeMotorPort);
+  Solenoid oneSolenoid = new Solenoid(IntakeConstants.kIntakeOneSolenoidPort);
+  Solenoid twoSolenoid = new Solenoid(IntakeConstants.kIntakeTwoSolenoidPort);
   public IntakeSubsystem()
   {
 
@@ -39,7 +39,7 @@ public class IntakeSubsystem extends SubsystemBase
   }
   public void spin()
   {
-      intakeVictor.set(MechanismConstants.kIntakeSpin);
+      intakeVictor.set(IntakeConstants.kIntakePower);
   }
   public void stop()
   {

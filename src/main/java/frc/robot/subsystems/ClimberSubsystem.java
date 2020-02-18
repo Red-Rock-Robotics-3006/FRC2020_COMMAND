@@ -29,14 +29,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
   public void climb() {
-      this.motor.set(MechanismConstants.kClimbUp);
+      this.motor.set(MechanismConstants.kClimberUpPower);
   }
 
   public void stop() {
       this.motor.set(0);
   }
 
-  public void reverse() {
-      this.motor.set(MechanismConstants.kClimbDown);
+  public void descend() {
+      this.motor.set(MechanismConstants.kClimberDownPower);
   }
 }

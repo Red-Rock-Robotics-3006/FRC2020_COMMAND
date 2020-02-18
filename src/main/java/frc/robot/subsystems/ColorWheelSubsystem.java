@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants.ColorWheelConstants;
 
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
@@ -38,7 +38,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
 
     public ColorWheelSubsystem() {
 
-        this.colorWheel = new WPI_TalonFX(MechanismConstants.kColorWheelPort);
+        this.colorWheel = new WPI_TalonFX(ColorWheelConstants.kColorWheelPort);
         this.colorSensor = new ColorSensorV3(I2C.Port.kOnboard); //todo: find sensor I2C address
         colorMatcher.addColorMatch(kBlueTarget);
         colorMatcher.addColorMatch(kGreenTarget);
@@ -88,7 +88,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     }
     public void spin()
     {
-        colorWheel.set(MechanismConstants.kColorWheelSpeed);
+        colorWheel.set(ColorWheelConstants.kColorWheelPower);
     }
     public void stop()
     {
