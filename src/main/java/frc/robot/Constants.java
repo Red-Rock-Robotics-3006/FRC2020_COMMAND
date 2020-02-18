@@ -23,10 +23,10 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public final class Constants {
     public static final class DriveConstants 
     {
-        public static final int kLeftMotor1Port = 0;
-    public static final int kLeftMotor2Port = 1;
-    public static final int kRightMotor1Port = 2;
-    public static final int kRightMotor2Port = 3;
+        public static final int kLeftMotor1Port = 10;
+        public static final int kLeftMotor2Port = 11;
+        public static final int kRightMotor1Port = 8;
+        public static final int kRightMotor2Port = 9;
    
 
     public static final int[] kLeftEncoderPorts = new int[]{0, 1};
@@ -87,30 +87,45 @@ public final class Constants {
   }
   public static final class MechanismConstants
   {
-    public static final int kIntakeVictorPort = 0;
-    public static final int kIntakeSolenoidPort= 0;
+    //Mechanism Port/ID number constants
+    public static final int kIntakeVictorPort = 15;
+    public static final int kIntakeOneSolenoidPort= 0;
+    public static final int kIntakeTwoSolenoidPort = 0;
+    public static final int kTurretMotorPort = 19;
+    public static int kConveyorPort = 13;
+    public static int kFeederPort = 12;
+    public static int kFeederSpringPort = 16;
+    public static int kColorWheelPort = 21;
+    public static int kColorWheelLiftPort = 18;
+    public static int kColorSensorPort = 0;
+    public static int kShooterMotorPort = 14;
+    public static int kClimberMotorPort = 17;
+    public static int kSpoolPort = 20;
 
-    public static final int kTurretMotorPort = 0;
+    //Turret subsystem constants
     public static final double kStopTurretRight = 0;
-    public static final double kStopTurretLeft = 2048;
+    public static final double kStopTurretLeft = 2048;  
+    public static double kTurretPower = 0.15;
 
+    //Intake subsystem constants
     public static final double kIntakeSpin = 0.5;
 
+    //Shooter constants
     public static final double kShoot = -0.2;
 
+    //climber constants
     public static final double kClimbUp = 0.5;
     public static final double kClimbDown = -0.5;
-	  public static int kConveyorPort = 0;
-	  public static int kFeederPort = 0;
+    
+    //Storage subsystem constants
 	  public static double kConveyorSpeed = 0.5;
 	  public static double kFeederSpeed = 0.5;
     public static double kReverseFeederSpeed = -0.5;
-    public static int kColorWheelPort = 0;
-	public static int kColorSensorPort;
-  public static double kColorWheelSpeed = 0.5;
-  public static double kTurretPower = 0.15;
-  public static int kShooterMotorPort;
-public static int kClimberMotorPort;
+    
+    //Color wheel subsystem constants
+    public static double kColorWheelSpeed = 0.5;
+   
+  
   }
  }
 
