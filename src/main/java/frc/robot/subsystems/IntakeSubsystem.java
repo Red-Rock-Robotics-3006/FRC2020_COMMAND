@@ -19,9 +19,9 @@ public class IntakeSubsystem extends SubsystemBase
   /**
    * Creates a new ExampleSubsystem.
    */
-  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(MechanismConstants.kIntakeMotorPort);
-  Solenoid oneSolenoid = new Solenoid(MechanismConstants.kIntakeOneSolenoidPort);
-  Solenoid twoSolenoid = new Solenoid(MechanismConstants.kIntakeTwoSolenoidPort);
+  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(IntakeConstants.kIntakeMotorPort);
+  Solenoid oneSolenoid = new Solenoid(IntakeConstants.kIntakeOneSolenoidPort);
+  Solenoid twoSolenoid = new Solenoid(IntakeConstants.kIntakeTwoSolenoidPort);
   public IntakeSubsystem()
   {
 

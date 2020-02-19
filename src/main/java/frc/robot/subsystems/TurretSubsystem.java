@@ -10,10 +10,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants.TurretConstants;
 
 public class TurretSubsystem extends SubsystemBase {
-  private WPI_TalonFX turret = new WPI_TalonFX(MechanismConstants.kTurretMotorPort);
+  private WPI_TalonFX turret = new WPI_TalonFX(TurretConstants.kTurretMotorPort);
 
   public TurretSubsystem() {
 
@@ -32,7 +32,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public void turn(boolean direction)
   {
-      double power = direction ? MechanismConstants.kTurretPower : -1 * MechanismConstants.kTurretPower;
+      double power = direction ? TurretConstants.kTurretPower : -1 * TurretConstants.kTurretPower;
       turret.set(power);
   }
 
@@ -43,7 +43,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public boolean isOver()
   {
-    if(getEncoderRate() < MechanismConstants.kStopTurretRight || getEncoderRate() > MechanismConstants.kStopTurretLeft)
+    if(getEncoderRate() < TurretConstants.kStopTurretRight || getEncoderRate() > TurretConstants.kStopTurretLeft)
     {
       return false;
     }

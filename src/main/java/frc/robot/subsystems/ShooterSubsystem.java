@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -15,14 +16,14 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants.ShooterConstants;
 
 //16.5 feet from shooter to high target
 
 //extend PIDSubsystem to use PID features (commented right now in various blocks)
 public class ShooterSubsystem extends SubsystemBase {
   // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
- private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(MechanismConstants.kShooterMotorPort);
+ private WPI_TalonSRX m_shooterMotor = new WPI_TalonSRX(ShooterConstants.kShooterMotorPort);
 /*
  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.ksVolts, ShooterConstants.kVVoltsSecondsPerRotation);
@@ -42,7 +43,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
   
   public void shoot() {
-    m_shooterMotor.set(MechanismConstants.kShooterPower);
+    m_shooterMotor.set(ShooterConstants.kShooterPower);
   }
 
   public void stop()

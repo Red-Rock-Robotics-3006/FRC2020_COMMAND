@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.music.Orchestra;
 
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.StorageConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -45,7 +47,12 @@ public class Robot extends TimedRobot {
 
   //private Joystick joystick = new Joystick(0);
 
+ /* private WPI_TalonSRX conveyor = new WPI_TalonSRX(13);
+  private WPI_TalonSRX feeder1 = new WPI_TalonSRX(12);
+  private WPI_TalonSRX feeder2 = new WPI_TalonSRX(16);
+*/
 
+  //private WPI_TalonSRX shooter = new WPI_TalonSRX(14);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -114,6 +121,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     
     //drive.arcadeDrive(.5, 0);
+   // shooter.set(.7);
    
   }
 
@@ -123,9 +131,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
+   /* if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }
+    }*/
   }
 
   /**
@@ -134,30 +142,19 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //orchestra.play();
-    /*if (joystick.getRawButton(JoystickConstants.buttonA)) {
-      motor2.set(-.2);
-      if (joystick.getRawButton(JoystickConstants.buttonB)) {
-        motor1.set(-.2);
-      } else {
-        motor1.set(.2);
-      }
-    } else {
-      motor1.set(0);
-      motor2.set(0);
-    }
-    if (joystick.getRawButton(JoystickConstants.buttonX)) {
-      linearSlideMotor.set(-0.3);
-    } else {
-      linearSlideMotor.set(0);
-    }*/
+ /*  if (joystick.getRawButton(JoystickConstants.buttonA)) {
+     conveyor.set(StorageConstants.kConveyorPower);
+     feeder1.set(StorageConstants.kFeederPower);
+     feeder2.set(StorageConstants.kReverseFeederSpeed);
+     System.out.println("f");
+     shooter.set(.7);
 
-/*
-    if (joystick.getRawButton(JoystickConstants.buttonB)) {
-      motor1.set(-.2);
-    } else {
-      motor1.set(0);
-    }*/
-  
+   } else {
+     conveyor.set(0);
+     feeder1.set(0);
+     feeder2.set(0);
+     shooter.set(0);
+   }*/
   }
 
   @Override

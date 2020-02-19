@@ -42,9 +42,11 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
@@ -55,6 +57,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.JoystickConstants;
 
@@ -67,16 +70,14 @@ import frc.robot.Constants.JoystickConstants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-<<<<<<< HEAD
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-=======
->>>>>>> 6831e1a35a18b75474d771672134efe8abc90037
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
- // private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
+  private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  //private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
+  private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   private final Joystick driver = new Joystick(0);
+  private final Joystick mechJoystick = new Joystick(1);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -85,13 +86,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-<<<<<<< HEAD
    m_driveSubsystem.setDefaultCommand(
-=======
-    m_driveSubsystem.setDefaultCommand(
->>>>>>> 6831e1a35a18b75474d771672134efe8abc90037
-        new RunCommand(() -> m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)), m_driveSubsystem));
+        new RunCommand(() -> 
+            m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+
 
 
   }
@@ -103,20 +102,33 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-   /* new JoystickButton(driver, JoystickConstants.buttonX)
+
+    new JoystickButton(driver, JoystickConstants.buttonX)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(false)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
                                           m_turretSubsystem::isOver))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-    new JoystickButton(driver, JoystickConstants.buttonX)
+    new JoystickButton(driver, JoystickConstants.buttonB)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(true)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
                                           m_turretSubsystem::isOver))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
+
     new JoystickButton(driver, JoystickConstants.buttonA)
+        .whenPressed(new InstantCommand(() -> m_storageSubsystem.feed()))
+        .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
+    new JoystickButton(driver, JoystickConstants.buttonY)
+        .whenPressed(new InstantCommand(() -> m_storageSubsystem.reverseFeed()))
+        .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
+    
+      
+    new JoystickButton(driver, JoystickConstants.leftTrigger)
         .whenPressed(new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem))
         .whenReleased(new InstantCommand(() -> m_shooterSubsystem.stop(), m_shooterSubsystem));
-    */
+
+    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .2)
+        .whenPressed(new IntakeCommand(m_intake, m_storageSubsystem));
+    
 
   }
 
