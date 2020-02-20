@@ -133,11 +133,9 @@ public class RobotContainer {
     new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .1)
         .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem));
     
-<<<<<<< HEAD
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .1)
         .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem));
 
-=======
     new JoystickButton(mechJoystick, JoystickConstants.buttonY)
         .whenPressed(new InstantCommand(()->m_climberSubsystem.extend()))
         .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
@@ -147,7 +145,6 @@ public class RobotContainer {
     new JoystickButton(mechJoystick, JoystickConstants.buttonX)
         .whenPressed(new InstantCommand(()->m_climberSubsystem.climb()))
         .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSpool()));
->>>>>>> 5cb466d02cc453f6f85b2780310eb58390e4d9a2
   }
 
   /**

@@ -132,6 +132,8 @@ public final class Constants {
     public static final int kColorWheelPort = 0;
 	  public static final int kColorSensorPort = 0;
     public static final double kColorWheelPower = 0.5;
+	  public static int kSlideMotorPort = 0;
+	  public static double kSlideMotorPower=0.5;
    
   }
  }
