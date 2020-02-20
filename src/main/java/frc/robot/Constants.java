@@ -53,6 +53,7 @@ public final class Constants {
     public static final double kTurnToleranceDeg = 5;
     public static final double kTurnRateToleranceDegPerS = 10;
     
+    public static final double kSearchTurnRate = 10;
     
   }
 

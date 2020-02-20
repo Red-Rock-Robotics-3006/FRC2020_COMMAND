@@ -19,15 +19,16 @@ public class TurnToAngle extends CommandBase {
     private static SimpleMotorFeedforward motorFeedforward = new SimpleMotorFeedforward(DriveConstants.ksVolts,
       DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter);
 
-    private double targetAngle;
+    private double targetAngle, targetSpeed;
 
     private PIDController leftController, rightController;
 
     private DriveSubsystem drive;
 
-  public TurnToAngle(double targetAngle, DriveSubsystem drive) {
+  public TurnToAngle(double targetAngle, double targetSpeed, DriveSubsystem drive) {
     
     this.targetAngle = targetAngle;
+    this.targetSpeed = targetSpeed;
     this.drive = drive;
 
     leftController = new PIDController(DriveConstants.kPDriveVel, 0, 0);
@@ -58,7 +59,7 @@ public class TurnToAngle extends CommandBase {
   public void execute() {
     
 
-    var targetWheelSpeeds = DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(0, 0, drive.getHeading() - targetAngle));
+    var targetWheelSpeeds = DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(targetSpeed, 0, drive.getHeading() - targetAngle));
     var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
     var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
 
