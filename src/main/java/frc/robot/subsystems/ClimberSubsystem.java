@@ -10,10 +10,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MechanismConstants;
+import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-    private WPI_VictorSPX motor = new WPI_VictorSPX(MechanismConstants.kClimberMotorPort);
+    private WPI_VictorSPX motor = new WPI_VictorSPX(ClimberConstants.kClimberMotorPort);
 
     /**
    * Creates a new ClimbingSubsystem
@@ -29,7 +29,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
   public void climb() {
-      this.motor.set(MechanismConstants.kClimberUpPower);
+      this.motor.set(ClimberConstants.kClimberUpPower);
   }
 
   public void stop() {
@@ -37,6 +37,6 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void descend() {
-      this.motor.set(MechanismConstants.kClimberDownPower);
+      this.motor.set(ClimberConstants.kClimberDownPower);
   }
 }
