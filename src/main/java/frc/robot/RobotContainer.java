@@ -41,7 +41,6 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
@@ -62,7 +61,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.JoystickConstants;
-import com.kauailabs.navx.frc.AHRS;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -80,9 +78,6 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-
-  private final AHRS gyro = new AHRS();
-
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
