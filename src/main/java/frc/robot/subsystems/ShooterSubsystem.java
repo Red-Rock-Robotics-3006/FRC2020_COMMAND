@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -22,7 +23,7 @@ import frc.robot.Constants.ShooterConstants;
 //extend PIDSubsystem to use PID features (commented right now in various blocks)
 public class ShooterSubsystem extends SubsystemBase {
   // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
- private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(ShooterConstants.kShooterMotorPort);
+ private WPI_TalonSRX m_shooterMotor = new WPI_TalonSRX(ShooterConstants.kShooterMotorPort);
 /*
  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.ksVolts, ShooterConstants.kVVoltsSecondsPerRotation);

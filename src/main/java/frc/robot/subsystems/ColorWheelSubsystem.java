@@ -10,7 +10,9 @@ package frc.robot.subsystems;
 import java.nio.ByteBuffer;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -28,6 +30,9 @@ public class ColorWheelSubsystem extends SubsystemBase {
   
    private final WPI_TalonFX colorWheel;
    private ColorSensorV3 colorSensor;
+   private DigitalInput touchSensor = new DigitalInput(0);
+   private final WPI_TalonSRX slideMotor;
+
     
     private final ColorMatch colorMatcher = new ColorMatch();
     private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
@@ -39,12 +44,34 @@ public class ColorWheelSubsystem extends SubsystemBase {
     public ColorWheelSubsystem() {
 
         this.colorWheel = new WPI_TalonFX(ColorWheelConstants.kColorWheelPort);
+        this.slideMotor = new WPI_TalonSRX(ColorWheelConstants.kSlideMotorPort);
         this.colorSensor = new ColorSensorV3(I2C.Port.kOnboard); //todo: find sensor I2C address
         colorMatcher.addColorMatch(kBlueTarget);
         colorMatcher.addColorMatch(kGreenTarget);
         colorMatcher.addColorMatch(kRedTarget);
         colorMatcher.addColorMatch(kYellowTarget);    
         
+    }
+
+    public void getColor() {
+      Color detectedColor = colorSensor.getColor();
+
+        String colorString;
+        ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+    
+        if (match.color == kBlueTarget) {
+          colorString = "Blue";
+        } else if (match.color == kRedTarget) {
+          colorString = "Red";
+        } else if (match.color == kGreenTarget) {
+          colorString = "Green";
+        } else if (match.color == kYellowTarget) {
+          colorString = "Yellow";
+        } else {
+          colorString = "Unknown";
+        }
+
+        System.out.println(colorString);
     }
 
     @Override
@@ -77,7 +104,9 @@ public class ColorWheelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Confidence", match.confidence);
         SmartDashboard.putString("Detected Color", colorString);
     }
-
+    public boolean getTouching(){
+      return touchSensor.get();
+    }
    
     public double getEncoderCount(){
         return colorWheel.getSensorCollection().getIntegratedSensorAbsolutePosition();
@@ -93,5 +122,12 @@ public class ColorWheelSubsystem extends SubsystemBase {
     public void stop()
     {
         colorWheel.set(0);
+        slideMotor.set(0);
+    }
+    public void extend(){
+      slideMotor.set(ColorWheelConstants.kSlideMotorPower);
+    }
+    public void retract(){
+      slideMotor.set(-ColorWheelConstants.kSlideMotorPower);
     }
 }

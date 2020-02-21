@@ -21,10 +21,10 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int kLeftMotor1Port = 0;
-    public static final int kLeftMotor2Port = 1;
-    public static final int kRightMotor1Port = 2;
-    public static final int kRightMotor2Port = 3;
+    public static final int kLeftMotor1Port = 8;
+    public static final int kLeftMotor2Port = 9;
+    public static final int kRightMotor1Port = 10;
+    public static final int kRightMotor2Port = 11;
   
     public static final double kTrackwidthMeters = .58;//0.5588;
     public static final DifferentialDriveKinematics kDriveKinematics =
@@ -95,22 +95,23 @@ public final class Constants {
   }
 
   public static final class TurretConstants {
-    public static final int kTurretMotorPort = 0;
+    public static final int kTurretMotorPort = 19;
     public static final double kStopTurretRight = 0;
     public static final double kStopTurretLeft = 2048;
     public static final double kTurretPower = 0.15;
   }
 
   public static final class StorageConstants {
-    public static final int kConveyorMotorPort = 0;
-	  public static final int kFeederMotorPort = 0;
+    public static final int kConveyorMotorPort = 13;
+    public static final int kFeeder1MotorPort = 12;
+    public static final int kFeeder2MotorPort = 16;
     public static final double kConveyorPower = 0.5;
     public static final double kFeederPower = 0.5;
     public static final double kReverseFeederSpeed = -0.5;
   }
 
   public static final class ShooterConstants {
-    public static final int kShooterMotorPort = 0;
+    public static final int kShooterMotorPort = 14;
     public static final double kShooterPower = -0.2;
     public static final double KP = 0;
     public static final double KI = 0;
@@ -124,17 +125,20 @@ public final class Constants {
 
   public static final class ClimberConstants {
     public static final int kClimberMotorPort = 0;
+    public static final int kSpoolMotorPort = 0;
     public static final double kClimberUpPower = 0.5;
     public static final double kClimberDownPower = -0.5;
+	  public static final double kSlideMotorPower = 0.5;
   }
 
   public static final class ColorWheelConstants {
     public static final int kColorWheelPort = 0;
 	  public static final int kColorSensorPort = 0;
     public static final double kColorWheelPower = 0.5;
+	  public static int kSlideMotorPort = 0;
+	  public static double kSlideMotorPower=0.5;
    
   }
  }
-
 
 

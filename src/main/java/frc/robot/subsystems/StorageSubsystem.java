@@ -7,14 +7,17 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.StorageConstants;
 
 public class StorageSubsystem extends SubsystemBase {
-  WPI_VictorSPX conveyor = new WPI_VictorSPX(StorageConstants.kConveyorMotorPort);
-  WPI_VictorSPX feeder = new WPI_VictorSPX(StorageConstants.kFeederMotorPort);
+  private WPI_TalonSRX conveyor = new WPI_TalonSRX(StorageConstants.kConveyorMotorPort);
+  WPI_TalonSRX feeder1 = new WPI_TalonSRX(StorageConstants.kFeeder1MotorPort);
+  WPI_TalonSRX feeder2 = new WPI_TalonSRX(StorageConstants.kFeeder2MotorPort);
+
   
 
   @Override
@@ -24,17 +27,20 @@ public class StorageSubsystem extends SubsystemBase {
   public void feed()
   {
       conveyor.set(StorageConstants.kConveyorPower);
-      feeder.set(StorageConstants.kFeederPower);
+      feeder1.set(StorageConstants.kFeederPower);
+      feeder2.set(StorageConstants.kReverseFeederSpeed);
   }
 
   public void stop()
   {
       conveyor.set(0);
-      feeder.set(0);
+      feeder1.set(0);
+      feeder2.set(0);
   }
 
   public void reverseFeed()
   {
-      feeder.set(StorageConstants.kReverseFeederSpeed);
+      feeder1.set(StorageConstants.kReverseFeederSpeed);
+      feeder2.set(StorageConstants.kFeederPower);
   }
 }
