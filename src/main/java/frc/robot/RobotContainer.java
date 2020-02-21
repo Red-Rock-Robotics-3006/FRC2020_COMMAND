@@ -41,9 +41,11 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -76,6 +78,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
   private final AHRS gyro = new AHRS();
 
@@ -130,9 +133,21 @@ public class RobotContainer {
     new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .1)
         .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem));
     
+<<<<<<< HEAD
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .1)
         .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem));
 
+=======
+    new JoystickButton(mechJoystick, JoystickConstants.buttonY)
+        .whenPressed(new InstantCommand(()->m_climberSubsystem.extend()))
+        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+    new JoystickButton(mechJoystick, JoystickConstants.buttonA)
+        .whenPressed(new InstantCommand(()->m_climberSubsystem.retract()))
+        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+    new JoystickButton(mechJoystick, JoystickConstants.buttonX)
+        .whenPressed(new InstantCommand(()->m_climberSubsystem.climb()))
+        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSpool()));
+>>>>>>> 5cb466d02cc453f6f85b2780310eb58390e4d9a2
   }
 
   /**

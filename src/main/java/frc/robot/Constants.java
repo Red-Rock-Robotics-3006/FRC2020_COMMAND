@@ -122,8 +122,10 @@ public final class Constants {
 
   public static final class ClimberConstants {
     public static final int kClimberMotorPort = 0;
+    public static final int kSpoolMotorPort = 0;
     public static final double kClimberUpPower = 0.5;
     public static final double kClimberDownPower = -0.5;
+	  public static final double kSlideMotorPower = 0.5;
   }
 
   public static final class ColorWheelConstants {
