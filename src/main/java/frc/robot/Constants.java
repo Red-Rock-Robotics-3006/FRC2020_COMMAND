@@ -96,9 +96,17 @@ public final class Constants {
 
   public static final class TurretConstants {
     public static final int kTurretMotorPort = 19;
-    public static final double kStopTurretRight = 0;
-    public static final double kStopTurretLeft = 2048;
     public static final double kTurretPower = 0.15;
+
+    public static final double kP = 0, kI = 0, kD = 0;
+    public static final double kTurretToleranceEPR = 0;
+    public static final double kEncoderEPR = 2048;
+    public static final double kEncoderPulsesPerRev = kEncoderEPR * (100/19);
+
+    public static final double kMaxAngle = 30;
+    public static final double kStopTurretRight = kEncoderPulsesPerRev * (kMaxAngle/360);
+    public static final double kStopTurretLeft = -kStopTurretRight;
+    
   }
 
   public static final class StorageConstants {

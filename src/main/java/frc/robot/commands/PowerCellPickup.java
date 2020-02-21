@@ -33,12 +33,7 @@ public class PowerCellPickup extends SequentialCommandGroup {
       new TurnToAngle(vision.getAngleToTurn(), 0, drive),
       new ParallelCommandGroup(
         new IntakeCommand(intake, storage),
-        new ConditionalCommand(
-          new TurnToAngle(vision.getAngleToTurn(), 0, drive),
-          new DriveStraight(drive), 
-          () -> {
-            return updateHeadingSetpoint(drive.getHeading(), vision.getPowerCellAngle(), DriveConstants.kTurnToleranceDeg);
-          })
+        new TurnToAngle(vision.getAngleToTurn(), 0.4, drive)
       )
     );
 

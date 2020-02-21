@@ -111,12 +111,12 @@ public class RobotContainer {
     new JoystickButton(driver, JoystickConstants.buttonX)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(false)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
-                                          m_turretSubsystem::isOver))
+                                          m_turretSubsystem::reachedLimit))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
     new JoystickButton(driver, JoystickConstants.buttonB)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(true)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
-                                          m_turretSubsystem::isOver))
+                                          m_turretSubsystem::reachedLimit))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
 
     new JoystickButton(driver, JoystickConstants.buttonA)
