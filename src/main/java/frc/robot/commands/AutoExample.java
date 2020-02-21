@@ -58,13 +58,13 @@ public class AutoExample extends SequentialCommandGroup {
 
         //Currently a 5 ball auto; if this doesn't work well, consider adding more dead reckoning
         super.addCommands(toBallCommand.andThen(() -> drive.tankDriveVolts(0, 0)),
-                    new PowerCellPickup(vision, drive, intake, storage),
-                    new PowerCellPickup(vision, drive, intake, storage),
-                    new TurnToAngle(0, drive),
+                    new PowerCellPickup(vision, drive, intake, storage, true),
+                    new PowerCellPickup(vision, drive, intake, storage, true),
+                    new TurnToAngle(0, 0, drive),
                     lineUpCommand.andThen(() -> drive.tankDriveVolts(0, 0)),
                     new TapeTracking(vision, drive),
                     new ShootCommand(shooter, storage).withTimeout(4),
-                    new PowerCellPickup(vision, drive, intake, storage)                    
+                    new PowerCellPickup(vision, drive, intake, storage, false)                    
         );
 
     }

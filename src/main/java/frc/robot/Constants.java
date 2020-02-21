@@ -42,6 +42,8 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 3.03;
     public static final double kaVoltSecondsSquaredPerMeter = 0.697;
 
+    public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
+
     public static final double kPDriveVel = 5.14;
 
     public static final double kTurnP = 0;
@@ -51,6 +53,7 @@ public final class Constants {
     public static final double kTurnToleranceDeg = 5;
     public static final double kTurnRateToleranceDegPerS = 10;
     
+    public static final double kSearchTurnRate = 10;
     
   }
 

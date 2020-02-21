@@ -78,9 +78,11 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
+
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
   private final AHRS gyro = new AHRS();
+
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
@@ -96,7 +98,6 @@ public class RobotContainer {
         new RunCommand(() -> 
             m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
             -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
-
   }
 
   /**
