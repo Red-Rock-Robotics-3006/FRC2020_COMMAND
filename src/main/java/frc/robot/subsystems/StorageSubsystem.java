@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.StorageConstants;
 
 public class StorageSubsystem extends SubsystemBase {
-  WPI_TalonSRX conveyor = new WPI_TalonSRX(StorageConstants.kConveyorMotorPort);
+  private WPI_TalonSRX conveyor = new WPI_TalonSRX(StorageConstants.kConveyorMotorPort);
   WPI_TalonSRX feeder1 = new WPI_TalonSRX(StorageConstants.kFeeder1MotorPort);
   WPI_TalonSRX feeder2 = new WPI_TalonSRX(StorageConstants.kFeeder2MotorPort);
 

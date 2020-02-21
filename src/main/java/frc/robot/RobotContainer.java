@@ -60,6 +60,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.JoystickConstants;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -76,6 +77,8 @@ public class RobotContainer {
   private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
+  private final AHRS gyro = new AHRS();
+
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
@@ -90,8 +93,6 @@ public class RobotContainer {
         new RunCommand(() -> 
             m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
             -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
-
-
 
   }
 
@@ -126,9 +127,11 @@ public class RobotContainer {
         .whenPressed(new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem))
         .whenReleased(new InstantCommand(() -> m_shooterSubsystem.stop(), m_shooterSubsystem));
 
-    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .2)
-        .whenPressed(new IntakeCommand(m_intake, m_storageSubsystem));
+    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .1)
+        .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem));
     
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .1)
+        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem));
 
   }
 

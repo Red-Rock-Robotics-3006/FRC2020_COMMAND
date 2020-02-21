@@ -47,6 +47,27 @@ public class ColorWheelSubsystem extends SubsystemBase {
         
     }
 
+    public void getColor() {
+      Color detectedColor = colorSensor.getColor();
+
+        String colorString;
+        ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+    
+        if (match.color == kBlueTarget) {
+          colorString = "Blue";
+        } else if (match.color == kRedTarget) {
+          colorString = "Red";
+        } else if (match.color == kGreenTarget) {
+          colorString = "Green";
+        } else if (match.color == kYellowTarget) {
+          colorString = "Yellow";
+        } else {
+          colorString = "Unknown";
+        }
+
+        System.out.println(colorString);
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run

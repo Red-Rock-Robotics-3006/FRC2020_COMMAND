@@ -17,6 +17,7 @@ import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,7 +26,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.StorageConstants;
+import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import com.kauailabs.navx.frc.AHRS;
+
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,8 +43,11 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private DigitalInput touch = new DigitalInput(0);
+  private ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
+  //private RobotContainer m_robotContainer;
 
-  private RobotContainer m_robotContainer;
+  private AHRS gyro = new AHRS();
   //private WPI_VictorSPX motor1 = new WPI_VictorSPX(0);
   //private WPI_VictorSPX motor2 = new WPI_VictorSPX(1);
   //private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
@@ -62,7 +73,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    //m_robotContainer = new RobotContainer();
     //drive.resetEncoders();
 
     /*instruments.add(linearSlideMotor);
@@ -105,7 +116,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  //  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -141,6 +152,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    //colorWheelSubsystem.getColor();
+
+    System.out.println("Touch: " + touch.get());
     //orchestra.play();
  /*  if (joystick.getRawButton(JoystickConstants.buttonA)) {
      conveyor.set(StorageConstants.kConveyorPower);
@@ -155,6 +169,19 @@ public class Robot extends TimedRobot {
      feeder2.set(0);
      shooter.set(0);
    }*/
+   
+  // System.out.println("gyro X: " + gyro.getRawGyroX());
+   /*
+   System.out.println("gyro Y: " + gyro.getRawGyroY());
+   System.out.println("gyro Z"+ gyro.getRawGyroZ());
+   System.out.println("gyro Y Velocity"+ gyro.getVelocityX());
+   System.out.println("gyro X Velocity"+ gyro.getVelocityY());
+   System.out.println("gyro angle"+ gyro.getAngle());
+   System.out.println("gyro rate of rotation"+ gyro.getRate());
+   System.out.println("gyro acceleration X"+ gyro.getRawAccelX());
+   System.out.println("gyro accelaration Y" + gyro.get);
+   */
+
   }
 
   @Override
