@@ -28,7 +28,7 @@ public class StorageSubsystem extends SubsystemBase {
   {
       conveyor.set(StorageConstants.kConveyorPower);
       feeder1.set(StorageConstants.kFeederPower);
-      feeder2.set(StorageConstants.kReverseFeederSpeed);
+  
   }
 
   public void stop()
@@ -40,7 +40,12 @@ public class StorageSubsystem extends SubsystemBase {
 
   public void reverseFeed()
   {
+    conveyor.set(StorageConstants.kConveyorPower);
       feeder1.set(StorageConstants.kReverseFeederSpeed);
-      feeder2.set(StorageConstants.kFeederPower);
+      feeder2.set(StorageConstants.kReverseFeederSpeed);
+  }
+
+  public void feedToTurret() {
+    feeder1.set(StorageConstants.kReverseFeederSpeed);
   }
 }

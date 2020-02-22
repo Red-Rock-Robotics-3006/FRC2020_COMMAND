@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class IntakeSubsystem extends SubsystemBase 
@@ -19,7 +21,7 @@ public class IntakeSubsystem extends SubsystemBase
   /**
    * Creates a new ExampleSubsystem.
    */
-  WPI_VictorSPX intakeVictor = new WPI_VictorSPX(IntakeConstants.kIntakeMotorPort);
+  WPI_TalonSRX intakeVictor = new WPI_TalonSRX(IntakeConstants.kIntakeMotorPort);
   Solenoid oneSolenoid = new Solenoid(IntakeConstants.kIntakeOneSolenoidPort);
   Solenoid twoSolenoid = new Solenoid(IntakeConstants.kIntakeTwoSolenoidPort);
   public IntakeSubsystem()

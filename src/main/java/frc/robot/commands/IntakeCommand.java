@@ -21,7 +21,7 @@ public class IntakeCommand extends ParallelCommandGroup {
   public IntakeCommand(IntakeSubsystem intake, StorageSubsystem storage) {
     super(
       new InstantCommand(() -> intake.extend(true)),
-      new InstantCommand(() -> intake.spin(), intake),
+      new InstantCommand(() -> intake.spin()),
       new InstantCommand(() -> storage.feed(), storage)
     );
    

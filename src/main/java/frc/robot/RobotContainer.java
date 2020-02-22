@@ -91,8 +91,9 @@ public class RobotContainer {
 
    m_driveSubsystem.setDefaultCommand(
         new RunCommand(() -> 
-            m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+            m_driveSubsystem.tankDrive(-0.6 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            -0.6 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+
   }
 
   /**
@@ -108,40 +109,44 @@ public class RobotContainer {
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
                                           m_turretSubsystem::reachedLimit))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
+
     new JoystickButton(driver, JoystickConstants.buttonB)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(true)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
                                           m_turretSubsystem::reachedLimit))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-
+/*
     new JoystickButton(driver, JoystickConstants.buttonA)
         .whenPressed(new InstantCommand(() -> m_storageSubsystem.feed()))
         .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
     new JoystickButton(driver, JoystickConstants.buttonY)
         .whenPressed(new InstantCommand(() -> m_storageSubsystem.reverseFeed()))
         .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
-    
+    */
       
-    new JoystickButton(driver, JoystickConstants.leftTrigger)
-        .whenPressed(new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem))
-        .whenReleased(new InstantCommand(() -> m_shooterSubsystem.stop(), m_shooterSubsystem));
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .1)
+        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem));
 
     new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .1)
         .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem));
-    
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .1)
-        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem));
 
     new JoystickButton(mechJoystick, JoystickConstants.buttonY)
         .whenPressed(new InstantCommand(()->m_climberSubsystem.extend()))
         .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
     new JoystickButton(mechJoystick, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(()->m_climberSubsystem.retract()))
-        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+        .whenPressed(new InstantCommand(()->m_storageSubsystem.feedToTurret()))
+        .whenReleased(new InstantCommand(()->m_storageSubsystem.stop()));
     new JoystickButton(mechJoystick, JoystickConstants.buttonX)
         .whenPressed(new InstantCommand(()->m_climberSubsystem.climb()))
         .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSpool()));
+
+
+    new JoystickButton(driver, JoystickConstants.buttonA)
+        .whenPressed(new InstantCommand(() -> m_shooterSubsystem.shoot()))
+        .whenReleased(new InstantCommand(() -> m_shooterSubsystem.stop()));
+        
   }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

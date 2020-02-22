@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-    private WPI_TalonFX slideMotor = new WPI_TalonFX(ClimberConstants.kClimberMotorPort);
+    private WPI_TalonSRX slideMotor = new WPI_TalonSRX(ClimberConstants.kClimberMotorPort);
     private WPI_TalonFX spoolMotor = new WPI_TalonFX(ClimberConstants.kSpoolMotorPort);
 
     /**

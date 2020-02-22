@@ -88,10 +88,10 @@ public final class Constants {
 
   public static final class IntakeConstants
   {
-    public static final int kIntakeMotorPort = 0;
-    public static final int kIntakeOneSolenoidPort = 0;
-    public static final int kIntakeTwoSolenoidPort = 0;
-    public static final double kIntakePower = 0.5;
+    public static final int kIntakeMotorPort = 15;
+    public static final int kIntakeOneSolenoidPort = 1;
+    public static final int kIntakeTwoSolenoidPort = 2;
+    public static final double kIntakePower = 0.4;
   }
 
   public static final class TurretConstants {
@@ -106,35 +106,36 @@ public final class Constants {
     public static final double kMaxAngle = 30;
     public static final double kStopTurretRight = kEncoderPulsesPerRev * (kMaxAngle/360);
     public static final double kStopTurretLeft = -kStopTurretRight;
-    
+
   }
 
   public static final class StorageConstants {
     public static final int kConveyorMotorPort = 13;
     public static final int kFeeder1MotorPort = 12;
     public static final int kFeeder2MotorPort = 16;
-    public static final double kConveyorPower = 0.5;
-    public static final double kFeederPower = 0.5;
-    public static final double kReverseFeederSpeed = -0.5;
+    public static final double kConveyorPower = -0.3;
+    public static final double kFeederPower = 0.3;
+    public static final double kReverseFeederSpeed = -0.6;
   }
 
   public static final class ShooterConstants {
-    public static final int kShooterMotorPort = 14;
-    public static final double kShooterPower = -0.2;
+    public static final int kShooterMotorPort = 1;
+    public static final double kShooterPower = 0.5;
     public static final double KP = 0;
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double kShooterToleranceRPS = 0;
     public static final double ksVolts = 0;
     public static final double kVVoltsSecondsPerRotation = 0;
-    public static final double kEncoderDistancePerPulse = 0;
+    public static final double kEncoderDistancePerPulse = 2048 * 16 / 54;
     public static final double kShooterTargetRPS = 0;
+  
   }
 
   public static final class ClimberConstants {
-    public static final int kClimberMotorPort = 0;
-    public static final int kSpoolMotorPort = 0;
-    public static final double kClimberUpPower = 0.5;
+    public static final int kClimberMotorPort = 17;
+    public static final int kSpoolMotorPort = 20;
+    public static final double kClimberUpPower = -0.5;
     public static final double kClimberDownPower = -0.5;
 	  public static final double kSlideMotorPower = 0.5;
   }
