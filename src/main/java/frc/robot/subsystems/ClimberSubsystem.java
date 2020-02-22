@@ -12,11 +12,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ClimberConstants;;
+
+import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
     private WPI_TalonSRX slideMotor = new WPI_TalonSRX(ClimberConstants.kClimberMotorPort);
     private WPI_TalonFX spoolMotor = new WPI_TalonFX(ClimberConstants.kSpoolMotorPort);
+
     /**
    * Creates a new ClimbingSubsystem
    */
@@ -49,5 +51,6 @@ public class ClimberSubsystem extends SubsystemBase {
   }
   public void retract(){
       this.slideMotor.set(-ClimberConstants.kSlideMotorPower);
+
   }
 }

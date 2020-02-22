@@ -42,6 +42,8 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 3.03;
     public static final double kaVoltSecondsSquaredPerMeter = 0.697;
 
+    public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
+
     public static final double kPDriveVel = 5.14;
 
     public static final double kTurnP = 0;
@@ -104,6 +106,7 @@ public final class Constants {
     public static final double kMaxAngle = 30;
     public static final double kStopTurretRight = kEncoderPulsesPerRev * (kMaxAngle/360);
     public static final double kStopTurretLeft = -kStopTurretRight;
+
   }
 
   public static final class StorageConstants {
@@ -141,6 +144,8 @@ public final class Constants {
     public static final int kColorWheelPort = 0;
 	  public static final int kColorSensorPort = 0;
     public static final double kColorWheelPower = 0.5;
+	  public static int kSlideMotorPort = 0;
+	  public static double kSlideMotorPower=0.5;
    
   }
  }
