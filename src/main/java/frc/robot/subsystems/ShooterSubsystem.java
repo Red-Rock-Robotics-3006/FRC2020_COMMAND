@@ -23,7 +23,7 @@ import frc.robot.Constants.ShooterConstants;
 //extend PIDSubsystem to use PID features (commented right now in various blocks)
 public class ShooterSubsystem extends SubsystemBase {
   // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
- private WPI_TalonSRX m_shooterMotor = new WPI_TalonSRX(ShooterConstants.kShooterMotorPort);
+ private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(ShooterConstants.kShooterMotorPort);
 /*
  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.ksVolts, ShooterConstants.kVVoltsSecondsPerRotation);
@@ -35,6 +35,9 @@ public class ShooterSubsystem extends SubsystemBase {
    super.getController().setTolerance(ShooterConstants.kShooterToleranceRPS);
    super.setSetpoint(ShooterConstants.kShooterTargetRPS);
    */
+  m_shooterMotor.configFactoryDefault();
+  m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
+  m_shooterMotor.setInverted(true);
   }
 
   @Override
@@ -44,13 +47,14 @@ public class ShooterSubsystem extends SubsystemBase {
   
   public void shoot() {
     m_shooterMotor.set(ShooterConstants.kShooterPower);
+    System.out.println(getEncoder());
   }
 
   public void stop()
   {
     m_shooterMotor.set(0);
   }
-/*
+
   public void resetEncoder() {
     m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
   }
@@ -58,7 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getEncoder() {
     return m_shooterMotor.getSensorCollection().getIntegratedSensorPosition();
   }
-
+/*
   @Override
   public void useOutput(double output, double setpoint) {
     m_shooterMotor.setVoltage(output + m_shooterFeedForward.calculate(setpoint));

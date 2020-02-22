@@ -9,6 +9,7 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,11 +45,11 @@ import com.revrobotics.ColorSensorV3;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private DigitalInput touch = new DigitalInput(0);
-  private ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
-  //private RobotContainer m_robotContainer;
+  //private DigitalInput touch = new DigitalInput(0);
+  //private ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
+  private RobotContainer m_robotContainer;
 
-  private AHRS gyro = new AHRS();
+ // private AHRS gyro = new AHRS();
   //private WPI_VictorSPX motor1 = new WPI_VictorSPX(0);
   //private WPI_VictorSPX motor2 = new WPI_VictorSPX(1);
   //private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
@@ -56,12 +58,21 @@ public class Robot extends TimedRobot {
 
  // private DriveSubsystem drive = new DriveSubsystem();
 
-  //private Joystick joystick = new Joystick(0);
+ /* private Joystick joystick = new Joystick(0);
 
- /* private WPI_TalonSRX conveyor = new WPI_TalonSRX(13);
+  private WPI_TalonSRX conveyor = new WPI_TalonSRX(13);
   private WPI_TalonSRX feeder1 = new WPI_TalonSRX(12);
   private WPI_TalonSRX feeder2 = new WPI_TalonSRX(16);
-*/
+
+  //private Solenoid intake1 = new Solenoid(1);
+  //private Solenoid intake2 = new Solenoid(2);
+  private Solenoid LED = new Solenoid(0);
+
+  private WPI_TalonSRX intake = new WPI_TalonSRX(15);
+
+  private WPI_TalonFX falcon = new WPI_TalonFX(1);
+
+  private WPI_TalonSRX climber = new WPI_TalonSRX(17);
 
   //private WPI_TalonSRX shooter = new WPI_TalonSRX(14);
 
@@ -73,7 +84,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    //m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer();
     //drive.resetEncoders();
 
     /*instruments.add(linearSlideMotor);
@@ -116,7 +127,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-  //  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -133,6 +144,7 @@ public class Robot extends TimedRobot {
     
     //drive.arcadeDrive(.5, 0);
    // shooter.set(.7);
+   
    
   }
 
@@ -152,23 +164,58 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    //colorWheelSubsystem.getColor();
+   /* //colorWheelSubsystem.getColor();
 
-    System.out.println("Touch: " + touch.get());
+    //System.out.println("Touch: " + touch.get());
     //orchestra.play();
- /*  if (joystick.getRawButton(JoystickConstants.buttonA)) {
-     conveyor.set(StorageConstants.kConveyorPower);
-     feeder1.set(StorageConstants.kFeederPower);
-     feeder2.set(StorageConstants.kReverseFeederSpeed);
+   if (joystick.getRawButton(JoystickConstants.buttonA)) {
+    
+    // feeder1.set(StorageConstants.kFeederPower);
+    // feeder2.set(-0.45);
+     conveyor.set(-.2);
+     //falcon.set(-.4);
+    intake.set(.6);
      System.out.println("f");
-     shooter.set(.7);
+    //shooter.set(.7);
+    if(joystick.getRawButton(JoystickConstants.buttonY)){
+      feeder1.set(-.5);
+      feeder2.set(-.45);
+      falcon.set(-.5);
+    } else {
+      feeder1.set(ControlMode.PercentOutput, .2);
+      feeder2.set(0);
+      falcon.set(0);
+    }
 
    } else {
-     conveyor.set(0);
      feeder1.set(0);
      feeder2.set(0);
-     shooter.set(0);
-   }*/
+     conveyor.set(0);
+     falcon.set(0);
+     intake.set(0);
+    // feeder1.set(0);
+    // feeder2.set(0);
+    // shooter.set(0);
+   }
+
+   if(joystick.getRawButton(JoystickConstants.buttonB))
+   {
+      //LED.set(true);
+   }
+   else
+   {
+     //LED.set(false);
+   }
+
+
+   if(joystick.getRawButton(JoystickConstants.buttonX)){
+     climber.set(.2);
+   } else if (joystick.getRawButton(JoystickConstants.buttonA)){
+     climber.set(-.2);
+   } else {
+      climber.set(0);
+   }
+   
    
   // System.out.println("gyro X: " + gyro.getRawGyroX());
    /*

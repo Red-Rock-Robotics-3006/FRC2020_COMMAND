@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -15,19 +16,24 @@ public class SearchForPowerCell extends CommandBase {
   
   private DriveSubsystem drive;
   private VisionSubsystem vision;
+  private boolean rotDirection;
 
-  public SearchForPowerCell(VisionSubsystem vision, DriveSubsystem drive) {
+  public SearchForPowerCell(VisionSubsystem vision, DriveSubsystem drive, boolean rotDirection) {
    
     addRequirements(vision, drive);
 
     this.vision = vision;
     this.drive = drive;
-    
+    this.rotDirection = rotDirection;
+
   }
 
   @Override
   public void execute() {
-     drive.arcadeDrive(0, 10);
+    if (rotDirection)
+      drive.arcadeDrive(0, DriveConstants.kSearchTurnRate);
+    else
+      drive.arcadeDrive(0, -DriveConstants.kSearchTurnRate);
   }
 
   // Called once the command ends or is interrupted.

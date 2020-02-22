@@ -26,19 +26,14 @@ public class PowerCellPickup extends SequentialCommandGroup {
   private DriveSubsystem drive;
 
   public PowerCellPickup(VisionSubsystem vision, DriveSubsystem drive, IntakeSubsystem intake,
-      StorageSubsystem storage) {
+      StorageSubsystem storage, boolean searchRotDirection) {
     super(
       new InstantCommand(() -> vision.setCamMode(false)),
-      new SearchForPowerCell(vision, drive),
-      new TurnToTarget(vision, drive),
+      new SearchForPowerCell(vision, drive, searchRotDirection),
+      new TurnToAngle(vision.getAngleToTurn(), 0, drive),
       new ParallelCommandGroup(
         new IntakeCommand(intake, storage),
-        new ConditionalCommand(
-          new TurnToTarget(vision, drive), 
-          new DriveStraight(drive), 
-          () -> {
-            return updateHeadingSetpoint(drive.getHeading(), vision.getPowerCellAngle(), DriveConstants.kTurnToleranceDeg);
-          })
+        new TurnToAngle(vision.getAngleToTurn(), 0.4, drive)
       )
     );
 
