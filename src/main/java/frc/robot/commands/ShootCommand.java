@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -15,17 +16,23 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class ShootCommand extends ParallelCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private ShooterSubsystem shooter;
   private StorageSubsystem storage;
+  private IntakeSubsystem intake;
 
-  public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage) {
+  public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage, IntakeSubsystem intake) {
     super(
         new InstantCommand(() -> shooter.shoot()),
-        new InstantCommand(() -> storage.reverseFeed(), storage)
+        new InstantCommand(() -> shooter.runFeeder()),
+        new SequentialCommandGroup(
+          new InstantCommand(() -> storage.setStorageOrTurret(false)),
+          new InstantCommand(() -> storage.runFeeder())
+        )
     );
 
     /*
@@ -47,14 +54,18 @@ public class ShootCommand extends ParallelCommandGroup {
     
     this.shooter = shooter;
     this.storage = storage;
+    this.intake = intake;
 
   }
 
   @Override
   public void end(boolean interrupted) {
     System.out.println("Stopping");
-    shooter.stop();
-    storage.stop();
+   // if(!intake.isRunning()) {
+      shooter.stop();
+      storage.stop();
+    //}
+    storage.setStorageOrTurret(true);
   }
 
   @Override

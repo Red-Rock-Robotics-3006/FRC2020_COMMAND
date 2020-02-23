@@ -10,6 +10,7 @@ package frc.robot.commands;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -26,13 +27,13 @@ public class PowerCellPickup extends SequentialCommandGroup {
   private DriveSubsystem drive;
 
   public PowerCellPickup(VisionSubsystem vision, DriveSubsystem drive, IntakeSubsystem intake,
-      StorageSubsystem storage, boolean searchRotDirection) {
+      StorageSubsystem storage, ShooterSubsystem shooter, boolean searchRotDirection) {
     super(
       new InstantCommand(() -> vision.setCamMode(false)),
       new SearchForPowerCell(vision, drive, searchRotDirection),
       new TurnToAngle(vision.getAngleToTurn(), 0, drive),
       new ParallelCommandGroup(
-        new IntakeCommand(intake, storage),
+        new IntakeCommand(intake, storage, shooter),
         new TurnToAngle(vision.getAngleToTurn(), 0.4, drive)
       )
     );

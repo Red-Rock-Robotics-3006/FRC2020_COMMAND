@@ -24,6 +24,9 @@ public class IntakeSubsystem extends SubsystemBase
   WPI_TalonSRX intakeVictor = new WPI_TalonSRX(IntakeConstants.kIntakeMotorPort);
   Solenoid oneSolenoid = new Solenoid(IntakeConstants.kIntakeOneSolenoidPort);
   Solenoid twoSolenoid = new Solenoid(IntakeConstants.kIntakeTwoSolenoidPort);
+
+  private boolean running = false;
+
   public IntakeSubsystem()
   {
 
@@ -42,9 +45,15 @@ public class IntakeSubsystem extends SubsystemBase
   public void spin()
   {
       intakeVictor.set(IntakeConstants.kIntakePower);
+      running = true;
   }
   public void stop()
   {
       intakeVictor.set(0);
+      running = false;
+  }
+
+  public boolean isRunning() {
+    return running;
   }
 }

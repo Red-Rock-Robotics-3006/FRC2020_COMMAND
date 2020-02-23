@@ -24,6 +24,8 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
   // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
  private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(ShooterConstants.kShooterMotorPort);
+ private WPI_TalonSRX feeder = new WPI_TalonSRX(ShooterConstants.kFeederMotorPort);
+ private boolean feederRunning = false;
 /*
  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.ksVolts, ShooterConstants.kVVoltsSecondsPerRotation);
@@ -47,12 +49,24 @@ public class ShooterSubsystem extends SubsystemBase {
   
   public void shoot() {
     m_shooterMotor.set(ShooterConstants.kShooterPower);
+    feeder.set(ShooterConstants.kFeederPower);
     System.out.println(getEncoder());
+    feederRunning = true;
+  }
+
+  public void runFeeder() {
+    feeder.set(-.4);
   }
 
   public void stop()
   {
     m_shooterMotor.set(0);
+    feeder.set(0);
+    feederRunning = false;
+  }
+
+  public boolean isFeederRunning() {
+    return feederRunning;
   }
 
   public void resetEncoder() {

@@ -8,44 +8,56 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.StorageConstants;
 
 public class StorageSubsystem extends SubsystemBase {
   private WPI_TalonSRX conveyor = new WPI_TalonSRX(StorageConstants.kConveyorMotorPort);
-  WPI_TalonSRX feeder1 = new WPI_TalonSRX(StorageConstants.kFeeder1MotorPort);
-  WPI_TalonSRX feeder2 = new WPI_TalonSRX(StorageConstants.kFeeder2MotorPort);
-
-  
+  private WPI_TalonSRX feeder = new WPI_TalonSRX(StorageConstants.kFeederMotorPort);
+  private boolean storageOrFeeder = true;
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void feed()
+  public void runConveyor()
   {
       conveyor.set(StorageConstants.kConveyorPower);
-      feeder1.set(StorageConstants.kFeederPower);
-  
+  }
+
+  public void runFeeder() {
+    if (storageOrFeeder) {
+      feedToStorage();
+      System.out.println("true");
+    } else {
+      feedToTurret();
+      System.out.println("false");
+    }
+  }
+
+  public void feedToStorage() {
+    feeder.set(StorageConstants.kFeederPower);
+    
+  }
+
+  public void feedToTurret() {
+    feeder.set(StorageConstants.kReverseFeederSpeed);
+    runConveyor();
+  }
+
+  public void setStorageOrTurret(boolean mode) {
+    storageOrFeeder = mode;
+    System.out.println(mode);
+  }
+
+  public boolean getStorageOrTurret() {
+    return storageOrFeeder;
   }
 
   public void stop()
   {
       conveyor.set(0);
-      feeder1.set(0);
-      feeder2.set(0);
+      feeder.set(0);
   }
 
-  public void reverseFeed()
-  {
-    conveyor.set(StorageConstants.kConveyorPower);
-      feeder1.set(StorageConstants.kReverseFeederSpeed);
-      feeder2.set(StorageConstants.kReverseFeederSpeed);
-  }
-
-  public void feedToTurret() {
-    feeder1.set(StorageConstants.kReverseFeederSpeed);
-  }
 }

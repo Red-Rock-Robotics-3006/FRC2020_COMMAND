@@ -54,6 +54,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -82,77 +83,69 @@ public class RobotContainer {
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
   public RobotContainer() {
-    // Configure the button bindings
     configureButtonBindings();
 
    m_driveSubsystem.setDefaultCommand(
         new RunCommand(() -> 
-            m_driveSubsystem.tankDrive(-0.6 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            -0.6 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+            m_driveSubsystem.tankDrive(-0.4 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            -0.4 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
 
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
 
-    new JoystickButton(driver, JoystickConstants.buttonX)
+    //Turret bindings
+    new JoystickButton(mechJoystick, JoystickConstants.buttonX)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(false)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
                                           m_turretSubsystem::reachedLimit))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
 
-    new JoystickButton(driver, JoystickConstants.buttonB)
+    new JoystickButton(mechJoystick, JoystickConstants.buttonB)
         .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(true)), 
                                           new InstantCommand(() -> m_turretSubsystem.stop()), 
                                           m_turretSubsystem::reachedLimit))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-/*
-    new JoystickButton(driver, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(() -> m_storageSubsystem.feed()))
-        .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
-    new JoystickButton(driver, JoystickConstants.buttonY)
-        .whenPressed(new InstantCommand(() -> m_storageSubsystem.reverseFeed()))
-        .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
-    */
-      
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .1)
-        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem));
 
-    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .1)
-        .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem));
+    //Intake bindings
+    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .3)
+        .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
+        /*
+    new JoystickButton(mechJoystick, JoystickConstants.buttonA)
+        .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))
+        .whenReleased(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(true)));*/
 
-    new JoystickButton(mechJoystick, JoystickConstants.buttonY)
+    //Shoot bindings
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
+        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake));
+
+    /**
+     * 17ft = 5.18m
+     * 70% power
+     * 
+     */
+
+    //Climb bindings
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) < -.3)
         .whenPressed(new InstantCommand(()->m_climberSubsystem.extend()))
         .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) > .3)
+        .whenPressed(new InstantCommand(()->m_climberSubsystem.retract()))
+        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+
     new JoystickButton(mechJoystick, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(()->m_storageSubsystem.feedToTurret()))
-        .whenReleased(new InstantCommand(()->m_storageSubsystem.stop()));
-    new JoystickButton(mechJoystick, JoystickConstants.buttonX)
         .whenPressed(new InstantCommand(()->m_climberSubsystem.climb()))
         .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSpool()));
 
-
     new JoystickButton(driver, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(() -> m_shooterSubsystem.shoot()))
-        .whenReleased(new InstantCommand(() -> m_shooterSubsystem.stop()));
+        .whenPressed(new InstantCommand(() -> m_storageSubsystem.feedToTurret()))
+        .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
         
   }
   
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
    // return new InstantCommand(() -> m_driveSubsystem.tankDrive(.1, .1), m_driveSubsystem);
     // An ExampleCommand will run in autonomous

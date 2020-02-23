@@ -91,7 +91,7 @@ public final class Constants {
     public static final int kIntakeMotorPort = 15;
     public static final int kIntakeOneSolenoidPort = 1;
     public static final int kIntakeTwoSolenoidPort = 2;
-    public static final double kIntakePower = 0.4;
+    public static final double kIntakePower = 0.6;
   }
 
   public static final class TurretConstants {
@@ -111,14 +111,16 @@ public final class Constants {
 
   public static final class StorageConstants {
     public static final int kConveyorMotorPort = 13;
-    public static final int kFeeder1MotorPort = 12;
-    public static final int kFeeder2MotorPort = 16;
-    public static final double kConveyorPower = -0.3;
-    public static final double kFeederPower = 0.3;
+    public static final int kFeederMotorPort = 12;
+    public static final double kConveyorPower = -0.35;
+    public static final double kFeederPower = 0.2;
     public static final double kReverseFeederSpeed = -0.6;
   }
 
   public static final class ShooterConstants {
+    public static final int kFeederMotorPort = 16;
+    public static final double kFeederPower = .1;
+    
     public static final int kShooterMotorPort = 1;
     public static final double kShooterPower = 0.5;
     public static final double KP = 0;
@@ -135,7 +137,7 @@ public final class Constants {
   public static final class ClimberConstants {
     public static final int kClimberMotorPort = 17;
     public static final int kSpoolMotorPort = 20;
-    public static final double kClimberUpPower = -0.5;
+    public static final double kClimberUpPower = -0.7;
     public static final double kClimberDownPower = -0.5;
 	  public static final double kSlideMotorPower = 0.5;
   }
