@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 /**
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
   public static final class DriveConstants {
     public static final int kLeftMotor1Port = 8;
     public static final int kLeftMotor2Port = 9;
@@ -112,14 +115,15 @@ public final class Constants {
   public static final class StorageConstants {
     public static final int kConveyorMotorPort = 13;
     public static final int kFeederMotorPort = 12;
-    public static final double kConveyorPower = -0.35;
-    public static final double kFeederPower = 0.2;
-    public static final double kReverseFeederSpeed = -0.6;
+    public static final double kConveyorPower = 0.35;
+    public static final double kFeederToStoragePower = 0.2;
+    public static final double kFeederToTurretPower = -0.5;
   }
 
   public static final class ShooterConstants {
     public static final int kFeederMotorPort = 16;
-    public static final double kFeederPower = .1;
+    public static final double kFeederUpPower = .5;
+    public static final double kFeederDownPower = -.5;
     
     public static final int kShooterMotorPort = 1;
     public static final double kShooterPower = 0.5;
@@ -129,7 +133,7 @@ public final class Constants {
     public static final double kShooterToleranceRPS = 0;
     public static final double ksVolts = 0;
     public static final double kVVoltsSecondsPerRotation = 0;
-    public static final double kEncoderDistancePerPulse = 2048 * 16 / 54;
+    public static final double kEncoderRotationsPerPulse = 2048 * 16 / 54;
     public static final double kShooterTargetRPS = 0;
   
   }

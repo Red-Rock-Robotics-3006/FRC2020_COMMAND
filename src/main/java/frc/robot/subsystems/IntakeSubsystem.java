@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
@@ -25,7 +26,7 @@ public class IntakeSubsystem extends SubsystemBase
   Solenoid oneSolenoid = new Solenoid(IntakeConstants.kIntakeOneSolenoidPort);
   Solenoid twoSolenoid = new Solenoid(IntakeConstants.kIntakeTwoSolenoidPort);
 
-  private boolean running = false;
+  private boolean running, solenoidExtended = false;
 
   public IntakeSubsystem()
   {
@@ -35,13 +36,17 @@ public class IntakeSubsystem extends SubsystemBase
   @Override
   public void periodic() 
   {
-    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Solenoid extended (T/F)", isExtended());
+    SmartDashboard.putNumber("Intake wheels power", IntakeConstants.kIntakePower);
   }
+  
   public void extend(boolean enabled)
   {
        oneSolenoid.set(enabled);
        twoSolenoid.set(enabled);
+       solenoidExtended = enabled;
   }
+  
   public void spin()
   {
       intakeVictor.set(IntakeConstants.kIntakePower);
@@ -50,10 +55,15 @@ public class IntakeSubsystem extends SubsystemBase
   public void stop()
   {
       intakeVictor.set(0);
+      extend(false);
       running = false;
   }
 
   public boolean isRunning() {
     return running;
+  }
+
+  public boolean isExtended() {
+    return solenoidExtended;
   }
 }

@@ -7,9 +7,11 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -25,9 +27,7 @@ public class IntakeCommand extends ParallelCommandGroup {
     super(
       new InstantCommand(() -> intake.extend(true)),
       new InstantCommand(() -> intake.spin()),
-      new InstantCommand(() -> storage.runConveyor()),
-      new InstantCommand(() -> storage.runFeeder()),
-      new InstantCommand(() -> shooter.runFeeder())
+      new InstantCommand(() -> storage.runConveyor())
     );
    
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,15 +39,19 @@ public class IntakeCommand extends ParallelCommandGroup {
     
   }
 
+  @Override
+  public void execute() {
+    super.execute();
+    m_storageSubsystem.runFeeder();
+  }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   // if(!shooter.isFeederRunning()) {
-      m_intakeSubsystem.stop();
+    m_intakeSubsystem.stop();
+    if(!shooter.isShooterFeederRunning()) {
       m_storageSubsystem.stop();
-      m_intakeSubsystem.extend(false);
-      this.shooter.stop();
-   // }
+    }
   }
 
   // Returns true when the command should end.

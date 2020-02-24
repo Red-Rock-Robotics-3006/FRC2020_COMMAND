@@ -23,7 +23,6 @@ public class ClimberSubsystem extends SubsystemBase {
    * Creates a new ClimbingSubsystem
    */
   public ClimberSubsystem() {
-
   }
 
   @Override

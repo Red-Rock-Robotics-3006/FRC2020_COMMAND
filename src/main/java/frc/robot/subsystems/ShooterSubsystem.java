@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -25,7 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
  private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(ShooterConstants.kShooterMotorPort);
  private WPI_TalonSRX feeder = new WPI_TalonSRX(ShooterConstants.kFeederMotorPort);
- private boolean feederRunning = false;
+ private boolean shooterFeederRunning = false;
 /*
  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.ksVolts, ShooterConstants.kVVoltsSecondsPerRotation);
@@ -38,44 +39,56 @@ public class ShooterSubsystem extends SubsystemBase {
    super.setSetpoint(ShooterConstants.kShooterTargetRPS);
    */
   m_shooterMotor.configFactoryDefault();
+  feeder.configFactoryDefault();
+
+  feeder.setInverted(true);
   m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
   m_shooterMotor.setInverted(true);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter power", ShooterConstants.kShooterPower);
+    SmartDashboard.putNumber("Shooter RPS", getRPS());
+    SmartDashboard.putBoolean("At RPS (T/F)", atRPS());
+    SmartDashboard.putNumber("Feeder up power", ShooterConstants.kFeederUpPower);
   }
   
   public void shoot() {
     m_shooterMotor.set(ShooterConstants.kShooterPower);
-    feeder.set(ShooterConstants.kFeederPower);
-    System.out.println(getEncoder());
-    feederRunning = true;
+    shooterFeederRunning = true;
   }
 
   public void runFeeder() {
-    feeder.set(-.4);
+    feeder.set(ShooterConstants.kFeederUpPower);
   }
 
   public void stop()
   {
     m_shooterMotor.set(0);
     feeder.set(0);
-    feederRunning = false;
+    shooterFeederRunning = false;
   }
 
-  public boolean isFeederRunning() {
-    return feederRunning;
+  public boolean isShooterFeederRunning() {
+    return shooterFeederRunning;
   }
 
   public void resetEncoder() {
     m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
   }
 
-  public double getEncoder() {
-    return m_shooterMotor.getSensorCollection().getIntegratedSensorPosition();
+  public double getRPS() {
+    return m_shooterMotor.getSensorCollection().getIntegratedSensorVelocity() * 1000 / ShooterConstants.kEncoderRotationsPerPulse;
   }
+
+  public boolean atRPS() {
+    if (getRPS() >= ShooterConstants.kShooterTargetRPS) {
+      return true;
+    }
+    return false;
+  }
+
 /*
   @Override
   public void useOutput(double output, double setpoint) {

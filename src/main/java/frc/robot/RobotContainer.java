@@ -109,21 +109,17 @@ public class RobotContainer {
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
 
     //Intake bindings
-    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .3)
-        .whenHeld(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
-        /*
-    new JoystickButton(mechJoystick, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))
-        .whenReleased(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(true)));*/
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
+        .whileActiveOnce(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
 
     //Shoot bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
-        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake));
+        .whileActiveContinuous(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake));
 
     /**
      * 17ft = 5.18m
      * 70% power
-     * 
+     * NOTE: Shooter changed so probably not true anymore
      */
 
     //Climb bindings

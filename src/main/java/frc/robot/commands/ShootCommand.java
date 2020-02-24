@@ -17,8 +17,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class ShootCommand extends ParallelCommandGroup {
+public class ShootCommand extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private ShooterSubsystem shooter;
@@ -27,12 +28,15 @@ public class ShootCommand extends ParallelCommandGroup {
 
   public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage, IntakeSubsystem intake) {
     super(
+        new InstantCommand(() -> storage.setStorageOrTurret(false)),
         new InstantCommand(() -> shooter.shoot()),
-        new InstantCommand(() -> shooter.runFeeder()),
-        new SequentialCommandGroup(
-          new InstantCommand(() -> storage.setStorageOrTurret(false)),
+        new WaitUntilCommand(shooter::atRPS),
+        new ParallelCommandGroup(
+          new InstantCommand(() -> shooter.runFeeder()),
+          new InstantCommand(() -> storage.runConveyor()),
           new InstantCommand(() -> storage.runFeeder())
         )
+
     );
 
     /*
@@ -60,11 +64,10 @@ public class ShootCommand extends ParallelCommandGroup {
 
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Stopping");
-   // if(!intake.isRunning()) {
-      shooter.stop();
+    if(storage.isStorageRunning() && !intake.isRunning()) {
       storage.stop();
-    //}
+    }
+    shooter.stop();
     storage.setStorageOrTurret(true);
   }
 
