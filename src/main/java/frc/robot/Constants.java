@@ -126,7 +126,7 @@ public final class Constants {
     public static final double kFeederDownPower = -.5;
     
     public static final int kShooterMotorPort = 1;
-    public static final double kShooterPower = 0.5;
+    public static final double kShooterPower = 0.3;
     public static final double KP = 0;
     public static final double KI = 0;
     public static final double KD = 0;

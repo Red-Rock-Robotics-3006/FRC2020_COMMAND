@@ -56,7 +56,6 @@ public class StorageSubsystem extends SubsystemBase {
 
   public void feedToTurret() {
     feeder.set(StorageConstants.kFeederToTurretPower);
-    runConveyor();
   }
 
   public void setStorageOrTurret(boolean mode) {

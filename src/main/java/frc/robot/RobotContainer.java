@@ -44,6 +44,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.ShootCommand2;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -112,9 +113,15 @@ public class RobotContainer {
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
         .whileActiveOnce(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
 
+
+    SequentialCommandGroup shootCommand3 = new SequentialCommandGroup(
+        new InstantCommand(() -> m_shooterSubsystem.resetEncoder()),
+        new InstantCommand(() -> m_shooterSubsystem.shoot())
+    );
+
     //Shoot bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
-        .whileActiveContinuous(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake));
+        .whenHeld(new ShootCommand2(m_shooterSubsystem));
 
     /**
      * 17ft = 5.18m

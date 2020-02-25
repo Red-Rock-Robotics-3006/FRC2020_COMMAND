@@ -64,7 +64,7 @@ public class AutoExample extends SequentialCommandGroup {
                     new TurnToAngle(0, 0, drive),
                     lineUpCommand.andThen(() -> drive.tankDriveVolts(0, 0)),
                     new TapeTracking(vision, turret),
-                    new ShootCommand(shooter, storage, intake).withTimeout(4),
+                    //new ShootCommand(shooter, storage, intake).withTimeout(4),
                     new PowerCellPickup(vision, drive, intake, storage, shooter, false)                    
         );
 

@@ -13,65 +13,27 @@ import frc.robot.subsystems.StorageSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-public class ShootCommand extends SequentialCommandGroup {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+public class ShootCommand2 extends SequentialCommandGroup {
+   
+    private ShooterSubsystem shooter;
 
-  private ShooterSubsystem shooter;
-  //private StorageSubsystem storage;
-  //private IntakeSubsystem intake;
+    public ShootCommand2(ShooterSubsystem shooter) {
+        super(
+            new RunCommand(() -> shooter.resetEncoder(), shooter).withTimeout(.1)
+        );
 
-  public ShootCommand(ShooterSubsystem shooter/*, StorageSubsystem storage, IntakeSubsystem intake*/) {
-    super(
-      new InstantCommand(() -> shooter.shoot())
-        /*new InstantCommand(() -> storage.setStorageOrTurret(false))
-        new InstantCommand(() -> shooter.shoot()),
-       // new WaitUntilCommand(shooter::atRPS),
-        new ParallelCommandGroup(
-          new InstantCommand(() -> shooter.runFeeder()),
-          new InstantCommand(() -> storage.runConveyor()),
-          new InstantCommand(() -> storage.runFeeder())
-        )*/
-
-    );
-
-    /*
-    TODO: Use PID subsystem
-    What it might look like
-    Use SequentialCommandGroup intsead
-
-    super (
-      new InstantCommand(shooter::enable, shooter),
-      new WaitUntilCommand(shooter::atSetpoint),
-      new ConditionalCommand(
-        new InstantCommand(storage::reverseFeed, storage),
-        new InstantCommand(),
-        shooter::atSetpoint
-      )
-    );
-
-    */
-    
-    this.shooter = shooter;
-   // this.storage = storage;
-    //this.intake = intake;
-
+        this.shooter = shooter;
   }
 
   @Override
   public void end(boolean interrupted) {
-   /* if(storage.isStorageRunning() && !intake.isRunning()) {
-      storage.stop();
-    }
-    storage.stop();
-    shooter.stop();
-    //storage.setStorageOrTurret(true);*/
-    shooter.stop();
+      this.shooter.stop();
+      System.out.println("stop");
   }
 
   @Override
