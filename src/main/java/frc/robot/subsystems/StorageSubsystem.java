@@ -42,10 +42,8 @@ public class StorageSubsystem extends SubsystemBase {
   public void runFeeder() {
     if (storageOrFeeder) {
       feedToStorage();
-      System.out.println("true");
     } else {
       feedToTurret();
-      System.out.println("false");
     }
   }
 

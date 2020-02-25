@@ -23,20 +23,20 @@ public class ShootCommand extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private ShooterSubsystem shooter;
-  //private StorageSubsystem storage;
-  //private IntakeSubsystem intake;
+  private StorageSubsystem storage;
+  private IntakeSubsystem intake;
 
-  public ShootCommand(ShooterSubsystem shooter/*, StorageSubsystem storage, IntakeSubsystem intake*/) {
+  public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage, IntakeSubsystem intake) {
     super(
-      new InstantCommand(() -> shooter.shoot())
-        /*new InstantCommand(() -> storage.setStorageOrTurret(false))
+      
+        new InstantCommand(() -> storage.setStorageOrTurret(false)),
         new InstantCommand(() -> shooter.shoot()),
        // new WaitUntilCommand(shooter::atRPS),
         new ParallelCommandGroup(
-          new InstantCommand(() -> shooter.runFeeder()),
-          new InstantCommand(() -> storage.runConveyor()),
-          new InstantCommand(() -> storage.runFeeder())
-        )*/
+          new RunCommand(() -> shooter.runFeeder()),
+          new RunCommand(() -> storage.runConveyor()),
+          new RunCommand(() -> storage.runFeeder())
+        )
 
     );
 
@@ -58,25 +58,19 @@ public class ShootCommand extends SequentialCommandGroup {
     */
     
     this.shooter = shooter;
-   // this.storage = storage;
-    //this.intake = intake;
+    this.storage = storage;
+    this.intake = intake;
 
   }
 
   @Override
   public void end(boolean interrupted) {
-   /* if(storage.isStorageRunning() && !intake.isRunning()) {
+    super.end(interrupted);
+    if(storage.isStorageRunning() && !intake.isRunning()) {
       storage.stop();
     }
-    storage.stop();
     shooter.stop();
-    //storage.setStorageOrTurret(true);*/
-    shooter.stop();
-  }
-
-  @Override
-  public boolean isFinished() {
-    return false;
+    storage.setStorageOrTurret(true);
   }
 
 /*

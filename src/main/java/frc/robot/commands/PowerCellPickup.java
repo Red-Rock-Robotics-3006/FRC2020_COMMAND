@@ -51,6 +51,7 @@ public class PowerCellPickup extends SequentialCommandGroup {
 
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     intake.stop();
     intake.extend(false);
     //storage.stop();
@@ -62,9 +63,10 @@ public class PowerCellPickup extends SequentialCommandGroup {
     //Maybe use ultrasonics to determine stop condition
     //Or use vision: power cell positioning
 
+
     if(vision.getPowerCellExists() && vision.getPowerCellPos()[1] > vision.getHeight() - 40) {
       return true;
     }
-    return false;
+    return super.isFinished();
   }
 }
