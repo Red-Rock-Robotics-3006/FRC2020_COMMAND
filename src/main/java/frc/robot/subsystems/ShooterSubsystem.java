@@ -38,8 +38,8 @@ public class ShooterSubsystem extends SubsystemBase {
    super.getController().setTolerance(ShooterConstants.kShooterToleranceRPS);
    super.setSetpoint(ShooterConstants.kShooterTargetRPS);
    */
-  //m_shooterMotor.configFactoryDefault();
-  //feeder.configFactoryDefault();
+  m_shooterMotor.configFactoryDefault();
+  feeder.configFactoryDefault();
 
   feeder.setInverted(true);
   m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
