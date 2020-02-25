@@ -29,7 +29,7 @@ public final class Constants {
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
   
-    public static final double kTrackwidthMeters = .58;//0.5588;
+    public static final double kTrackwidthMeters = .59;//0.5588;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
