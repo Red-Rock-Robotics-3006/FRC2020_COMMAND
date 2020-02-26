@@ -41,9 +41,9 @@ public final class Constants {
 
     public static final boolean kGyroReversed = true;
 
-    public static final double ksVolts = 1.01;
-    public static final double kvVoltSecondsPerMeter = 3.03;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.697;
+    public static final double ksVolts = 0.24; //old was 1.01
+    public static final double kvVoltSecondsPerMeter = 2.38; //old was 3.03
+    public static final double kaVoltSecondsSquaredPerMeter = 0.367; //old was 0.697
 
     public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
 
@@ -134,7 +134,7 @@ public final class Constants {
     public static final double ksVolts = 0;
     public static final double kVVoltsSecondsPerRotation = 0;
     public static final double kEncoderRotationsPerPulse = 2048 * 16 / 54;
-    public static final double kShooterTargetRPS = 0;
+    public static final double kShooterTargetRPS = 80;
   
   }
 

@@ -52,6 +52,7 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter RPS", getRPS());
     SmartDashboard.putBoolean("At RPS (T/F)", atRPS());
     SmartDashboard.putNumber("Feeder up power", ShooterConstants.kFeederUpPower);
+    SmartDashboard.putNumber("Encoder count", m_shooterMotor.getSensorCollection().getIntegratedSensorPosition());
   }
   
   public void shoot() {
@@ -79,7 +80,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getRPS() {
-    return m_shooterMotor.getSensorCollection().getIntegratedSensorVelocity() * 1000 / ShooterConstants.kEncoderRotationsPerPulse;
+    return -1* m_shooterMotor.getSensorCollection().getIntegratedSensorVelocity() * 10 / ShooterConstants.kEncoderRotationsPerPulse;
   }
 
   public boolean atRPS() {

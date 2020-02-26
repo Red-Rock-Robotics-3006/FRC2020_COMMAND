@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants.TurretConstants;
 
@@ -20,17 +21,18 @@ public class TurretSubsystem extends PIDSubsystem {
     super(new PIDController(TurretConstants.kP, TurretConstants.kI, TurretConstants.kD));
     super.getController().setTolerance(TurretConstants.kTurretToleranceEPR);
     super.getController().enableContinuousInput(-TurretConstants.kEncoderPulsesPerRev/2, TurretConstants.kEncoderPulsesPerRev/2);
+    turret.getSensorCollection().setIntegratedSensorPosition(0, 0);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Turret angle", getEncoderPos());
     
   }
   
   public double getEncoderPos() 
   {
-      return turret.getSensorCollection().getIntegratedSensorAbsolutePosition();
+      return turret.getSensorCollection().getIntegratedSensorPosition() * 360 / TurretConstants.kEncoderPulsesPerRev;
   }
 
   public void turn(boolean direction)
@@ -46,7 +48,7 @@ public class TurretSubsystem extends PIDSubsystem {
 
   public boolean reachedLimit()
   {
-    if(getEncoderPos() >= TurretConstants.kStopTurretRight || getEncoderPos() <= TurretConstants.kStopTurretLeft)
+    if(Math.abs(getEncoderPos()) >= TurretConstants.kStopTurretRight || Math.abs(getEncoderPos()) <= TurretConstants.kStopTurretLeft)
     {
       return true;
     }

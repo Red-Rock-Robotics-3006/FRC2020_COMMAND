@@ -88,26 +88,37 @@ public class RobotContainer {
 
    m_driveSubsystem.setDefaultCommand(
         new RunCommand(() -> 
-            m_driveSubsystem.tankDrive(-0.4 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            -0.4 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+            m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
 
   }
 
   private void configureButtonBindings() {
 
     //Turret bindings
+    
     new JoystickButton(mechJoystick, JoystickConstants.buttonX)
-        .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(false)), 
-                                          new InstantCommand(() -> m_turretSubsystem.stop()), 
-                                          m_turretSubsystem::reachedLimit))
+        .whenPressed(new InstantCommand(() -> m_turretSubsystem.turn(false)))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
 
     new JoystickButton(mechJoystick, JoystickConstants.buttonB)
-        .whenPressed(new ConditionalCommand(new InstantCommand(() -> m_turretSubsystem.turn(true)), 
-                                          new InstantCommand(() -> m_turretSubsystem.stop()), 
-                                          m_turretSubsystem::reachedLimit))
+        .whenPressed(new InstantCommand(() -> m_turretSubsystem.turn(true)))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-
+        
+        /*
+    new JoystickButton(mechJoystick, JoystickConstants.buttonX)
+        .whenPressed(new ConditionalCommand(
+            new InstantCommand(() -> m_turretSubsystem.stop()),
+            new InstantCommand(() -> m_turretSubsystem.turn(true)), 
+            m_turretSubsystem::reachedLimit))
+        .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
+    new JoystickButton(mechJoystick, JoystickConstants.buttonB)
+        .whenPressed(new ConditionalCommand(
+            new InstantCommand(() -> m_turretSubsystem.stop()),
+            new InstantCommand(() -> m_turretSubsystem.turn(false)), 
+            m_turretSubsystem::reachedLimit))
+        .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
+*/
     //Intake bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
         .whileActiveOnce(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));

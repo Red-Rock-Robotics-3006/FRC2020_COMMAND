@@ -31,7 +31,7 @@ public class ShootCommand extends SequentialCommandGroup {
       
         new InstantCommand(() -> storage.setStorageOrTurret(false)),
         new InstantCommand(() -> shooter.shoot()),
-       // new WaitUntilCommand(shooter::atRPS),
+        new WaitUntilCommand(shooter::atRPS),
         new ParallelCommandGroup(
           new RunCommand(() -> shooter.runFeeder()),
           new RunCommand(() -> storage.runConveyor()),
