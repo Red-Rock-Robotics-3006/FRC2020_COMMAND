@@ -62,6 +62,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void runFeeder() {
     feeder.set(ShooterConstants.kFeederUpPower);
+    shooterFeederRunning = true;
+  }
+
+  public void runFeederDownwards()
+  {
+    feeder.set(ShooterConstants.kFeederDownPower);
+    shooterFeederRunning = true;
   }
 
   public void stop()

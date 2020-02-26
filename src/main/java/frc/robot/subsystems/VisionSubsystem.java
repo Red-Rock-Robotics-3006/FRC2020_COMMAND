@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -16,9 +17,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     private double width = 320, height = 240;
 
-    private DriveSubsystem drive;
+    private Solenoid intakeLED = new Solenoid(0);
 
-    public VisionSubsystem(DriveSubsystem drive) {
+    public VisionSubsystem() {
         inst = NetworkTableInstance.getDefault();
 
         mlTable = inst.getTable("ML");
@@ -33,7 +34,6 @@ public class VisionSubsystem extends SubsystemBase {
 
         camMode = false;
 
-        this.drive = drive;
     }
 
     @Override
@@ -94,7 +94,13 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public double getAngleToTurn() {
-        return drive.getHeading() + getTargetAngle();
+       // return drive.getHeading() + getTargetAngle();
+       return getTargetAngle();
+    }
+
+    public void enableIntakeSideLED(boolean enabled) {
+        intakeLED.set(enabled);
+        
     }
 
 }
