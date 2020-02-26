@@ -41,10 +41,12 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.ColorWheelCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -79,6 +81,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
@@ -150,6 +153,14 @@ public class RobotContainer {
     new JoystickButton(driver, JoystickConstants.buttonA)
         .whenPressed(new InstantCommand(() -> m_storageSubsystem.feedToTurret()))
         .whenReleased(new InstantCommand(() -> m_storageSubsystem.stop()));
+
+    //Color bindings
+    new JoystickButton(mechJoystick, JoystickConstants.buttonY)
+        .toggleWhenPressed(new ColorWheelCommand(m_colorWheelSubsystem));
+    new JoystickButton(mechJoystick,JoystickConstants.buttonRightBumper)
+        .whenPressed(new InstantCommand(()->m_colorWheelSubsystem.spinAmount(4)));
+    new JoystickButton(mechJoystick,JoystickConstants.buttonLeftBumper)
+        .whenPressed(new InstantCommand(()->m_colorWheelSubsystem.spinToColor(""))); //need to get target color
         
   }
   

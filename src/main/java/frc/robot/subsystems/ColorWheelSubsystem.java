@@ -53,7 +53,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
         
     }
 
-    public void getColor() {
+    public String getColor() {
       Color detectedColor = colorSensor.getColor();
 
         String colorString;
@@ -71,7 +71,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
           colorString = "Unknown";
         }
 
-        System.out.println(colorString);
+        return colorString;
     }
 
     @Override
@@ -129,5 +129,63 @@ public class ColorWheelSubsystem extends SubsystemBase {
     }
     public void retract(){
       slideMotor.set(-ColorWheelConstants.kSlideMotorPower);
+    }
+    public void safeExtend(){
+      while(!getTouching()){
+        extend();
+      }
+      stop();
+    }
+    public void safeRetract(){
+      while(!getTouching()){
+        retract();
+      }
+      stop();
+    }
+    //will spin to a color so that the correct color is lined up with the game color sensor
+    public void spinToColor(String color){
+      if(color.equals("Red")){
+        while(!getColor().equals("Blue")){
+            spin();
+        }
+        stop();
+      }
+      else if(color.equals("Blue")){
+        while(!getColor().equals("Red")){
+          spin();
+        }
+        stop();
+      }
+      else if(color.equals("Green")){
+        while(!getColor().equals("Yellow")){
+          spin();
+        }
+        stop();
+      }
+      else if(color.equals("Yellow")){
+        while(!getColor().equals("Green")){
+          spin();
+        }
+        stop();
+      }
+    }
+    
+    public void spinAmount(int times){
+      String color = getColor();
+      boolean countAgain=false;
+      int passCount = 0;
+      spin();
+      while(passCount<times*2){
+        if(!getColor().equals(color)){
+          countAgain=true;
+        }
+        else{
+          if(countAgain){
+            passCount++;
+            countAgain=false;
+          }
+        }
+      }
+      stop();
     }
 }

@@ -33,8 +33,8 @@ public class IntakeCommand extends ParallelCommandGroup {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake, storage);
 
-    m_intakeSubsystem = intake;
-    m_storageSubsystem = storage;
+    this.m_intakeSubsystem = intake;
+    this.m_storageSubsystem = storage;
     this.shooter = shooter;
     
   }

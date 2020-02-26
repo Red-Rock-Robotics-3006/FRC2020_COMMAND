@@ -10,6 +10,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
@@ -25,6 +26,7 @@ public class ColorWheelCommand extends SequentialCommandGroup {
    * @param subsystem The subsystem used by this command.
    */
   public ColorWheelCommand(ColorWheelSubsystem colorWheelSubsystem) {
+    super(new InstantCommand(()->colorWheelSubsystem.safeExtend()));
     m_colorWheelSubsystem = colorWheelSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_colorWheelSubsystem);
@@ -43,6 +45,7 @@ public class ColorWheelCommand extends SequentialCommandGroup {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_colorWheelSubsystem.safeRetract();
   }
 
   // Returns true when the command should end.
