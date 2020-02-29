@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -58,6 +59,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     backRight.setInverted(InvertType.FollowMaster);
     backLeft.setInverted(InvertType.FollowMaster);
+
+    frontRight.setNeutralMode(NeutralMode.Brake);
+    frontLeft.setNeutralMode(NeutralMode.Brake);
+    backRight.setNeutralMode(NeutralMode.Brake);
+    backLeft.setNeutralMode(NeutralMode.Brake);
 
     m_drive = new DifferentialDrive(frontLeft, frontRight);
 
@@ -162,7 +168,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void tankDrive(double leftPower, double rightPower)
   {
-      m_drive.tankDrive(leftPower, rightPower);
+
+    //ax^3 + (1-a)x
+    double leftOutput = DriveConstants.joystickGain * Math.pow(leftPower, 3) + DriveConstants.joystickGain * leftPower;
+    double rightOutput = DriveConstants.joystickGain * Math.pow(rightPower, 3) + DriveConstants.joystickGain * rightPower;
+      m_drive.tankDrive(leftOutput, rightOutput);
      // System.out.println(leftPower + " " + rightPower);
   }
 }

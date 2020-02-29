@@ -98,6 +98,16 @@ def main(config):
     team = read_config(config)
     WIDTH, HEIGHT = 320, 240
     FOV = 68.5
+    print("Starting camera server")
+    
+    cs = CameraServer.getInstance()
+    power_cell_cam = UsbCamera('power_cell_cam', 2)
+    power_cell_cam.setResolution(WIDTH, HEIGHT)
+    power_cell_cam.setExposureManual(20)
+
+    tape_cam = UsbCamera('tape_cam', 0)
+    tape_cam.setResolution(WIDTH, HEIGHT)
+    tape_cam.setExposureManual(1)
 
     print("Connecting to Network Tables")
     ntinst = NetworkTablesInstance.getDefault()
@@ -115,16 +125,6 @@ def main(config):
 
     sd.addEntryListener(listener, key='cam')
 
-    print("Starting camera server")
-    cs = CameraServer.getInstance()
-
-    power_cell_cam = UsbCamera('power_cell_cam', 0)
-    power_cell_cam.setResolution(WIDTH, HEIGHT)
-
-    tape_cam = UsbCamera('tape_cam', 1)
-    tape_cam.setResolution(WIDTH, HEIGHT)
-    tape_cam.setManualExposure(8)
-
     cvSink = cs.getVideo(camera=power_cell_cam)
     img = np.zeros(shape=(HEIGHT, WIDTH, 3), dtype=np.uint8)
     output = cs.putVideo("MLOut", WIDTH, HEIGHT)
@@ -135,8 +135,8 @@ def main(config):
     lower_yellow = np.array([20, 75, 100])
     upper_yellow = np.array([40, 255, 255])
 
-    lower_green = np.array([0, 255, 110]) #137 240 135 - HSV, 0,90,90 - RGB
-    upper_green = np.array([80, 255, 200]) #143 255 148 - HSV, 86,255,255 - RGB
+    lower_green = np.array([55, 124, 81]) #137 240 135 - HSV, 0,90,90 - RGB
+    upper_green = np.array([255, 255, 255]) #143 255 148 - HSV, 86,255,255 - RGB
 
     lower_color = np.array([0, 0, 0])
     upper_color = np.array([0, 0, 0])
@@ -150,10 +150,12 @@ def main(config):
             cvSink.setSource(tape_cam)
             lower_color = lower_green
             upper_color = upper_green
+            print('green')
         else:
             cvSink.setSource(power_cell_cam)
             lower_color = lower_yellow
             upper_color = upper_yellow
+            print('yellow')
 
         t, frame = cvSink.grabFrame(img)
 
@@ -216,7 +218,6 @@ def main(config):
             '''
             TODO: Determine how reflective tapes will look through eye of god
             TODO: Calculate angle and distance to tape (tape angle calculation same as power cell angle calculation)
-
             '''
 
             largest_contour = np.array([0, 0])
@@ -230,23 +231,28 @@ def main(config):
                 x,y,w,h = cv2.boundingRect(largest_contour)
                 cv2.rectangle(frame,(x,y),(x+w, y+h),(0,255,0),2)
                 center_power_cell_x = 0.5 * (x + x + w)
-                center_power_cell_y = 0.5 * (y + y + j) 
+                center_power_cell_y = 0.5 * (y + y + h) 
                 bool_power_cell = True
-            else if (largest_box_area > 0 and cam_mode):
+            elif (largest_box_area > 0 and cam_mode):
                 M1 = cv2.moments(largest_contour)
                 center_contour_x = int(M1['m10']/M1['m00'])
+                cv2.drawContours(frame, [largest_contour], 0, (0, 255, 0), 3)
+                angle_to_turn_tape = (center_contour_x / WIDTH * FOV) - FOV/2
+                cv2.putText(frame, str(angle_to_turn_tape), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
         output.putFrame(frame)
 
         if cam_mode:
             angle_to_turn_tape = (center_contour_x / WIDTH * FOV) - FOV/2
             tape_angle.setDouble(angle_to_turn_tape)
+            print(angle_to_turn_tape)
             #TODO: Send distance to tape
         else:
             angle_to_turn_power_cell = (center_power_cell_x / WIDTH * FOV) - FOV/2
             power_cell_angle.setDouble(angle_to_turn_power_cell)
             power_cell_pos.setDoubleArray([center_power_cell_x, center_power_cell_y])
             power_cell_exists.setBoolean(bool_power_cell)
+            print(angle_to_turn_power_cell)
 
 if __name__ == '__main__':
     config_file = "/boot/frc.json"

@@ -31,7 +31,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
    private final WPI_TalonFX colorWheel;
    private ColorSensorV3 colorSensor;
    private DigitalInput touchSensor = new DigitalInput(0);
-   private final WPI_TalonSRX slideMotor;
+   //private final WPI_TalonSRX slideMotor;
 
     
     private final ColorMatch colorMatcher = new ColorMatch();
@@ -44,7 +44,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     public ColorWheelSubsystem() {
 
         this.colorWheel = new WPI_TalonFX(ColorWheelConstants.kColorWheelPort);
-        this.slideMotor = new WPI_TalonSRX(ColorWheelConstants.kSlideMotorPort);
+       // this.slideMotor = new WPI_TalonSRX(ColorWheelConstants.kSlideMotorPort);
         this.colorSensor = new ColorSensorV3(I2C.Port.kOnboard); //todo: find sensor I2C address
         colorMatcher.addColorMatch(kBlueTarget);
         colorMatcher.addColorMatch(kGreenTarget);
@@ -119,7 +119,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
     {
         colorWheel.set(ColorWheelConstants.kColorWheelPower);
     }
-    public void stop()
+  /*  public void stop()
     {
         colorWheel.set(0);
         slideMotor.set(0);
@@ -187,5 +187,5 @@ public class ColorWheelSubsystem extends SubsystemBase {
         }
       }
       stop();
-    }
+    }*/
 }

@@ -47,8 +47,8 @@ public final class Constants {
 
     public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
 
-    public static final double kPDriveVel = 5.14;
-
+    public static final double kPDriveVel = .375; //5.14
+     
     public static final double kTurnP = 0;
     public static final double kTurnI = 0;
     public static final double kTurnD = 0;
@@ -57,6 +57,8 @@ public final class Constants {
     public static final double kTurnRateToleranceDegPerS = 10;
     
     public static final double kSearchTurnRate = 10;
+
+    public static final double joystickGain = 0.5;
     
   }
 
@@ -101,10 +103,10 @@ public final class Constants {
     public static final int kTurretMotorPort = 19;
     public static final double kTurretPower = 0.15;
 
-    public static final double kP = 0, kI = 0, kD = 0;
+    public static final double kP = .015, kI = 0, kD = 0;
     public static final double kTurretToleranceEPR = 0;
     public static final double kEncoderEPR = 2048;
-    public static final double kEncoderPulsesPerRev = kEncoderEPR * (100/19);
+    public static final double kEncoderPulsesPerRev = kEncoderEPR * (100/19) * 10;
 
     public static final double kMaxAngle = 30;
     public static final double kStopTurretRight = kEncoderPulsesPerRev * (kMaxAngle/360);
@@ -117,16 +119,16 @@ public final class Constants {
     public static final int kFeederMotorPort = 12;
     public static final double kConveyorPower = 0.35;
     public static final double kFeederToStoragePower = 0.2;
-    public static final double kFeederToTurretPower = -0.5;
+    public static final double kFeederToTurretPower = -0.4;
   }
 
   public static final class ShooterConstants {
     public static final int kFeederMotorPort = 16;
-    public static final double kFeederUpPower = .5;
+    public static final double kFeederUpPower = .4;
     public static final double kFeederDownPower = -.5;
     
     public static final int kShooterMotorPort = 1;
-    public static final double kShooterPower = 0.3;
+    public static final double kShooterPower = 0.6;
     public static final double KP = 0;
     public static final double KI = 0;
     public static final double KD = 0;
@@ -134,7 +136,7 @@ public final class Constants {
     public static final double ksVolts = 0;
     public static final double kVVoltsSecondsPerRotation = 0;
     public static final double kEncoderRotationsPerPulse = 2048 * 16 / 54;
-    public static final double kShooterTargetRPS = 80;
+    public static final double kShooterTargetRPS = 150;
   
   }
 

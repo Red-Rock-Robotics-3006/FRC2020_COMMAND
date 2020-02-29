@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
 
     master = new WPI_TalonFX(1);
     master.setInverted(true);
-    master.setSensorPhase(true);
+    master.setSensorPhase(false);
     master.setNeutralMode(NeutralMode.Brake);
 
 

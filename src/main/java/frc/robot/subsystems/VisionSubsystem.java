@@ -17,6 +17,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     private double width = 320, height = 240;
 
+    private Solenoid turretLED = new Solenoid(3);
+
     private Solenoid intakeLED = new Solenoid(0);
 
     public VisionSubsystem() {
@@ -46,6 +48,10 @@ public class VisionSubsystem extends SubsystemBase {
             powerCellExists = powerCellExistsEntry.getBoolean(false);
             powerCellPos = powerCellPosEntry.getDoubleArray(new double[] {width/2, height/2});
         }
+
+        /*if(tapeAngle != 0)
+            System.out.println(tapeAngle);
+*/
     }
 
     public double getWidth() {
@@ -100,7 +106,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     public void enableIntakeSideLED(boolean enabled) {
         intakeLED.set(enabled);
+    }
+    public void enableTurretLED(boolean enabled) {
+        turretLED.set(enabled);
         
     }
+
 
 }

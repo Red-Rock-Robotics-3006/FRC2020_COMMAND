@@ -33,7 +33,7 @@ cv2.createTrackbar('highVal', 'colorTest', icol[5], 255, nothing)
 vidCapture = cv2.VideoCapture(1)
 vidCapture.set(cv2.CAP_PROP_FRAME_WIDTH,FRAME_WIDTH)
 vidCapture.set(cv2.CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT)
-vidCapture.set(cv2.CAP_PROP_EXPOSURE,-8)
+vidCapture.set(cv2.CAP_PROP_EXPOSURE,-13)
 
 while True:
     timeCheck = time.time()

@@ -45,6 +45,7 @@ import frc.robot.commands.ColorWheelCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TapeTracking;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -57,6 +58,7 @@ import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -65,6 +67,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.TurretConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -82,7 +85,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-  private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
+  //private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
 
   private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
 ;
@@ -126,13 +129,17 @@ public class RobotContainer {
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
 */
     //Intake bindings
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
+    new Button(() -> driver.getRawAxis(JoystickConstants.leftTrigger) > .3)
         .whileActiveOnce(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
 
 
     //Shoot bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
         .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake));
+
+    new JoystickButton(driver, JoystickConstants.buttonB)
+        .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))
+        .whenReleased(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(true)));
 
     /**
      * 17ft = 5.18m
@@ -155,17 +162,25 @@ public class RobotContainer {
 
     new JoystickButton(driver, JoystickConstants.buttonA)
 
-        .whenPressed(new InstantCommand(() -> m_visionSubsystem.enableIntakeSideLED(true)))
-        .whenReleased(new InstantCommand(() -> m_visionSubsystem.enableIntakeSideLED(false)));
+        .whenPressed(new InstantCommand(() -> m_visionSubsystem.enableTurretLED(true)))
+        .whenReleased(new InstantCommand(() -> m_visionSubsystem.enableTurretLED(false)));
+
+    new JoystickButton(driver, JoystickConstants.buttonX)
+        .whenPressed(new InstantCommand( () -> m_visionSubsystem.setCamMode(true)))
+        .whenReleased(new InstantCommand( () -> m_visionSubsystem.setCamMode(false)));
+
+    new JoystickButton(mechJoystick, JoystickConstants.buttonRightBumper)
+        .whenHeld(new TapeTracking(m_visionSubsystem, m_turretSubsystem));
+
 
     //Color bindings
-    new JoystickButton(mechJoystick, JoystickConstants.buttonY)
+   /* new JoystickButton(mechJoystick, JoystickConstants.buttonY)
         .toggleWhenPressed(new ColorWheelCommand(m_colorWheelSubsystem));
     new JoystickButton(mechJoystick,JoystickConstants.buttonRightBumper)
         .whenPressed(new InstantCommand(()->m_colorWheelSubsystem.spinAmount(4)));
     new JoystickButton(mechJoystick,JoystickConstants.buttonLeftBumper)
         .whenPressed(new InstantCommand(()->m_colorWheelSubsystem.spinToColor(""))); //need to get target color
-
+*/
   }
   
 

@@ -18,12 +18,13 @@
     # The first port is the one with the encoder attached
     "motorPorts": [1],
     # Inversions for the side motor(s)
-    "motorsInverted": [False],
+    "motorsInverted": [True],
     # Encoder edges-per-revolution (*NOT* cycles per revolution!)
     # This value should be the edges per revolution *of the flywheel*, and so
     # should take into account gearing between the encoder and the wheels
-    "encoderEPR": 606.81481481,
+    "encoderEPR": 607,
     # Whether the encoder is inverted
-    "encoderInverted": True,
+    "encoderInverted": False,
 }
+
 
