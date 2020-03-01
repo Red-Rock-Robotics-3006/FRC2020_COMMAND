@@ -12,6 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -19,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class TapeTracking extends SequentialCommandGroup {
+public class TapeTracking extends CommandBase {
 
     private TurretSubsystem turret;
     private VisionSubsystem vision;
@@ -27,33 +28,41 @@ public class TapeTracking extends SequentialCommandGroup {
     private boolean atAngle = false;
     
     public TapeTracking(VisionSubsystem vision, TurretSubsystem turret) {
+        /*
         super(
             new InstantCommand(() -> vision.setCamMode(true)),
             new InstantCommand(() -> vision.enableTurretLED(true)),
             new WaitCommand(1),
             new TurretTurnCommand(turret, vision),
             new RunCommand(() -> vision.setCamMode(true))
-        );
+        );*/
 
         this.turret = turret;
         this.vision = vision;
     }
 
     @Override
-    public void end(boolean interrupted) {
-        super.end(interrupted);
+    public void initialize() {
+        vision.setCamMode(true);
+        vision.enableTurretLED(true);
+    }
 
-        //turret.disable();
+    @Override
+    public void execute() {
+        if(vision.getTapeFound())
+            atAngle = turret.turnToAngle(vision.getAngleToTurn());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
         turret.stop();
-        System.out.println("turretstop");
         vision.enableTurretLED(false);
         vision.setCamMode(false);
     }
     
     @Override
     public boolean isFinished() {
-        super.isFinished();
-        if(turret.reachedLimit() /*|| turret.getController().atSetpoint()*/) {
+        if(turret.reachedLimit() || atAngle) {
             return true;
         }
         return false;

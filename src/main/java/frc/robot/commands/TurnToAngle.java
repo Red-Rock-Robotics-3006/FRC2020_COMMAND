@@ -12,6 +12,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class TurnToAngle extends CommandBase {
@@ -57,26 +59,35 @@ public class TurnToAngle extends CommandBase {
 
   @Override
   public void execute() {
-    
-
-    var targetWheelSpeeds = DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(targetSpeed, 0, drive.getHeading() - targetAngle));
+  
+    var targetWheelSpeeds = DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(targetSpeed, 0, Units.degreesToRadians(drive.getHeading() - targetAngle)));
     var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
     var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
 
     double leftFeedforward = motorFeedforward.calculate(leftSpeedSetpoint);
     double rightFeedforward = motorFeedforward.calculate(rightSpeedSetpoint);
 
+    System.out.println("left speed output: " + leftFeedforward);
+    System.out.println("right speed output: " + rightFeedforward);
+
     double leftOutput = leftController.calculate(drive.getWheelSpeeds().leftMetersPerSecond, leftSpeedSetpoint) + leftFeedforward;
     double rightOutput = rightController.calculate(drive.getWheelSpeeds().rightMetersPerSecond, rightSpeedSetpoint) + rightFeedforward;
 
-    drive.tankDriveVolts(leftOutput, rightOutput);
+    
+    //drive.tankDriveVolts(leftOutput, rightOutput);
 
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    drive.tankDrive(0, 0);
   }
 
   @Override
   public boolean isFinished() {
    // return super.getController().atSetpoint();
-   return leftController.atSetpoint() && rightController.atSetpoint();
+   //return leftController.atSetpoint() && rightController.atSetpoint();
+   return false;
   }
 
 

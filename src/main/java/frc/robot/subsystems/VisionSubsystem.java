@@ -10,10 +10,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     private NetworkTableInstance inst;
     private NetworkTable mlTable;
-    private NetworkTableEntry powerCellAngleEntry, powerCellExistsEntry, powerCellPosEntry, tapeAngleEntry, tapeDistEntry;
+    private NetworkTableEntry powerCellAngleEntry, powerCellExistsEntry, powerCellPosEntry, tapeAngleEntry, tapeDistEntry, tapeFoundEntry;
     private double powerCellAngle, tapeAngle, tapeDist;
     private double[] powerCellPos;
-    private boolean powerCellExists, camMode;
+    private boolean powerCellExists, camMode, tapeFound;
 
     private double width = 320, height = 240;
 
@@ -31,6 +31,7 @@ public class VisionSubsystem extends SubsystemBase {
         powerCellPosEntry = mlTable.getEntry("power_cell_pos");
         tapeAngleEntry = mlTable.getEntry("tape_angle");
         tapeDistEntry = mlTable.getEntry("tape_dist");
+        tapeFoundEntry = mlTable.getEntry("tape_found");
 
         inst.startClientTeam(3006);
 
@@ -43,6 +44,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (camMode) {
             tapeAngle = tapeAngleEntry.getDouble(0);
             tapeDist = tapeDistEntry.getDouble(0);
+            tapeFound = tapeFoundEntry.getBoolean(false);
         } else {
             powerCellAngle = powerCellAngleEntry.getDouble(0);
             powerCellExists = powerCellExistsEntry.getBoolean(false);
@@ -89,6 +91,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     public double getTapeDist() {
         return tapeDist;
+    }
+
+    public boolean getTapeFound() {
+        return tapeFound;
     }
     
     public double getTargetAngle() {

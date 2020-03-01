@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -70,7 +71,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.setRightSideInverted(false);
    
     resetEncoders();
-    zeroHeading();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
 
@@ -85,6 +85,13 @@ public class DriveSubsystem extends SubsystemBase {
     System.out.println(getLeftEncoderVelocity() + " " + getRightEncoderVelocity());*/
 
    // System.out.println(getHeading());
+
+   SmartDashboard.putNumber("Gyro", getHeading());
+   SmartDashboard.putBoolean("Calibrating", m_gyro.isCalibrating());
+   SmartDashboard.putNumber("PosX", getPose().getTranslation().getX());
+   SmartDashboard.putNumber("PosY", getPose().getTranslation().getY());
+   SmartDashboard.putNumber("Encoder Left", getLeftEncoderDistance());
+   SmartDashboard.putNumber("Encoder Right", getRightEncoderDistance());
 
 
   }
@@ -126,13 +133,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getLeftEncoderDistance() {
       double frontLeftEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
-      return frontLeftEncoder * -1;
+      return frontLeftEncoder;
     //return ((frontLeft.getSensorCollection().getQuadraturePosition() + backLeft.getSensorCollection().getQuadraturePosition())/2);
   }
 
   public double getRightEncoderDistance() {
     double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition()* DriveConstants.kEncoderDistancePerPulse;
-    return frontRightEncoder;
+    return frontRightEncoder * -1;
    //return ((frontRight.getSensorCollection().getQuadraturePosition() + backRight.getSensorCollection().getQuadraturePosition())/2);
   }
 
@@ -155,14 +162,14 @@ public class DriveSubsystem extends SubsystemBase {
   public double getLeftEncoderVelocity()
   {
     double frontLeftEncoder = frontLeft.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
-    return frontLeftEncoder * -1;
+    return frontLeftEncoder;
      // return (frontLeft.getSensorCollection().getQuadratureVelocity() + backLeft.getSensorCollection().getQuadratureVelocity())/2.0;
   }
 
   public double getRightEncoderVelocity()
   {
     double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
-      return frontRightEncoder;
+      return frontRightEncoder*-1;
      // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;
   }
 

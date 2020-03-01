@@ -121,6 +121,7 @@ def main(config):
 
     tape_angle = ntinst.getTable('ML').getEntry('tape_angle')
     tape_dist = ntinst.getTable('ML').getEntry('tape_dist')
+    tape_found = ntinst.getTable('ML').getEntry('tape_found')
     sd = ntinst.getTable('SmartDashboard')
 
     sd.addEntryListener(listener, key='cam')
@@ -170,6 +171,7 @@ def main(config):
         center_power_cell_y = HEIGHT/2
 
         bool_power_cell = False
+        bool_tape = False
 
         largest_box_xmin = 0
         largest_box_xmax = 0
@@ -239,12 +241,14 @@ def main(config):
                 cv2.drawContours(frame, [largest_contour], 0, (0, 255, 0), 3)
                 angle_to_turn_tape = (center_contour_x / WIDTH * FOV) - FOV/2
                 cv2.putText(frame, str(angle_to_turn_tape), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+                bool_tape = True
 
         output.putFrame(frame)
 
         if cam_mode:
             angle_to_turn_tape = (center_contour_x / WIDTH * FOV) - FOV/2
             tape_angle.setDouble(angle_to_turn_tape)
+            tape_found.setBoolean(bool_tape)
             print(angle_to_turn_tape)
             #TODO: Send distance to tape
         else:

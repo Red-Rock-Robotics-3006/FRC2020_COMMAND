@@ -29,25 +29,25 @@ public final class Constants {
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
   
-    public static final double kTrackwidthMeters = .59;//0.5588;
+    public static final double kTrackwidthMeters = .592;//0.5588;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
     public static final int kEncoderCPR = 2048;
-    public static final double kWheelDiameterMeters = 0.15;
+    public static final double kWheelDiameterMeters = 0.153;
     public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR * 10.71);
 
     public static final boolean kGyroReversed = true;
 
-    public static final double ksVolts = 0.24; //old was 1.01
-    public static final double kvVoltSecondsPerMeter = 2.38; //old was 3.03
-    public static final double kaVoltSecondsSquaredPerMeter = 0.367; //old was 0.697
+    public static final double ksVolts = 0.24; //old was 1.01, .229
+    public static final double kvVoltSecondsPerMeter = 2.38; //old was 3.03, 2.43
+    public static final double kaVoltSecondsSquaredPerMeter = 0.367; //old was 0.697, .258
 
     public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
 
-    public static final double kPDriveVel = .375; //5.14
+    public static final double kPDriveVel = .3; //5.14, .319, .375
      
     public static final double kTurnP = 0;
     public static final double kTurnI = 0;
@@ -63,7 +63,7 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxSpeedMetersPerSecond = .7;
     public static final double kMaxAccelerationMetersPerSecondSquared = .3;
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
@@ -129,12 +129,13 @@ public final class Constants {
     
     public static final int kShooterMotorPort = 1;
     public static final double kShooterPower = 0.6;
-    public static final double KP = 0;
+    public static final double KP = 25.9;
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double kShooterToleranceRPS = 0;
-    public static final double ksVolts = 0;
-    public static final double kVVoltsSecondsPerRotation = 0;
+    public static final double kS = .13;
+    public static final double kV = .037;
+    public static final double kA = .0409;
     public static final double kEncoderRotationsPerPulse = 2048 * 16 / 54;
     public static final double kShooterTargetRPS = 150;
   

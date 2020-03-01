@@ -46,6 +46,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TapeTracking;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -141,6 +142,9 @@ public class RobotContainer {
         .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))
         .whenReleased(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(true)));
 
+    new JoystickButton(driver, JoystickConstants.buttonLeftBumper)
+        .whenHeld(new TurnToAngle(30, 0, m_driveSubsystem));
+
     /**
      * 17ft = 5.18m
      * 70% power
@@ -205,14 +209,14 @@ public class RobotContainer {
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
 
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
         List.of(
             new Translation2d(1, 1),
-            new Translation2d(2, -1)
-         //  new Translation2d(1.5, 1.5)
+           
+           new Translation2d(2, -1)
         ),
         // End 3 meters straight ahead of where we started, facing forward
         new Pose2d(3, 0, new Rotation2d(0)),
@@ -220,9 +224,9 @@ public class RobotContainer {
         config
     );
 */
-/*
+   
     Trajectory trajectory;
-    String trajectoryJSON = "/home/lvuser/deploy/PathWeaver/output/test.wpilib.json";
+    String trajectoryJSON = "/home/lvuser/deploy/PathWeaver/Paths/output/rls1.wpilib.json";
     try {
       Path trajectoryPath = Paths.get(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -259,8 +263,11 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
-   */
-    return null;
    
+   // return null;
+  }
+
+  public void resetGyro() {
+      m_driveSubsystem.zeroHeading();
   }
 }
