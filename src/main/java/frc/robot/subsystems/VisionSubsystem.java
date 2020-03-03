@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -41,15 +42,17 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        tapeFound = tapeFoundEntry.getBoolean(false);
         if (camMode) {
             tapeAngle = tapeAngleEntry.getDouble(0);
             tapeDist = tapeDistEntry.getDouble(0);
-            tapeFound = tapeFoundEntry.getBoolean(false);
         } else {
             powerCellAngle = powerCellAngleEntry.getDouble(0);
             powerCellExists = powerCellExistsEntry.getBoolean(false);
             powerCellPos = powerCellPosEntry.getDoubleArray(new double[] {width/2, height/2});
         }
+
+        SmartDashboard.putNumber("Power cell angle", getTargetAngle());
 
         /*if(tapeAngle != 0)
             System.out.println(tapeAngle);

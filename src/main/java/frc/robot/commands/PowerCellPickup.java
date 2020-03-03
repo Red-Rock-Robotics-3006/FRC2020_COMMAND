@@ -30,12 +30,12 @@ public class PowerCellPickup extends SequentialCommandGroup {
       StorageSubsystem storage, ShooterSubsystem shooter, boolean searchRotDirection) {
     super(
       new InstantCommand(() -> vision.setCamMode(false)),
-      new SearchForPowerCell(vision, drive, searchRotDirection),
-      new TurnToAngle(vision.getAngleToTurn(), 0, drive),
-      new ParallelCommandGroup(
+     // new SearchForPowerCell(vision, drive, searchRotDirection),
+      new TurnToAngle(vision.getPowerCellAngle(), 0, drive)
+      /*new ParallelCommandGroup(
         new IntakeCommand(intake, storage, shooter),
         new TurnToAngle(vision.getAngleToTurn(), 0.4, drive)
-      )
+      )*/
     );
 
     this.intake = intake;
@@ -63,10 +63,9 @@ public class PowerCellPickup extends SequentialCommandGroup {
     //Maybe use ultrasonics to determine stop condition
     //Or use vision: power cell positioning
 
-
-    if(vision.getPowerCellExists() && vision.getPowerCellPos()[1] > vision.getHeight() - 40) {
+   /* if(vision.getPowerCellExists() && vision.getPowerCellPos()[1] > vision.getHeight() - 40) {
       return true;
-    }
+    }*/
     return super.isFinished();
   }
 }

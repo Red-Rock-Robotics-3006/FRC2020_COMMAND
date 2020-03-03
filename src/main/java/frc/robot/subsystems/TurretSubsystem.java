@@ -37,7 +37,11 @@ public class TurretSubsystem extends SubsystemBase {
   {
       return turret.getSensorCollection().getIntegratedSensorPosition() * 360 / TurretConstants.kEncoderPulsesPerRev;
   }
-
+  
+  public void setTurret(double power)
+  {
+    turret.set(power);
+  }
   public void turn(boolean direction)
   {
       double power = direction ? TurretConstants.kTurretPower : -1 * TurretConstants.kTurretPower;
@@ -65,10 +69,11 @@ public class TurretSubsystem extends SubsystemBase {
   public boolean turnToAngle(double angleToTurn) {
     double targetAngle = getAngle() + angleToTurn;
     System.out.println(angleToTurn + " " + targetAngle + " " + getAngle());
-    if(targetAngle < getAngle()-1.5) {
+    //System.out.println("Turning");
+    if(targetAngle < getAngle()-2.5) {
       set(-.1);
       System.out.println("left");
-    } else if (targetAngle > getAngle()+1.5) {
+    } else if (targetAngle > getAngle()+2.5) {
       set(.1);
       System.out.println("right");
 
@@ -76,6 +81,7 @@ public class TurretSubsystem extends SubsystemBase {
       set(0);
       return true;
     }
+    
     return false;
   }
 /*

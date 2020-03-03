@@ -62,6 +62,15 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterFeederRunning = true;
   }
 
+  public void setShooter(double power)
+  {
+    m_shooterMotor.set(power);
+  }
+
+  public void setFeeder1(double power)
+  {
+    feeder.set(power);
+  }
   public void runFeeder() {
     feeder.set(ShooterConstants.kFeederUpPower);
     shooterFeederRunning = true;

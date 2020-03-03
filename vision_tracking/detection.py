@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from time import time
 import json
 import sys
@@ -98,12 +99,13 @@ def main(config):
     team = read_config(config)
     WIDTH, HEIGHT = 320, 240
     FOV = 68.5
+    focal_length = WIDTH / (2*math.atan(FOV/2))
     print("Starting camera server")
     
     cs = CameraServer.getInstance()
     power_cell_cam = UsbCamera('power_cell_cam', 2)
     power_cell_cam.setResolution(WIDTH, HEIGHT)
-    power_cell_cam.setExposureManual(20)
+    power_cell_cam.setExposureManual(50)
 
     tape_cam = UsbCamera('tape_cam', 0)
     tape_cam.setResolution(WIDTH, HEIGHT)
@@ -142,6 +144,9 @@ def main(config):
     lower_color = np.array([0, 0, 0])
     upper_color = np.array([0, 0, 0])
 
+    camera_robot_x = .3302
+    camera_robot_y = -.0254
+
     print("Starting ML mainloop")
     
     while True:
@@ -151,12 +156,12 @@ def main(config):
             cvSink.setSource(tape_cam)
             lower_color = lower_green
             upper_color = upper_green
-            print('green')
+            #print('green')
         else:
             cvSink.setSource(power_cell_cam)
             lower_color = lower_yellow
             upper_color = upper_yellow
-            print('yellow')
+            #print('yellow')
 
         t, frame = cvSink.grabFrame(img)
 
@@ -180,6 +185,9 @@ def main(config):
         largest_box_area = 0
 
         minimum_box_area = 0
+
+        angle_to_turn_power_cell = 0
+        angle_to_turn_power_cell_robot = 0
 
         center_contour_x = WIDTH/2
 
@@ -210,6 +218,23 @@ def main(config):
                 center_power_cell_x = 0.5 * (largest_box_xmin + largest_box_xmax)
                 center_power_cell_y = 0.5 * (largest_box_ymin + largest_box_ymax)
                 bool_power_cell = True
+                angle_to_turn_power_cell = math.degrees(math.atan((center_power_cell_x -(.5*WIDTH - .5))/focal_length))
+                dist_power_cell = 0
+                x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(90-angle_to_turn_power_cell))**2)
+                y_vec = x_vec * math.tan(math.radians((90-angle_to_turn_power_cell)))
+                new_x = camera_robot_x + x_vec
+                new_y = camera_robot_y + y_vec
+                angle_to_turn_power_cell_robot = 90 - math.degrees(math.atan(new_y/new_x))
+                #cv2.putText(frame, str(largest_box_xmax - largest_box_xmin), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+                
+                #angle = math.degrees(math.atan((largest_box_xmax -(.5*WIDTH - .5))/focal_length))
+                #angle1 = abs(angle_to_turn_power_cell - angle)
+                #cv2.putText(frame, str(angle1), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
+                #x = (.5842/math.pi)/math.tan(math.radians(angle1))
+
+                cv2.putText(frame, str(largest_box_xmax - largest_box_xmin), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
 
         else:
 
@@ -235,28 +260,49 @@ def main(config):
                 center_power_cell_x = 0.5 * (x + x + w)
                 center_power_cell_y = 0.5 * (y + y + h) 
                 bool_power_cell = True
+                angle_to_turn_power_cell = math.degrees(math.atan((center_power_cell_x -(.5*WIDTH - .5))/focal_length))
+                dist_power_cell = 0
+                x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(90-angle_to_turn_power_cell))**2)
+                y_vec = x_vec * math.tan(math.radians((90-angle_to_turn_power_cell)))
+                new_x = camera_robot_x + x_vec
+                new_y = camera_robot_y + y_vec
+                angle_to_turn_power_cell_robot = 90 - math.degrees(math.atan(new_y/new_x))
+
+                #angle = math.degrees(math.atan((largest_box_xmax -(.5*WIDTH - .5))/focal_length))
+                #angle1 = abs(angle_to_turn_power_cell - angle)
+                #cv2.putText(frame, str(angle1), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
+                #x = (.5842/math.pi)/math.tan(math.radians(angle1))
+                
+                
+                cv2.putText(frame, str(w), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
+               
+
+                
+
             elif (largest_box_area > 0 and cam_mode):
                 M1 = cv2.moments(largest_contour)
                 center_contour_x = int(M1['m10']/M1['m00'])
                 cv2.drawContours(frame, [largest_contour], 0, (0, 255, 0), 3)
-                angle_to_turn_tape = (center_contour_x / WIDTH * FOV) - FOV/2
+                angle_to_turn_tape = math.degrees(math.atan((center_contour_x -(.5*WIDTH - .5))/focal_length))
                 cv2.putText(frame, str(angle_to_turn_tape), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
                 bool_tape = True
 
         output.putFrame(frame)
 
+        tape_found.setBoolean(bool_tape)
+        print(bool_tape)
+
         if cam_mode:
             angle_to_turn_tape = (center_contour_x / WIDTH * FOV) - FOV/2
             tape_angle.setDouble(angle_to_turn_tape)
-            tape_found.setBoolean(bool_tape)
-            print(angle_to_turn_tape)
             #TODO: Send distance to tape
         else:
-            angle_to_turn_power_cell = (center_power_cell_x / WIDTH * FOV) - FOV/2
-            power_cell_angle.setDouble(angle_to_turn_power_cell)
+            power_cell_angle.setDouble(angle_to_turn_power_cell_robot)
             power_cell_pos.setDoubleArray([center_power_cell_x, center_power_cell_y])
             power_cell_exists.setBoolean(bool_power_cell)
-            print(angle_to_turn_power_cell)
+            #print(angle_to_turn_power_cell)
 
 if __name__ == '__main__':
     config_file = "/boot/frc.json"

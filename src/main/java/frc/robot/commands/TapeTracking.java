@@ -24,7 +24,7 @@ public class TapeTracking extends CommandBase {
 
     private TurretSubsystem turret;
     private VisionSubsystem vision;
-    private static double angle = 0;
+    private static double angle;
     private boolean atAngle = false;
     
     public TapeTracking(VisionSubsystem vision, TurretSubsystem turret) {
@@ -45,16 +45,21 @@ public class TapeTracking extends CommandBase {
     public void initialize() {
         vision.setCamMode(true);
         vision.enableTurretLED(true);
+        atAngle = false;
+        System.out.println("Initializing");
+        angle = 0;
     }
 
     @Override
     public void execute() {
-        if(vision.getTapeFound())
-            atAngle = turret.turnToAngle(vision.getAngleToTurn());
+        if(vision.getTapeFound()) 
+           atAngle = turret.turnToAngle(vision.getAngleToTurn());
+        //System.out.println(vision.getTapeFound() + " " + vision.getAngleToTurn());
     }
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("stopping");
         turret.stop();
         vision.enableTurretLED(false);
         vision.setCamMode(false);

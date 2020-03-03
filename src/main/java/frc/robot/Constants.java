@@ -47,7 +47,7 @@ public final class Constants {
 
     public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
 
-    public static final double kPDriveVel = .3; //5.14, .319, .375
+    public static final double kPDriveVel = .0735; //5.14, .319, .375
      
     public static final double kTurnP = 0;
     public static final double kTurnI = 0;
@@ -137,7 +137,7 @@ public final class Constants {
     public static final double kV = .037;
     public static final double kA = .0409;
     public static final double kEncoderRotationsPerPulse = 2048 * 16 / 54;
-    public static final double kShooterTargetRPS = 150;
+    public static final double kShooterTargetRPS = 160;
   
   }
 

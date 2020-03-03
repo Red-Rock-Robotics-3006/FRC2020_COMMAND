@@ -44,9 +44,11 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ColorWheelCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PowerCellPickup;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TapeTracking;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.TurnToPowerCell;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -95,11 +97,11 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureButtonBindings();
-
+//DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis)
    m_driveSubsystem.setDefaultCommand(
         new RunCommand(() -> 
-            m_driveSubsystem.tankDrive(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+            m_driveSubsystem.tankDrive(DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.rightYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
 
   }
 
@@ -143,8 +145,8 @@ public class RobotContainer {
         .whenReleased(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(true)));
 
     new JoystickButton(driver, JoystickConstants.buttonLeftBumper)
-        .whenHeld(new TurnToAngle(30, 0, m_driveSubsystem));
-
+       // .whenHeld(new PowerCellPickup(m_visionSubsystem, m_driveSubsystem, m_intake, m_storageSubsystem, m_shooterSubsystem, true));
+        .whenHeld(new TurnToPowerCell(.1, m_driveSubsystem, m_visionSubsystem));
     /**
      * 17ft = 5.18m
      * 70% power

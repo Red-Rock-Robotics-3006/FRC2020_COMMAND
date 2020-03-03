@@ -177,9 +177,10 @@ public class DriveSubsystem extends SubsystemBase {
   {
 
     //ax^3 + (1-a)x
-    double leftOutput = DriveConstants.joystickGain * Math.pow(leftPower, 3) + DriveConstants.joystickGain * leftPower;
+    /*double leftOutput = DriveConstants.joystickGain * Math.pow(leftPower, 3) + DriveConstants.joystickGain * leftPower;
     double rightOutput = DriveConstants.joystickGain * Math.pow(rightPower, 3) + DriveConstants.joystickGain * rightPower;
-      m_drive.tankDrive(leftOutput, rightOutput);
+    */ 
+    m_drive.tankDrive(leftPower, rightPower);
      // System.out.println(leftPower + " " + rightPower);
   }
 }

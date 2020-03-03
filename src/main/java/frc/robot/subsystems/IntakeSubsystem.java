@@ -46,6 +46,11 @@ public class IntakeSubsystem extends SubsystemBase
        twoSolenoid.set(enabled);
        solenoidExtended = enabled;
   }
+
+  public void setIntakeMotor(double power)
+  {
+    intakeVictor.set(power);
+  }
   
   public void spin()
   {

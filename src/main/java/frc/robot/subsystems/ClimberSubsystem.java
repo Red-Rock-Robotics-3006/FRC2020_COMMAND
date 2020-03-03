@@ -30,7 +30,14 @@ public class ClimberSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
+  public void setSlide(double power)
+  {
+      slideMotor.set(power);
+  }
+  public void setSpool(double power)
+  {
+      spoolMotor.set(power);
+  }
   public void climb() {
       this.spoolMotor.set(ClimberConstants.kClimberUpPower);
   }

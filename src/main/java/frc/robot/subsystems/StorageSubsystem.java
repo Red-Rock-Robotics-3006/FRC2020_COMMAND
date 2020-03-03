@@ -39,6 +39,16 @@ public class StorageSubsystem extends SubsystemBase {
       storageRunning = true;
   }
 
+  public void setFeeder2(double power)
+  {
+    feeder.set(power);
+  }
+
+  public void setConveyor(double power)
+  {
+    conveyor.set(power);
+  }
+
   public void runFeeder() {
     if (storageOrFeeder) {
       feedToStorage();

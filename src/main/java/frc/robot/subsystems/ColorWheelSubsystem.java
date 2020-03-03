@@ -104,6 +104,11 @@ public class ColorWheelSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Confidence", match.confidence);
         SmartDashboard.putString("Detected Color", colorString);
     }
+
+    public void setWheel(double power)
+    {
+      colorWheel.set(power);
+    }
     public boolean getTouching(){
       return touchSensor.get();
     }
