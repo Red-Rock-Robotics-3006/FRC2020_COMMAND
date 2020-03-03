@@ -19,13 +19,19 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
+//Use CommandBase
 public class ShootCommand extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private ShooterSubsystem shooter;
   private StorageSubsystem storage;
   private IntakeSubsystem intake;
+  /*
+  private VisionSubsystem vision;
+  private TurretSubsystem turret
+  */
 
+  //pass in turret and vision too
   public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage, IntakeSubsystem intake) {
     super(
       
@@ -39,27 +45,15 @@ public class ShootCommand extends SequentialCommandGroup {
         )
 
     );
-
-    /*
-    TODO: Use PID subsystem
-    What it might look like
-    Use SequentialCommandGroup intsead
-
-    super (
-      new InstantCommand(shooter::enable, shooter),
-      new WaitUntilCommand(shooter::atSetpoint),
-      new ConditionalCommand(
-        new InstantCommand(storage::reverseFeed, storage),
-        new InstantCommand(),
-        shooter::atSetpoint
-      )
-    );
-
-    */
     
     this.shooter = shooter;
     this.storage = storage;
     this.intake = intake;
+
+    /*
+    this.vision = vision;
+    this.turret = turret;
+    */
 
   }
 
@@ -74,25 +68,27 @@ public class ShootCommand extends SequentialCommandGroup {
   }
 
 /*
+  TapeTracking trackTape = new TapeTracking(vision, turret);
+
   @Override
   public void initialize() {
-    //shooter.resetEncoder();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    System.out.println("Stopping");
-    shooter.stop();
-   // m_storageSubsystem.stop();
+    storage.setStorageOrTurret(false);
+    shooter.enable();
+    trackTape.schedule();
   }
 
   @Override
-  public boolean isFinished() {
-    if (Math.abs(shooter.getEncoder()) > 2048*5) {
-      return true;
-    } 
-    return false;
-  }*/
+  public void execute() {
+    if(shooter.atSetpoint() && trackTape.isFinished()) {
+      shooter.runFeeder();
+      storage.runFeeder();
+      storage.runConveyor();
+    } else {
+      storage.stop();
+      shooter.runFeederDownwards();
+    }
+  }
+*/
+
 
 }

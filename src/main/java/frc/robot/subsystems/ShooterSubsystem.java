@@ -116,8 +116,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public double getMeasurement() {
-    //return encoder rate
-    return 0;
+    //return getRPS()
   }
 
   public boolean atSetpoint() {

@@ -125,14 +125,14 @@ public final class Constants {
   public static final class ShooterConstants {
     public static final int kFeederMotorPort = 16;
     public static final double kFeederUpPower = .4;
-    public static final double kFeederDownPower = -.5;
+    public static final double kFeederDownPower = -.3;
     
     public static final int kShooterMotorPort = 1;
     public static final double kShooterPower = 0.6;
-    public static final double KP = 25.9;
+    public static final double KP = 6.05; //25.9
     public static final double KI = 0;
     public static final double KD = 0;
-    public static final double kShooterToleranceRPS = 0;
+    public static final double kShooterToleranceRPS = 3;
     public static final double kS = .13;
     public static final double kV = .037;
     public static final double kA = .0409;

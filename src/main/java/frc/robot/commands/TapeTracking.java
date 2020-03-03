@@ -46,7 +46,6 @@ public class TapeTracking extends CommandBase {
         vision.setCamMode(true);
         vision.enableTurretLED(true);
         atAngle = false;
-        System.out.println("Initializing");
         angle = 0;
     }
 
