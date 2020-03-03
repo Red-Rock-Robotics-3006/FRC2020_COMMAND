@@ -121,6 +121,9 @@ def main(config):
     power_cell_pos = ntinst.getTable('ML').getEntry('power_cell_pos')
     power_cell_exists = ntinst.getTable('ML').getEntry('power_cell_exists')
     power_cell_dist = ntinst.getTable('ML').getEntry('power_cell_dist')
+    power_cell_x = ntinst.getTable('ML').getEntry('power_cell_x')
+    power_cell_y = ntinst.getTable('ML').getEntry('power_cell_y')
+
 
     tape_angle = ntinst.getTable('ML').getEntry('tape_angle')
     tape_dist = ntinst.getTable('ML').getEntry('tape_dist')
@@ -191,6 +194,9 @@ def main(config):
         angle_to_turn_power_cell_robot = 0
         dist_power_cell = 0
 
+        new_x = 0
+        new_y = 0
+
         center_contour_x = WIDTH/2
 
         # Display result.
@@ -223,8 +229,8 @@ def main(config):
                 
                 angle_to_turn_power_cell = math.degrees(math.atan((center_power_cell_x -(.5*WIDTH - .5))/focal_length))
                 angle_to_right_side = math.degrees(math.atan((largest_box_xmax -(.5*WIDTH - .5))/focal_length))
-                angle_diff_right_center = abs(angle - angle_to_turn_power_cell)
-                dist_power_cell = (.5842/(2*math.pi))/math.tan(math.radians(angle1))
+                angle_diff_right_center = abs(angle_to_right_side - angle_to_turn_power_cell)
+                dist_power_cell = (.5842/(2*math.pi))/math.tan(math.radians(angle_diff_right_center))
                 
                 x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(90-angle_to_turn_power_cell))**2)
                 y_vec = x_vec * math.tan(math.radians((90-angle_to_turn_power_cell)))
@@ -261,8 +267,8 @@ def main(config):
                 
                 angle_to_turn_power_cell = math.degrees(math.atan((center_power_cell_x -(.5*WIDTH - .5))/focal_length))
                 angle_to_right_side = math.degrees(math.atan(((x+w) -(.5*WIDTH - .5))/focal_length))
-                angle_diff_right_center = angle - angle_to_turn_power_cell
-                dist_power_cell = (.5842/(2*math.pi))/math.tan(math.radians(angle1))
+                angle_diff_right_center = angle_to_right_side - angle_to_turn_power_cell
+                dist_power_cell = (.5842/(2*math.pi))/math.tan(math.radians(angle_diff_right_center))
                 
                 x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(90-angle_to_turn_power_cell))**2)
                 y_vec = x_vec * math.tan(math.radians((90-angle_to_turn_power_cell)))
@@ -293,6 +299,9 @@ def main(config):
             power_cell_pos.setDoubleArray([center_power_cell_x, center_power_cell_y])
             power_cell_exists.setBoolean(bool_power_cell)
             power_cell_dist.setDouble(dist_power_cell)
+            power_cell_x.setDouble(new_x)
+            power_cell_y.setDouble(new_y)
+
             #print(angle_to_turn_power_cell)
 
 if __name__ == '__main__':

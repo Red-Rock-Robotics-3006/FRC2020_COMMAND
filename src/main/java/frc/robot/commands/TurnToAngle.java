@@ -9,8 +9,10 @@ package frc.robot.commands;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
@@ -26,6 +28,8 @@ public class TurnToAngle extends CommandBase {
     private PIDController leftController, rightController;
 
     private DriveSubsystem drive;
+
+    private Pose2d currentPos;
 
   public TurnToAngle(double angleToTurn, double targetSpeed, DriveSubsystem drive) {
     
@@ -60,7 +64,8 @@ public class TurnToAngle extends CommandBase {
     System.out.println(angleToTurn);
     leftController.reset();
     rightController.reset();
-   
+
+    currentPos = drive.getPose();
   }
 
   @Override

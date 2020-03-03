@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.AutoCommands;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.PowerCellPickup;
+import frc.robot.commands.TapeTracking;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;

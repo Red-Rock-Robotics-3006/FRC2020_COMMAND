@@ -12,6 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
@@ -22,13 +23,15 @@ public class TurnToPowerCell extends CommandBase {
   private static SimpleMotorFeedforward motorFeedforward = new SimpleMotorFeedforward(DriveConstants.ksVolts,
       DriveConstants.kvVoltSecondsPerMeter);
 
-  private double targetAngle, targetSpeed, angleToTurn;
+  private double targetAngle, targetSpeed, angleToTurn, powerCellX, powerCellY;
 
   private PIDController leftController, rightController;
 
   private DriveSubsystem drive;
 
   private VisionSubsystem vision;
+
+  private Pose2d currentPos;
 
   public TurnToPowerCell(double targetSpeed, DriveSubsystem drive, VisionSubsystem vision) {
     
@@ -63,6 +66,11 @@ public class TurnToPowerCell extends CommandBase {
     
     leftController.reset();
     rightController.reset();
+
+    currentPos = drive.getPose();
+
+    powerCellX = vision.getPowerCellX() + currentPos.getTranslation().getX();
+    powerCellY = vision.getPowerCellY() + currentPos.getTranslation().getY();
    
   }
 
@@ -71,6 +79,9 @@ public class TurnToPowerCell extends CommandBase {
 
    // System.out.println("Degrees to turn: " + (targetAngle - drive.getHeading()));
     //System.out.println("Target angle: " + targetAngle);
+
+    currentPos = drive.getPose();
+    targetAngle = Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX());
 
     if (Math.abs(vision.getTargetAngle()) > 100) {
       double error = vision.getTargetAngle();

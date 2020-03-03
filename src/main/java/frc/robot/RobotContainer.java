@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ColorWheelCommand;
+import frc.robot.commands.EveryMotorCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PowerCellPickup;
@@ -116,21 +117,7 @@ public class RobotContainer {
     new JoystickButton(mechJoystick, JoystickConstants.buttonB)
         .whenPressed(new InstantCommand(() -> m_turretSubsystem.turn(true)))
         .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-        
-        /*
-    new JoystickButton(mechJoystick, JoystickConstants.buttonX)
-        .whenPressed(new ConditionalCommand(
-            new InstantCommand(() -> m_turretSubsystem.stop()),
-            new InstantCommand(() -> m_turretSubsystem.turn(true)), 
-            m_turretSubsystem::reachedLimit))
-        .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-    new JoystickButton(mechJoystick, JoystickConstants.buttonB)
-        .whenPressed(new ConditionalCommand(
-            new InstantCommand(() -> m_turretSubsystem.stop()),
-            new InstantCommand(() -> m_turretSubsystem.turn(false)), 
-            m_turretSubsystem::reachedLimit))
-        .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
-*/
+     
     //Intake bindings
     new Button(() -> driver.getRawAxis(JoystickConstants.leftTrigger) > .3)
         .whileActiveOnce(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
@@ -138,7 +125,7 @@ public class RobotContainer {
 
     //Shoot bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
-        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake));
+        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake, m_visionSubsystem, m_turretSubsystem));
 
     new JoystickButton(driver, JoystickConstants.buttonB)
         .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))
@@ -191,82 +178,7 @@ public class RobotContainer {
   
 
   public Command getAutonomousCommand() {
-   // return new InstantCommand(() -> m_driveSubsystem.tankDrive(.1, .1), m_driveSubsystem);
-    // An ExampleCommand will run in autonomous
-    /*
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                       DriveConstants.kvVoltSecondsPerMeter,
-                                       DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
-            10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-                             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(1, 1),
-           
-           new Translation2d(2, -1)
-        ),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        // Pass config
-        config
-    );
-*/
-   
-    Trajectory trajectory;
-    String trajectoryJSON = "/home/lvuser/deploy/PathWeaver/Paths/output/rls1.wpilib.json";
-    try {
-      Path trajectoryPath = Paths.get(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-     
-    } catch (IOException ex) {
-      trajectory = null;
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
-
-    System.out.println("Robot before: " + m_driveSubsystem.getPose().getTranslation().getX() + " " + m_driveSubsystem.getPose().getTranslation().getY());
-    System.out.println("Trajectory before: " + trajectory.getInitialPose().getTranslation().getX() + " " + trajectory.getInitialPose().getTranslation().getY());
-    
-    var transform = m_driveSubsystem.getPose().minus(trajectory.getInitialPose());
-    trajectory = trajectory.transformBy(transform);
-
-    System.out.println("Robot after: " + m_driveSubsystem.getPose().getTranslation().getX() + " " + m_driveSubsystem.getPose().getTranslation().getY());
-    System.out.println("Trajectory after: " + trajectory.getInitialPose().getTranslation().getX() + " " + trajectory.getInitialPose().getTranslation().getY());
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        trajectory,
-        m_driveSubsystem::getPose,
-        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                   DriveConstants.kvVoltSecondsPerMeter,
-                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics,
-        m_driveSubsystem::getWheelSpeeds,
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_driveSubsystem::tankDriveVolts,
-        m_driveSubsystem
-    ); 
-
-    // Run path following command, then stop at the end.
-   return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
-   
-   // return null;
+      return null;
   }
 
   public void resetGyro() {

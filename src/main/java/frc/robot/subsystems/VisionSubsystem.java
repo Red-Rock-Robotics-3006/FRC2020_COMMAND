@@ -11,8 +11,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     private NetworkTableInstance inst;
     private NetworkTable mlTable;
-    private NetworkTableEntry powerCellAngleEntry, powerCellExistsEntry, powerCellPosEntry, tapeAngleEntry, tapeDistEntry, tapeFoundEntry;
-    private double powerCellAngle, tapeAngle, tapeDist;
+    private NetworkTableEntry powerCellAngleEntry, powerCellExistsEntry, powerCellPosEntry,
+                        powerCellXEntry, powerCellYEntry, 
+                        tapeAngleEntry, tapeDistEntry, tapeFoundEntry;
+    private double powerCellAngle, tapeAngle, tapeDist, powerCellX, powerCellY;
     private double[] powerCellPos;
     private boolean powerCellExists, camMode, tapeFound;
 
@@ -33,6 +35,8 @@ public class VisionSubsystem extends SubsystemBase {
         tapeAngleEntry = mlTable.getEntry("tape_angle");
         tapeDistEntry = mlTable.getEntry("tape_dist");
         tapeFoundEntry = mlTable.getEntry("tape_found");
+        powerCellXEntry = mlTable.getEntry("power_cell_x");
+        powerCellYEntry = mlTable.getEntry("power_cell_y");
 
         inst.startClientTeam(3006);
 
@@ -50,13 +54,10 @@ public class VisionSubsystem extends SubsystemBase {
             powerCellAngle = powerCellAngleEntry.getDouble(0);
             powerCellExists = powerCellExistsEntry.getBoolean(false);
             powerCellPos = powerCellPosEntry.getDoubleArray(new double[] {width/2, height/2});
+            powerCellX = powerCellXEntry.getDouble(0);
+            powerCellY = powerCellYEntry.getDouble(0);
         }
 
-        SmartDashboard.putNumber("Power cell angle", getTargetAngle());
-
-        /*if(tapeAngle != 0)
-            System.out.println(tapeAngle);
-*/
     }
 
     public double getWidth() {
@@ -111,6 +112,14 @@ public class VisionSubsystem extends SubsystemBase {
     public double getAngleToTurn() {
        // return drive.getHeading() + getTargetAngle();
        return getTargetAngle();
+    }
+
+    public double getPowerCellX() {
+        return powerCellX;
+    }
+
+    public double getPowerCellY() {
+        return powerCellY;
     }
 
     public void enableIntakeSideLED(boolean enabled) {

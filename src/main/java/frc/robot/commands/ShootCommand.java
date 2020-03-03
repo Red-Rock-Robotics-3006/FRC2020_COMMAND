@@ -10,7 +10,10 @@ package frc.robot.commands;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -20,20 +23,23 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 //Use CommandBase
-public class ShootCommand extends SequentialCommandGroup {
+public class ShootCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private ShooterSubsystem shooter;
   private StorageSubsystem storage;
   private IntakeSubsystem intake;
-  /*
+  
   private VisionSubsystem vision;
-  private TurretSubsystem turret
-  */
+  private TurretSubsystem turret;
+
+  TapeTracking trackTape;
+  
 
   //pass in turret and vision too
-  public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage, IntakeSubsystem intake) {
-    super(
+  public ShootCommand(ShooterSubsystem shooter, StorageSubsystem storage, IntakeSubsystem intake, VisionSubsystem vision, TurretSubsystem turret) {
+    
+    /*super(
       
         new InstantCommand(() -> storage.setStorageOrTurret(false)),
         new InstantCommand(() -> shooter.shoot()),
@@ -44,31 +50,17 @@ public class ShootCommand extends SequentialCommandGroup {
           new RunCommand(() -> storage.runFeeder())
         )
 
-    );
+    );*/
     
     this.shooter = shooter;
     this.storage = storage;
     this.intake = intake;
 
-    /*
     this.vision = vision;
     this.turret = turret;
-    */
 
+    this.trackTape = new TapeTracking(vision, turret);
   }
-
-  @Override
-  public void end(boolean interrupted) {
-    super.end(interrupted);
-    if(storage.isStorageRunning() && !intake.isRunning()) {
-      storage.stop();
-    }
-    shooter.stop();
-    storage.setStorageOrTurret(true);
-  }
-
-/*
-  TapeTracking trackTape = new TapeTracking(vision, turret);
 
   @Override
   public void initialize() {
@@ -88,7 +80,15 @@ public class ShootCommand extends SequentialCommandGroup {
       shooter.runFeederDownwards();
     }
   }
-*/
 
 
+  @Override
+  public void end(boolean interrupted) {
+    //super.end(interrupted);
+    if(storage.isStorageRunning() && !intake.isRunning()) {
+      storage.stop();
+    }
+    shooter.stop();
+    storage.setStorageOrTurret(true);
+  }
 }
