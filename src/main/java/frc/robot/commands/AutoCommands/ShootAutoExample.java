@@ -64,17 +64,15 @@ public class ShootAutoExample extends SequentialCommandGroup {
     
     RamseteCommand toShootCommand = createRamseteCommand(toShoot);
 
-    /*super.addCommands(toShootCommand.deadlineWith(new InstantCommand(() -> shooter.shoot())).andThen(() -> drive.tankDriveVolts(0, 0)),
+    super.addCommands(toShootCommand.deadlineWith(new InstantCommand(() -> shooter.shoot())).andThen(() -> drive.tankDriveVolts(0, 0)),
                new ShootCommand(shooter, storage, intake, vision, turret).alongWith(new TapeTracking(vision, turret))        
-        );*/
+        );
 
-    super.addCommands(toShootCommand.andThen(() -> drive.tankDrive(0, 0)));
+    //super.addCommands(toShootCommand.andThen(() -> drive.tankDrive(0, 0)));
   }
 
   // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+
 
   public RamseteCommand createRamseteCommand(Trajectory trajectory) {
     return new RamseteCommand(

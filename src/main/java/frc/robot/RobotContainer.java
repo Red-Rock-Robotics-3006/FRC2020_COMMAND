@@ -197,7 +197,7 @@ public class RobotContainer {
   
 
   public Command getAutonomousCommand() {
-
+/*
     Trajectory toShoot;
     try {
         toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/rls1.wpilib.json"));
@@ -223,8 +223,8 @@ public class RobotContainer {
         m_driveSubsystem::tankDriveVolts,
         m_driveSubsystem
     ); 
-
-      return auto.deadlineWith(new InstantCommand(() -> m_shooterSubsystem.shoot()));
+*/
+      return auto;
   }
 
   public void resetGyro() {
