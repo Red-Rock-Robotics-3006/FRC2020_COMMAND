@@ -32,6 +32,10 @@ public class ShooterSubsystem extends PIDSubsystem {
  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV, ShooterConstants.kA);
 
+  private PIDController shooterPID = new PIDController(ShooterConstants.KP, ShooterConstants.KP, ShooterConstants.KP);
+
+  private double output = 0;
+
 
  public ShooterSubsystem() {
    
@@ -50,15 +54,18 @@ public class ShooterSubsystem extends PIDSubsystem {
 
   @Override
   public void periodic() {
+    output = shooterPID.calculate(getRPS(), ShooterConstants.kShooterTargetRPS) + m_shooterFeedForward.calculate(ShooterConstants.kShooterTargetRPS);
     SmartDashboard.putNumber("Shooter power", ShooterConstants.kShooterPower);
     SmartDashboard.putNumber("Shooter RPS", getRPS());
     SmartDashboard.putBoolean("At RPS (T/F)", atRPS());
-    SmartDashboard.putNumber("Feeder up power", ShooterConstants.kFeederUpPower);
-    SmartDashboard.putNumber("Encoder count", m_shooterMotor.getSensorCollection().getIntegratedSensorPosition());
+    SmartDashboard.putNumber("Shooter feedfoward", output);
+    
   }
   
   public void shoot() {
-    m_shooterMotor.set(ShooterConstants.kShooterPower);
+    //m_shooterMotor.set(ShooterConstants.kShooterPower);
+    m_shooterMotor.setVoltage(output);
+    m_shooterMotor.feed();
     shooterFeederRunning = true;
   }
 
@@ -111,7 +118,7 @@ public class ShooterSubsystem extends PIDSubsystem {
 
   @Override
   public void useOutput(double output, double setpoint) {
-    m_shooterMotor.setVoltage(output + m_shooterFeedForward.calculate(setpoint));
+    m_shooterMotor.set(output + m_shooterFeedForward.calculate(setpoint));
   }
 
   @Override

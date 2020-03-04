@@ -81,14 +81,15 @@ public class TurnToPowerCell extends CommandBase {
     //System.out.println("Target angle: " + targetAngle);
 
     currentPos = drive.getPose();
-    targetAngle = Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX());
+    //targetAngle = 180 * Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX()) / Math.PI;
 
-    if (Math.abs(vision.getTargetAngle()) > 100) {
+    /*if (Math.abs(vision.getTargetAngle()) > 100) {
       double error = vision.getTargetAngle();
       double output = error * .013;
       drive.tankDrive(output, -output);
       System.out.println(output);
-    } else {
+    } else {*/
+      System.out.println(targetAngle + " " + drive.getHeading());
       var targetWheelSpeeds = DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(targetSpeed, 0, Units.degreesToRadians(targetAngle - drive.getHeading())));
       var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
       var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
@@ -103,7 +104,7 @@ public class TurnToPowerCell extends CommandBase {
       System.out.println(rightController.getVelocityError());
     
       drive.tankDrive(leftOutput, rightOutput);
-    }
+    //}
   
   }
 

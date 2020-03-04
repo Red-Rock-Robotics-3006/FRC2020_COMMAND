@@ -194,6 +194,9 @@ def main(config):
         angle_to_turn_power_cell_robot = 0
         dist_power_cell = 0
 
+        angle_to_turn_tape = 0
+        dist_tape = 0
+
         new_x = 0
         new_y = 0
 
@@ -238,7 +241,9 @@ def main(config):
                 new_y = camera_robot_y + y_vec
                 angle_to_turn_power_cell_robot = 90 - math.degrees(math.atan(new_y/new_x))
 
-                cv2.putText(frame, str(dist_power_cell), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(frame, str(angle_to_turn_power_cell_robot), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(frame, str(angle_to_turn_power_cell), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
                 
         else:
 
@@ -276,14 +281,21 @@ def main(config):
                 new_y = camera_robot_y + y_vec
                 angle_to_turn_power_cell_robot = 90 - math.degrees(math.atan(new_y/new_x))
                 
-                cv2.putText(frame, str(dist_power_cell), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(frame, str(angle_to_turn_power_cell_robot), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(frame, str(angle_to_turn_power_cell), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             elif (largest_box_area > 0 and cam_mode):
+                x,y,w,h = cv2.boundingRect(largest_contour)
                 M1 = cv2.moments(largest_contour)
                 center_contour_x = int(M1['m10']/M1['m00'])
                 cv2.drawContours(frame, [largest_contour], 0, (0, 255, 0), 3)
+                
                 angle_to_turn_tape = math.degrees(math.atan((center_contour_x -(.5*WIDTH - .5))/focal_length))
-                cv2.putText(frame, str(angle_to_turn_tape), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+                angle_to_right_side = math.degrees(math.atan(((x+w) -(.5*WIDTH - .5))/focal_length))
+                angle_diff_right_center = abs(angle_to_right_side - angle_to_turn_tape)
+                dist_tape = .99695/math.tan(math.radians(angle_diff_right_center))
+
+                cv2.putText(frame, str(dist_tape), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
                 bool_tape = True
 
         output.putFrame(frame)

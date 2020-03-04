@@ -127,6 +127,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
     public void enableTurretLED(boolean enabled) {
         turretLED.set(enabled);
+        intakeLED.set(enabled);
         
     }
 

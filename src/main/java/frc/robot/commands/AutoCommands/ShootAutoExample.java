@@ -10,6 +10,7 @@ package frc.robot.commands.AutoCommands;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TapeTracking;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -64,7 +65,7 @@ public class ShootAutoExample extends SequentialCommandGroup {
     RamseteCommand toShootCommand = createRamseteCommand(toShoot);
 
     super.addCommands(toShootCommand.deadlineWith(new InstantCommand(() -> shooter.shoot())).andThen(() -> drive.tankDriveVolts(0, 0)),
-               new ShootCommand(shooter, storage, intake, vision, turret)        
+               new ShootCommand(shooter, storage, intake, vision, turret).alongWith(new TapeTracking(vision, turret))        
         );
   }
 

@@ -65,19 +65,20 @@ public class ShootCommand extends CommandBase {
   @Override
   public void initialize() {
     storage.setStorageOrTurret(false);
-    shooter.enable();
-    trackTape.schedule();
+    //shooter.enable();
+    shooter.shoot();
+    //trackTape.schedule();
   }
 
   @Override
   public void execute() {
-    if(shooter.atSetpoint() && trackTape.isFinished()) {
+    if(shooter.atRPS()) {
       shooter.runFeeder();
       storage.runFeeder();
       storage.runConveyor();
     } else {
       storage.stop();
-      shooter.runFeederDownwards();
+      //shooter.runFeederDownwards();
     }
   }
 
@@ -89,6 +90,7 @@ public class ShootCommand extends CommandBase {
       storage.stop();
     }
     shooter.stop();
+    //shooter.disable();
     storage.setStorageOrTurret(true);
   }
 }

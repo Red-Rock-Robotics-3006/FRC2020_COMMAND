@@ -92,9 +92,13 @@ public class RobotContainer {
   //private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
 
   private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
-;
+
+  //private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
+
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
+
+  //private final EveryMotorCommand everyMotor = new EveryMotorCommand(m_storageSubsystem, m_shooterSubsystem, m_climberSubsystem, m_intake, m_turretSubsystem, m_colorWheelSubsystem);
 
   public RobotContainer() {
     configureButtonBindings();
@@ -126,6 +130,18 @@ public class RobotContainer {
     //Shoot bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
         .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake, m_visionSubsystem, m_turretSubsystem));
+
+    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
+        .whenPressed(new InstantCommand(() -> {
+            m_storageSubsystem.setStorageOrTurret(false);
+            m_shooterSubsystem.runFeeder();
+            m_storageSubsystem.runFeeder();
+            m_storageSubsystem.runConveyor();
+        }))
+        .whenReleased(new InstantCommand(() -> {
+            m_storageSubsystem.stop();
+            m_storageSubsystem.setStorageOrTurret(true);
+        }));
 
     new JoystickButton(driver, JoystickConstants.buttonB)
         .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))

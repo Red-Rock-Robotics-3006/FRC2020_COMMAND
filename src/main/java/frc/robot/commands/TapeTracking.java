@@ -43,10 +43,10 @@ public class TapeTracking extends CommandBase {
         //this.targetSpeed = targetSpeed;
         this.turret = turret;
         this.vision = vision;
-
+/*
         turretController = new PIDController(0.1, 0, 0);
 
-        turretController.setTolerance(0.005);
+        turretController.setTolerance(0.005);*/
 
     }
 
@@ -55,21 +55,21 @@ public class TapeTracking extends CommandBase {
         vision.setCamMode(true);
         vision.enableTurretLED(true);
 
-        this.targetAngle = turret.getAngle() - vision.getTargetAngle();
-        /*
+       //this.targetAngle = turret.getAngle() - vision.getTargetAngle();
+        
         atAngle = false;
         angle = 0;
-        */
-        turretController.reset();
+        
+       // turretController.reset();
     }
 
     @Override
     public void execute() {
         if(vision.getTapeFound())
-            System.out.println("Power: " + turretController.calculate(turret.getAngle(), targetAngle));
-           turret.set(turretController.calculate(turret.getAngle(), targetAngle));
+           // System.out.println("Power: " + turretController.calculate(turret.getAngle(), targetAngle));
+           //turret.set(turretController.calculate(turret.getAngle(), targetAngle));
 
-          // atAngle = turret.turnToAngle(vision.getAngleToTurn());
+           atAngle = turret.turnToAngle(vision.getAngleToTurn());
         //System.out.println(vision.getTapeFound() + " " + vision.getAngleToTurn());
     }
 
@@ -83,12 +83,12 @@ public class TapeTracking extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        return turretController.atSetpoint();
-        /*
+       // return turretController.atSetpoint();
+        
         if(turret.reachedLimit() || atAngle) {
             return true;
         }
         return false;
-        */
+        
     }
 }
