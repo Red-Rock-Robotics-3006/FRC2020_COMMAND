@@ -62,15 +62,22 @@ public class TurnToPowerCell extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Initalize: " + vision.getTargetAngle());
-    this.targetAngle = drive.getHeading() - vision.getTargetAngle();
     
     leftController.reset();
     rightController.reset();
 
     currentPos = drive.getPose();
 
-    powerCellX = vision.getPowerCellX() + currentPos.getTranslation().getX();
-    powerCellY = vision.getPowerCellY() + currentPos.getTranslation().getY();
+    double currentRotRad = currentPos.getRotation().getRadians();
+    double currentRotTan = Math.tan(currentRotRad);
+    double factor = 1 / Math.sqrt(1 + Math.pow(currentRotTan, 2));
+    double powerCellXRobot = vision.getPowerCellX();
+    double powerCellYRobot = vision.getPowerCellY();
+
+    powerCellX = factor * (powerCellXRobot - powerCellYRobot * currentRotTan) + currentPos.getTranslation().getX();
+    powerCellY = factor * (powerCellXRobot * currentRotTan + powerCellYRobot) + currentPos.getTranslation().getY();
+
+    this.targetAngle = currentPos.getRotation().getDegrees() - vision.getTargetAngle();
    
   }
 
@@ -81,7 +88,7 @@ public class TurnToPowerCell extends CommandBase {
     //System.out.println("Target angle: " + targetAngle);
 
     currentPos = drive.getPose();
-    //targetAngle = 180 * Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX()) / Math.PI;
+    targetAngle = (180 / Math.PI) * Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX());
 
     /*if (Math.abs(vision.getTargetAngle()) > 100) {
       double error = vision.getTargetAngle();

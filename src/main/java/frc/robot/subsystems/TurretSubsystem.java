@@ -68,14 +68,14 @@ public class TurretSubsystem extends SubsystemBase {
 
   public boolean turnToAngle(double angleToTurn) {
     double targetAngle = getAngle() + angleToTurn;
-    System.out.println(angleToTurn + " " + targetAngle + " " + getAngle());
+    //System.out.println(angleToTurn + " " + targetAngle + " " + getAngle());
     //System.out.println("Turning");
     if(targetAngle < getAngle()-2.5) {
       set(-.1);
-      System.out.println("left");
+      //System.out.println("left");
     } else if (targetAngle > getAngle()+2.5) {
       set(.1);
-      System.out.println("right");
+      //System.out.println("right");
 
     } else {
       set(0);

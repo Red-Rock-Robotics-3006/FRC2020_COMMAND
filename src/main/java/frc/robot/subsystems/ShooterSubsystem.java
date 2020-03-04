@@ -23,26 +23,24 @@ import frc.robot.Constants.ShooterConstants;
 //16.5 feet from shooter to high target
 
 //extend PIDSubsystem to use PID features (commented right now in various blocks)
-public class ShooterSubsystem extends PIDSubsystem {
-  // private WPI_VictorSPX shooter = new WPI_VictorSPX(1);
- private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(ShooterConstants.kShooterMotorPort);
- private WPI_TalonSRX feeder = new WPI_TalonSRX(ShooterConstants.kFeederMotorPort);
- private boolean shooterFeederRunning = false;
+public class ShooterSubsystem extends SubsystemBase {
+  private WPI_TalonFX m_shooterMotor = new WPI_TalonFX(ShooterConstants.kShooterMotorPort);
+  private WPI_TalonSRX feeder = new WPI_TalonSRX(ShooterConstants.kFeederMotorPort);
+  private boolean shooterFeederRunning = false;
 
- private SimpleMotorFeedforward m_shooterFeedForward =
+  private SimpleMotorFeedforward m_shooterFeedForward =
     new SimpleMotorFeedforward(ShooterConstants.kS, ShooterConstants.kV, ShooterConstants.kA);
-
-  private PIDController shooterPID = new PIDController(ShooterConstants.KP, ShooterConstants.KP, ShooterConstants.KP);
+    
+  private PIDController shooterPID = new PIDController(ShooterConstants.KP, ShooterConstants.KI, ShooterConstants.KD);
 
   private double output = 0;
 
-
- public ShooterSubsystem() {
-   
+  public ShooterSubsystem() {
+   /*
    super(new PIDController(ShooterConstants.KP, ShooterConstants.KI, ShooterConstants.KD));
    super.getController().setTolerance(ShooterConstants.kShooterToleranceRPS);
    super.setSetpoint(ShooterConstants.kShooterTargetRPS);
-   
+   */
   m_shooterMotor.configFactoryDefault();
   feeder.configFactoryDefault();
 
@@ -50,11 +48,15 @@ public class ShooterSubsystem extends PIDSubsystem {
   //m_shooterMotor.setNeutralMode(NeutralMode.Brake);
   m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
   m_shooterMotor.setInverted(true);
+
+  shooterPID.reset();
+  shooterPID.setSetpoint(ShooterConstants.kShooterTargetRPS);
   }
 
   @Override
   public void periodic() {
     output = shooterPID.calculate(getRPS(), ShooterConstants.kShooterTargetRPS) + m_shooterFeedForward.calculate(ShooterConstants.kShooterTargetRPS);
+    
     SmartDashboard.putNumber("Shooter power", ShooterConstants.kShooterPower);
     SmartDashboard.putNumber("Shooter RPS", getRPS());
     SmartDashboard.putBoolean("At RPS (T/F)", atRPS());
@@ -109,12 +111,12 @@ public class ShooterSubsystem extends PIDSubsystem {
   }
 
   public boolean atRPS() {
-    if (getRPS() >= ShooterConstants.kShooterTargetRPS) {
+    if (getRPS() >= ShooterConstants.kShooterTargetRPS-2) {
       return true;
     }
     return false;
   }
-
+/*
 
   @Override
   public void useOutput(double output, double setpoint) {
@@ -129,5 +131,5 @@ public class ShooterSubsystem extends PIDSubsystem {
   public boolean atSetpoint() {
     return m_controller.atSetpoint();
   }
-
+*/
 }

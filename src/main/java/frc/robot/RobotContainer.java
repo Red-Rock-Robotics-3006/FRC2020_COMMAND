@@ -83,33 +83,33 @@ import frc.robot.Constants.TurretConstants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
-  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final StorageSubsystem m_storageSubsystem = new StorageSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final DriveSubsystem drive = new DriveSubsystem();
+  private final TurretSubsystem turret = new TurretSubsystem();
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final StorageSubsystem storage = new StorageSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
 
-  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-  //private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
+  private final ClimberSubsystem climber = new ClimberSubsystem();
+  //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
 
-  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  private final VisionSubsystem vision = new VisionSubsystem();
 
-  //private final ColorWheelSubsystem m_colorWheelSubsystem = new ColorWheelSubsystem();
+  //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
-  private final ShootAutoExample auto = new ShootAutoExample(m_visionSubsystem, m_shooterSubsystem, m_turretSubsystem, m_storageSubsystem, m_driveSubsystem, m_intake);
+  //private final ShootAutoExample auto = new ShootAutoExample(vision, shooter, turret, storage, drive, intake);
 
-  //private final EveryMotorCommand everyMotor = new EveryMotorCommand(m_storageSubsystem, m_shooterSubsystem, m_climberSubsystem, m_intake, m_turretSubsystem, m_colorWheelSubsystem);
+  //private final EveryMotorCommand everyMotor = new EveryMotorCommand(storage, shooter, climber, intake, turret, colorWheel);
 
   public RobotContainer() {
     configureButtonBindings();
 //DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis)
-   m_driveSubsystem.setDefaultCommand(
+   drive.setDefaultCommand(
         new RunCommand(() -> 
-            m_driveSubsystem.tankDrive(DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.rightYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , m_driveSubsystem));
+            drive.tankDrive(DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
+            DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.rightYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , drive));
 
   }
 
@@ -118,41 +118,41 @@ public class RobotContainer {
     //Turret bindings
     
     new JoystickButton(mechJoystick, JoystickConstants.buttonX)
-        .whenPressed(new InstantCommand(() -> m_turretSubsystem.turn(false)))
-        .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
+        .whenPressed(new InstantCommand(() -> turret.turn(false)))
+        .whenReleased(new InstantCommand(() -> turret.stop()));
 
     new JoystickButton(mechJoystick, JoystickConstants.buttonB)
-        .whenPressed(new InstantCommand(() -> m_turretSubsystem.turn(true)))
-        .whenReleased(new InstantCommand(() -> m_turretSubsystem.stop()));
+        .whenPressed(new InstantCommand(() -> turret.turn(true)))
+        .whenReleased(new InstantCommand(() -> turret.stop()));
      
     //Intake bindings
     new Button(() -> driver.getRawAxis(JoystickConstants.leftTrigger) > .3)
-        .whileActiveOnce(new IntakeCommand(m_intake, m_storageSubsystem, m_shooterSubsystem));
+        .whileActiveOnce(new IntakeCommand(intake, storage, shooter));
 
 
     //Shoot bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
-        .whenHeld(new ShootCommand(m_shooterSubsystem, m_storageSubsystem, m_intake, m_visionSubsystem, m_turretSubsystem));
+        .whenHeld(new ShootCommand(shooter, storage, intake, vision, turret));
 
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
         .whenPressed(new InstantCommand(() -> {
-            m_storageSubsystem.setStorageOrTurret(false);
-            m_shooterSubsystem.runFeeder();
-            m_storageSubsystem.runFeeder();
-            m_storageSubsystem.runConveyor();
+            storage.setStorageOrTurret(false);
+            shooter.runFeeder();
+            storage.runFeeder();
+            storage.runConveyor();
         }))
         .whenReleased(new InstantCommand(() -> {
-            m_storageSubsystem.stop();
-            m_storageSubsystem.setStorageOrTurret(true);
+            storage.stop();
+            storage.setStorageOrTurret(true);
         }));
 
     new JoystickButton(driver, JoystickConstants.buttonB)
-        .whenPressed(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(false)))
-        .whenReleased(new InstantCommand(() -> m_storageSubsystem.setStorageOrTurret(true)));
+        .whenPressed(new InstantCommand(() -> storage.setStorageOrTurret(false)))
+        .whenReleased(new InstantCommand(() -> storage.setStorageOrTurret(true)));
 
     new JoystickButton(driver, JoystickConstants.buttonLeftBumper)
-       // .whenHeld(new PowerCellPickup(m_visionSubsystem, m_driveSubsystem, m_intake, m_storageSubsystem, m_shooterSubsystem, true));
-        .whenHeld(new TurnToPowerCell(.1, m_driveSubsystem, m_visionSubsystem));
+       // .whenHeld(new PowerCellPickup(vision, drive, intake, storage, shooter, true));
+        .whenHeld(new TurnToPowerCell(.1, drive, vision));
     /**
      * 17ft = 5.18m
      * 70% power
@@ -161,37 +161,37 @@ public class RobotContainer {
 
     //Climb bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) < -.3)
-        .whenPressed(new InstantCommand(()->m_climberSubsystem.extend()))
-        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+        .whenPressed(new InstantCommand(()->climber.extend()))
+        .whenReleased(new InstantCommand(()->climber.stopSlide()));
 
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) > .3)
-        .whenPressed(new InstantCommand(()->m_climberSubsystem.retract()))
-        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSlide()));
+        .whenPressed(new InstantCommand(()->climber.retract()))
+        .whenReleased(new InstantCommand(()->climber.stopSlide()));
 
     new JoystickButton(mechJoystick, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(()->m_climberSubsystem.climb()))
-        .whenReleased(new InstantCommand(()->m_climberSubsystem.stopSpool()));
+        .whenPressed(new InstantCommand(()->climber.climb()))
+        .whenReleased(new InstantCommand(()->climber.stopSpool()));
 
     new JoystickButton(driver, JoystickConstants.buttonA)
 
-        .whenPressed(new InstantCommand(() -> m_visionSubsystem.enableTurretLED(true)))
-        .whenReleased(new InstantCommand(() -> m_visionSubsystem.enableTurretLED(false)));
+        .whenPressed(new InstantCommand(() -> vision.enableTurretLED(true)))
+        .whenReleased(new InstantCommand(() -> vision.enableTurretLED(false)));
 
     new JoystickButton(driver, JoystickConstants.buttonX)
-        .whenPressed(new InstantCommand( () -> m_visionSubsystem.setCamMode(true)))
-        .whenReleased(new InstantCommand( () -> m_visionSubsystem.setCamMode(false)));
+        .whenPressed(new InstantCommand( () -> vision.setCamMode(true)))
+        .whenReleased(new InstantCommand( () -> vision.setCamMode(false)));
 
     new JoystickButton(mechJoystick, JoystickConstants.buttonRightBumper)
-        .whenHeld(new TapeTracking(m_visionSubsystem, m_turretSubsystem));
+        .whenHeld(new TapeTracking(vision, turret));
 
 
     //Color bindings
    /* new JoystickButton(mechJoystick, JoystickConstants.buttonY)
-        .toggleWhenPressed(new ColorWheelCommand(m_colorWheelSubsystem));
+        .toggleWhenPressed(new ColorWheelCommand(colorWheel));
     new JoystickButton(mechJoystick,JoystickConstants.buttonRightBumper)
-        .whenPressed(new InstantCommand(()->m_colorWheelSubsystem.spinAmount(4)));
+        .whenPressed(new InstantCommand(()->colorWheel.spinAmount(4)));
     new JoystickButton(mechJoystick,JoystickConstants.buttonLeftBumper)
-        .whenPressed(new InstantCommand(()->m_colorWheelSubsystem.spinToColor(""))); //need to get target color
+        .whenPressed(new InstantCommand(()->colorWheel.spinToColor(""))); //need to get target color
 */
   }
   
@@ -206,28 +206,29 @@ public class RobotContainer {
         toShoot = null;
     }
 
-    var transform = m_driveSubsystem.getPose().minus(toShoot.getInitialPose());
+    var transform = drive.getPose().minus(toShoot.getInitialPose());
     toShoot = toShoot.transformBy(transform);
 
     RamseteCommand auto = new RamseteCommand(
         toShoot,
-        m_driveSubsystem::getPose,
+        driveSubsystem::getPose,
         new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
         new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                    DriveConstants.kvVoltSecondsPerMeter,
                                    DriveConstants.kaVoltSecondsSquaredPerMeter),
         DriveConstants.kDriveKinematics,
-        m_driveSubsystem::getWheelSpeeds,
+        driveSubsystem::getWheelSpeeds,
         new PIDController(DriveConstants.kPDriveVel, 0, 0),
         new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        m_driveSubsystem::tankDriveVolts,
-        m_driveSubsystem
+        driveSubsystem::tankDriveVolts,
+        driveSubsystem
     ); 
 */
-      return auto;
+      //return auto;
+      return null;
   }
 
   public void resetGyro() {
-      m_driveSubsystem.zeroHeading();
+      drive.zeroHeading();
   }
 }
