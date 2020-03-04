@@ -50,6 +50,7 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TapeTracking;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToPowerCell;
+import frc.robot.commands.AutoCommands.ShootAutoExample;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -97,6 +98,8 @@ public class RobotContainer {
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
+
+  private final ShootAutoExample auto = new ShootAutoExample(m_visionSubsystem, m_shooterSubsystem, m_turretSubsystem, m_storageSubsystem, m_driveSubsystem, m_intake);
 
   //private final EveryMotorCommand everyMotor = new EveryMotorCommand(m_storageSubsystem, m_shooterSubsystem, m_climberSubsystem, m_intake, m_turretSubsystem, m_colorWheelSubsystem);
 
@@ -194,7 +197,34 @@ public class RobotContainer {
   
 
   public Command getAutonomousCommand() {
-      return null;
+
+    Trajectory toShoot;
+    try {
+        toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/rls1.wpilib.json"));
+    } catch (IOException e) {
+        e.printStackTrace(); 
+        toShoot = null;
+    }
+
+    var transform = m_driveSubsystem.getPose().minus(toShoot.getInitialPose());
+    toShoot = toShoot.transformBy(transform);
+
+    RamseteCommand auto = new RamseteCommand(
+        toShoot,
+        m_driveSubsystem::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        m_driveSubsystem::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        m_driveSubsystem::tankDriveVolts,
+        m_driveSubsystem
+    ); 
+
+      return auto.deadlineWith(new InstantCommand(() -> m_shooterSubsystem.shoot()));
   }
 
   public void resetGyro() {
