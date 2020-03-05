@@ -58,8 +58,6 @@ public class ShootCommand extends CommandBase {
 
     this.vision = vision;
     this.turret = turret;
-
-    this.trackTape = new TapeTracking(vision, turret);
   }
 
   @Override
