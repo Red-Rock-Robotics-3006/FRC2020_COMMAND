@@ -148,8 +148,8 @@ def main(config):
     lower_color = np.array([0, 0, 0])
     upper_color = np.array([0, 0, 0])
 
-    camera_robot_x = -.0254
-    camera_robot_y = .3302
+    camera_robot_x = .3302
+    camera_robot_y = -.0254
 
     print("Starting ML mainloop")
     
@@ -235,14 +235,14 @@ def main(config):
                 angle_diff_right_center = abs(angle_to_right_side - angle_to_turn_power_cell)
                 dist_power_cell = (.5842/(2*math.pi))/math.tan(math.radians(angle_diff_right_center))
                 
-                x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(90-angle_to_turn_power_cell))**2)
-                y_vec = x_vec * math.tan(math.radians((90-angle_to_turn_power_cell)))
+                x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(-angle_to_turn_power_cell))**2)
+                y_vec = x_vec * math.tan(math.radians((-angle_to_turn_power_cell)))
                 if (angle_to_turn_power_cell < 0):
                     x_vec *= -1
                     y_vec *= -1
                 new_x = camera_robot_x + x_vec
                 new_y = camera_robot_y + y_vec
-                angle_to_turn_power_cell_robot = 90 - math.degrees(math.atan2(new_y,new_x))
+                angle_to_turn_power_cell_robot = - math.degrees(math.atan2(new_y,new_x))
 
                 cv2.putText(frame, str(new_x), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 cv2.putText(frame, str(new_y), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
@@ -279,14 +279,14 @@ def main(config):
                 angle_diff_right_center = angle_to_right_side - angle_to_turn_power_cell
                 dist_power_cell = (.5842/(2*math.pi))/math.tan(math.radians(angle_diff_right_center))
                 
-                x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(90-angle_to_turn_power_cell))**2)
-                y_vec = x_vec * math.tan(math.radians((90-angle_to_turn_power_cell)))
+                x_vec = dist_power_cell / math.sqrt(1 + math.tan(math.radians(-angle_to_turn_power_cell))**2)
+                y_vec = x_vec * math.tan(math.radians((-angle_to_turn_power_cell)))
                 if(angle_to_turn_power_cell < 0):
                     x_vec *= -1
                     y_vec *= -1
                 new_x = camera_robot_x + x_vec
                 new_y = camera_robot_y + y_vec
-                angle_to_turn_power_cell_robot = 90 - math.degrees(math.atan2(new_y,new_x))
+                angle_to_turn_power_cell_robot = - math.degrees(math.atan2(new_y,new_x))
                 
                 cv2.putText(frame, str(new_x), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 cv2.putText(frame, str(new_y), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)

@@ -110,7 +110,7 @@ public class TurnToPowerCell extends CommandBase {
       System.out.println("target angle: " + targetAngle);
       System.out.println("difference: " + (drive.getHeading() - vision.getTargetAngle()));
     
-     // drive.tankDrive(leftOutput, rightOutput);
+      drive.tankDrive(leftOutput, rightOutput);
     //}
   
   }
