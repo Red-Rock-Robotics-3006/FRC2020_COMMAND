@@ -24,6 +24,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     private Solenoid intakeLED = new Solenoid(0);
 
+    private Solenoid robotLED = new Solenoid(4);
+
     public VisionSubsystem() {
         inst = NetworkTableInstance.getDefault();
 
@@ -127,8 +129,12 @@ public class VisionSubsystem extends SubsystemBase {
     }
     public void enableTurretLED(boolean enabled) {
         turretLED.set(enabled);
+    }
+
+    public void enableAllLEDs(boolean enabled) {
+        turretLED.set(enabled);
         intakeLED.set(enabled);
-        
+        robotLED.set(enabled);
     }
 
 

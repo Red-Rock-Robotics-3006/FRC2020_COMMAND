@@ -45,6 +45,8 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
 
+  private double maxSpeed = 0.8;
+
   public DriveSubsystem() {
     // Sets the distance per pulse for the encoders
     frontLeft.configFactoryDefault();
@@ -182,5 +184,14 @@ public class DriveSubsystem extends SubsystemBase {
     */ 
     m_drive.tankDrive(leftPower, rightPower);
      // System.out.println(leftPower + " " + rightPower);
+  }
+
+  public void drive(double leftPower, double rightPower) {
+    tankDrive(DriveConstants.joystickGain * Math.pow(-maxSpeed * leftPower, 3) + DriveConstants.joystickGain * -maxSpeed * leftPower,
+            DriveConstants.joystickGain * Math.pow(-maxSpeed * rightPower, 3) + DriveConstants.joystickGain * -maxSpeed * rightPower);
+  }
+
+  public void setMaxPower(double power) {
+    maxSpeed = power;
   }
 }

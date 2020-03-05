@@ -29,10 +29,9 @@ public class StorageSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Conveyor power", StorageConstants.kConveyorPower);
-    SmartDashboard.putBoolean("Storage or Feeder (T/F)", storageOrFeeder);
-    SmartDashboard.putNumber("Feeder power", storageOrFeeder ? StorageConstants.kFeederToStoragePower : StorageConstants.kFeederToTurretPower);
+    
   }
+  
   public void runConveyor()
   {
       conveyor.set(StorageConstants.kConveyorPower);

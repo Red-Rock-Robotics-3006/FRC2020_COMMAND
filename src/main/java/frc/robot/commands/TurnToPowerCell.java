@@ -107,10 +107,10 @@ public class TurnToPowerCell extends CommandBase {
       double leftOutput = leftController.calculate(drive.getWheelSpeeds().leftMetersPerSecond, leftSpeedSetpoint) + leftFeedforward;
       double rightOutput = rightController.calculate(drive.getWheelSpeeds().rightMetersPerSecond, rightSpeedSetpoint) + rightFeedforward;
 
-      System.out.println(leftController.getVelocityError());
-      System.out.println(rightController.getVelocityError());
+      System.out.println("target angle: " + targetAngle);
+      System.out.println("difference: " + (drive.getHeading() - vision.getTargetAngle()));
     
-      drive.tankDrive(leftOutput, rightOutput);
+     // drive.tankDrive(leftOutput, rightOutput);
     //}
   
   }

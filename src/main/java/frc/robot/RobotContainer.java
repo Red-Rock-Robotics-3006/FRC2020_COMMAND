@@ -108,8 +108,7 @@ public class RobotContainer {
 //DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis)
    drive.setDefaultCommand(
         new RunCommand(() -> 
-            drive.tankDrive(DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis),
-            DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.rightYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.rightYAxis)) , drive));
+            drive.drive(driver.getRawAxis(JoystickConstants.leftYAxis), driver.getRawAxis(JoystickConstants.rightYAxis)), drive));
 
   }
 
@@ -143,21 +142,18 @@ public class RobotContainer {
         }))
         .whenReleased(new InstantCommand(() -> {
             storage.stop();
+            shooter.stopFeeder();
             storage.setStorageOrTurret(true);
         }));
-
-    new JoystickButton(driver, JoystickConstants.buttonB)
-        .whenPressed(new InstantCommand(() -> storage.setStorageOrTurret(false)))
-        .whenReleased(new InstantCommand(() -> storage.setStorageOrTurret(true)));
 
     new JoystickButton(driver, JoystickConstants.buttonLeftBumper)
        // .whenHeld(new PowerCellPickup(vision, drive, intake, storage, shooter, true));
         .whenHeld(new TurnToPowerCell(.1, drive, vision));
-    /**
-     * 17ft = 5.18m
-     * 70% power
-     * NOTE: Shooter changed so probably not true anymore
-     */
+    
+    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .3)
+        .whenPressed(new InstantCommand(() -> drive.setMaxPower(1)))
+        .whenReleased(new InstantCommand(() -> drive.setMaxPower(0.8)));
+   
 
     //Climb bindings
     new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) < -.3)
@@ -174,8 +170,8 @@ public class RobotContainer {
 
     new JoystickButton(driver, JoystickConstants.buttonA)
 
-        .whenPressed(new InstantCommand(() -> vision.enableTurretLED(true)))
-        .whenReleased(new InstantCommand(() -> vision.enableTurretLED(false)));
+        .whenPressed(new InstantCommand(() -> vision.enableAllLEDs(true)))
+        .whenReleased(new InstantCommand(() -> vision.enableAllLEDs(false)));
 
     new JoystickButton(driver, JoystickConstants.buttonX)
         .whenPressed(new InstantCommand( () -> vision.setCamMode(true)))

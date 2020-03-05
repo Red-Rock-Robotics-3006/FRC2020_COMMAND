@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
   feeder.configFactoryDefault();
 
   feeder.setInverted(true);
-  //m_shooterMotor.setNeutralMode(NeutralMode.Brake);
+  m_shooterMotor.setNeutralMode(NeutralMode.Brake);
   m_shooterMotor.getSensorCollection().setIntegratedSensorPosition(0, 0);
   m_shooterMotor.setInverted(true);
 
@@ -55,12 +55,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    output = shooterPID.calculate(getRPS(), ShooterConstants.kShooterTargetRPS) + m_shooterFeedForward.calculate(ShooterConstants.kShooterTargetRPS);
+    double feedback = shooterPID.calculate(getRPS(), ShooterConstants.kShooterTargetRPS);
+    double feedforward = m_shooterFeedForward.calculate(ShooterConstants.kShooterTargetRPS);
+    output = feedback + feedforward;
     
     SmartDashboard.putNumber("Shooter power", ShooterConstants.kShooterPower);
     SmartDashboard.putNumber("Shooter RPS", getRPS());
     SmartDashboard.putBoolean("At RPS (T/F)", atRPS());
-    SmartDashboard.putNumber("Shooter feedfoward", output);
+    SmartDashboard.putNumber("Shooter feedfoward", feedforward);
+    SmartDashboard.putNumber("Shooter feedback", feedback);
+
     
   }
   
@@ -89,6 +93,10 @@ public class ShooterSubsystem extends SubsystemBase {
   {
     feeder.set(ShooterConstants.kFeederDownPower);
     shooterFeederRunning = true;
+  }
+
+  public void stopFeeder() {
+    feeder.set(0);
   }
 
   public void stop()
