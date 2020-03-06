@@ -37,13 +37,13 @@ public class DriveSubsystem extends SubsystemBase {
 */
   // The robot's drive
   private final DifferentialDrive m_drive;
-
   
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
+  private final DifferentialDriveOdometry m_odometryReverse;
 
   private double maxSpeed = 0.8;
 
@@ -69,11 +69,11 @@ public class DriveSubsystem extends SubsystemBase {
     backLeft.setNeutralMode(NeutralMode.Brake);
 
     m_drive = new DifferentialDrive(frontLeft, frontRight);
-
     m_drive.setRightSideInverted(false);
-   
+
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    m_odometryReverse = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
 
   @Override
@@ -82,14 +82,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderDistance(),
                       getRightEncoderDistance());
 
-   /* System.out.println("X: " + getPose().getTranslation().getX() + " Y: " + getPose().getTranslation().getY() + " Deg: " + getHeading());
-    System.out.println(getLeftEncoderDistance() + " " + getRightEncoderDistance());
-    System.out.println(getLeftEncoderVelocity() + " " + getRightEncoderVelocity());*/
-
-   // System.out.println(getHeading());
+    m_odometryReverse.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderDistanceReverse(),
+                      getRightEncoderDistanceReverse());
 
    SmartDashboard.putNumber("Gyro", getHeading());
-   SmartDashboard.putBoolean("Calibrating", m_gyro.isCalibrating());
    SmartDashboard.putNumber("PosX", getPose().getTranslation().getX());
    SmartDashboard.putNumber("PosY", getPose().getTranslation().getY());
    SmartDashboard.putNumber("Encoder Left", getLeftEncoderDistance());
@@ -102,13 +98,22 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public Pose2d getPoseReverse() {
+    return m_odometryReverse.getPoseMeters();
+  }
+
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(), getRightEncoderVelocity());
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeedsReverse() {
+    return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocityReverse(), getRightEncoderVelocityReverse());
   }
 
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+    m_odometryReverse.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
 
   public void arcadeDrive(double fwd, double rot) {
@@ -121,17 +126,19 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.feed();
   }
 
+  public void tankDriveVoltsReverse(double leftVolts, double rightVolts) {
+    frontRight.setVoltage(-leftVolts);
+    frontLeft.setVoltage(-rightVolts);
+    frontRight.feed();
+    frontLeft.feed();
+  }
+
   public void resetEncoders() {
     frontLeft.getSensorCollection().setIntegratedSensorPosition(0,0);
     
     frontRight.getSensorCollection().setIntegratedSensorPosition(0, 0);
     
   }
-
- /* public double getAverageEncoderDistance() {
-   // return (frontLeft.getSensorCollection().getQuadraturePosition() + backLeft.getSensorCollection().getQuadraturePosition() + frontRight.getSensorCollection().getQuadraturePosition() + backLeft.getSensorCollection().getQuadraturePosition()) / 4.0;
-  }
-  */
 
   public double getLeftEncoderDistance() {
       double frontLeftEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
@@ -144,6 +151,18 @@ public class DriveSubsystem extends SubsystemBase {
     return frontRightEncoder * -1;
    //return ((frontRight.getSensorCollection().getQuadraturePosition() + backRight.getSensorCollection().getQuadraturePosition())/2);
   }
+
+  public double getLeftEncoderDistanceReverse() {
+    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
+    return frontLeftEncoder;
+  //return ((frontLeft.getSensorCollection().getQuadraturePosition() + backLeft.getSensorCollection().getQuadraturePosition())/2);
+}
+
+public double getRightEncoderDistanceReverse() {
+  double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition()* DriveConstants.kEncoderDistancePerPulse;
+  return frontRightEncoder * -1;
+ //return ((frontRight.getSensorCollection().getQuadraturePosition() + backRight.getSensorCollection().getQuadraturePosition())/2);
+}
 
   public void setMaxOutput(double maxOutput) {
     m_drive.setMaxOutput(maxOutput);
@@ -173,6 +192,22 @@ public class DriveSubsystem extends SubsystemBase {
   {
     //For revsered right, call frontLeft
     double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
+      return frontRightEncoder*-1;
+     // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;
+  }
+
+  public double getLeftEncoderVelocityReverse()
+  {
+    //For reversed left, call frontRight
+    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
+    return frontLeftEncoder;
+     // return (frontLeft.getSensorCollection().getQuadratureVelocity() + backLeft.getSensorCollection().getQuadratureVelocity())/2.0;
+  }
+
+  public double getRightEncoderVelocityReverse()
+  {
+    //For revsered right, call frontLeft
+    double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
       return frontRightEncoder*-1;
      // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;
   }
