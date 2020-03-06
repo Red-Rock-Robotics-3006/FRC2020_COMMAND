@@ -1,4 +1,4 @@
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.RedShootCommands;
 
 import java.io.IOException;
 import java.nio.file.Paths;

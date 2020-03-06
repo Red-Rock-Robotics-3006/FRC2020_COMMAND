@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.RedShootCommands;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;

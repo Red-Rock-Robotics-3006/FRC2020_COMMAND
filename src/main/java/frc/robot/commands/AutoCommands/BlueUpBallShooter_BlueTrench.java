@@ -71,7 +71,6 @@ public class BlueUpBallShooter_BlueTrench extends SequentialCommandGroup {
 
         Trajectory lineUpWithTarget;
         try {
-            lineUpWithTarget = TrajectoryUtil.fromPathweaverJson();
             lineUpWithTarget = TrajectoryUtil.fromPathweaverJson(Paths.get("src/main/deploy/PathWeaver/Paths/output/bubs1-2.wpilib.json"));
         } catch (IOException e) {
             e.printStackTrace();

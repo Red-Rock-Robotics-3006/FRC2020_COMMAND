@@ -43,7 +43,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
-  private final DifferentialDriveOdometry m_odometryReverse;
 
   private double maxSpeed = 0.8;
 
@@ -73,7 +72,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-    m_odometryReverse = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
 
   @Override
@@ -81,10 +79,6 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
     m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderDistance(),
                       getRightEncoderDistance());
-
-    m_odometryReverse.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderDistanceReverse(),
-                      getRightEncoderDistanceReverse());
-
    SmartDashboard.putNumber("Gyro", getHeading());
    SmartDashboard.putNumber("PosX", getPose().getTranslation().getX());
    SmartDashboard.putNumber("PosY", getPose().getTranslation().getY());
@@ -98,22 +92,13 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-  public Pose2d getPoseReverse() {
-    return m_odometryReverse.getPoseMeters();
-  }
-
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(), getRightEncoderVelocity());
-  }
-
-  public DifferentialDriveWheelSpeeds getWheelSpeedsReverse() {
-    return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocityReverse(), getRightEncoderVelocityReverse());
   }
 
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-    m_odometryReverse.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
 
   public void arcadeDrive(double fwd, double rot) {
@@ -124,13 +109,6 @@ public class DriveSubsystem extends SubsystemBase {
     frontLeft.setVoltage(leftVolts);
     frontRight.setVoltage(rightVolts);
     m_drive.feed();
-  }
-
-  public void tankDriveVoltsReverse(double leftVolts, double rightVolts) {
-    frontRight.setVoltage(-leftVolts);
-    frontLeft.setVoltage(-rightVolts);
-    frontRight.feed();
-    frontLeft.feed();
   }
 
   public void resetEncoders() {
@@ -152,18 +130,6 @@ public class DriveSubsystem extends SubsystemBase {
    //return ((frontRight.getSensorCollection().getQuadraturePosition() + backRight.getSensorCollection().getQuadraturePosition())/2);
   }
 
-  public double getLeftEncoderDistanceReverse() {
-    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
-    return frontLeftEncoder;
-  //return ((frontLeft.getSensorCollection().getQuadraturePosition() + backLeft.getSensorCollection().getQuadraturePosition())/2);
-}
-
-public double getRightEncoderDistanceReverse() {
-  double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition()* DriveConstants.kEncoderDistancePerPulse;
-  return frontRightEncoder * -1;
- //return ((frontRight.getSensorCollection().getQuadraturePosition() + backRight.getSensorCollection().getQuadraturePosition())/2);
-}
-
   public void setMaxOutput(double maxOutput) {
     m_drive.setMaxOutput(maxOutput);
   }
@@ -180,18 +146,6 @@ public double getRightEncoderDistanceReverse() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public double getLeftEncoderVelocityReversed()
-  {
-    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
-    return frontLeftEncoder;
-  }
-
-  public double getRightEncoderVelocityReversed()
-  {
-    double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
-    return frontRightEncoder * -1;
-  }
-
   public double getLeftEncoderVelocity()
   {
     //For reversed left, call frontRight
@@ -204,22 +158,6 @@ public double getRightEncoderDistanceReverse() {
   {
     //For revsered right, call frontLeft
     double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
-      return frontRightEncoder*-1;
-     // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;
-  }
-
-  public double getLeftEncoderVelocityReverse()
-  {
-    //For reversed left, call frontRight
-    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
-    return frontLeftEncoder;
-     // return (frontLeft.getSensorCollection().getQuadratureVelocity() + backLeft.getSensorCollection().getQuadratureVelocity())/2.0;
-  }
-
-  public double getRightEncoderVelocityReverse()
-  {
-    //For revsered right, call frontLeft
-    double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
       return frontRightEncoder*-1;
      // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;
   }

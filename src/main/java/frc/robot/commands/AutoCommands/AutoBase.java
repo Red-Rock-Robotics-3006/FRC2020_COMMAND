@@ -41,23 +41,6 @@ public class AutoBase extends SequentialCommandGroup {
         
     }
     
-    public RamseteCommand createReverseRamseteCommand(Trajectory trajectory, DriveSubsystem drive) {
-        return new RamseteCommand(
-            trajectory,
-            drive::getPoseReverse,
-            new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                   DriveConstants.kvVoltSecondsPerMeter,
-                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
-            drive::getWheelSpeedsReverse,
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            drive::tankDriveVoltsReverse,
-            drive
-        ); 
-    }
-    
     public Trajectory generateTrajectory(TrajectoryConfig config, double[] x, double[] y, double[] x1, double[] y1) {
         TrajectoryGenerator.ControlVectorList controlVectors = new TrajectoryGenerator.ControlVectorList();
         ControlVector v = new ControlVector(x, y);

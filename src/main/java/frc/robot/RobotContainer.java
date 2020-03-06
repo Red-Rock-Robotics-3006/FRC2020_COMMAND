@@ -53,9 +53,13 @@ import frc.robot.commands.TapeTracking;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToPowerCell;
 import frc.robot.commands.TurretTurnCommand;
-import frc.robot.commands.AutoCommands.BlueUpperShoot;
-import frc.robot.commands.AutoCommands.ShootAutoExample;
 import frc.robot.commands.AutoCommands.TestAuto;
+import frc.robot.commands.AutoCommands.BlueShootCommands.BlueMiddleShoot;
+import frc.robot.commands.AutoCommands.BlueShootCommands.BlueShootNT;
+import frc.robot.commands.AutoCommands.BlueShootCommands.BlueUpperShoot;
+import frc.robot.commands.AutoCommands.RedShootCommands.RedLowerShoot;
+import frc.robot.commands.AutoCommands.RedShootCommands.RedMiddleShoot;
+import frc.robot.commands.AutoCommands.RedShootCommands.RedUpperShoot;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -106,13 +110,13 @@ public class RobotContainer {
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
-  private final BlueMiddleShoot bms = new BlueMiddleShoot(vision, shooter, turret, storage, drive, intake);
-  private final BlueShootNT bsnt = new BlueShootNT(vision, shooter, turret, storage, drive, intake);
-  private final BlueUpperShoot bus = new BlueUpperShoot(vision, shooter, turret, storage, drive, intake);
+  private final BlueMiddleShoot bms = new BlueMiddleShoot(vision, drive, intake, storage, shooter, turret);
+  private final BlueShootNT bsnt = new BlueShootNT(vision, drive, intake, storage, shooter, turret);
+  private final BlueUpperShoot bus = new BlueUpperShoot(vision, drive, intake, storage, shooter, turret);
 
   private final RedLowerShoot rls = new RedLowerShoot(vision, shooter, turret, storage, drive, intake);
-  private final RedMiddleShoot rms = new RedMiddleShoot(vision, shooter, turret, storage, drive, intake);
-  private final RedUpperShoot rus = new RedUpperShoot(vision, shooter, turret, storage, drive, intake);
+  private final RedMiddleShoot rms = new RedMiddleShoot(vision, drive, intake, storage, shooter, turret);
+  private final RedUpperShoot rus = new RedUpperShoot(vision, drive, intake, storage, shooter, turret);
   //private final ShootAutoExample auto = new ShootAutoExample(vision, shooter, turret, storage, drive, intake);
 
   //private final EveryMotorCommand everyMotor = new EveryMotorCommand(storage, shooter, climber, intake, turret, colorWheel);
