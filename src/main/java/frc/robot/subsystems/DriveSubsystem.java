@@ -180,6 +180,18 @@ public double getRightEncoderDistanceReverse() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  public double getLeftEncoderVelocityReversed()
+  {
+    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
+    return frontLeftEncoder;
+  }
+
+  public double getRightEncoderVelocityReversed()
+  {
+    double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
+    return frontRightEncoder * -1;
+  }
+
   public double getLeftEncoderVelocity()
   {
     //For reversed left, call frontRight
