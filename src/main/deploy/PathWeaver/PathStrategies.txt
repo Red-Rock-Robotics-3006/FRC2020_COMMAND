@@ -1,0 +1,23 @@
+3 Ball Autos
+
+Red Alliance:
+RLS-3-1: Follow path
+RMS-3-1: Follow path
+RUS-3-1: Follow path
+
+
+5 Ball Autos:
+
+Red Alliance:
+RLBS-BT-5-1: rlbs2-1 -> vision track -> rlbs2-2.gen -> vision track -> rlbs2-3.gen
+RLBS-SG-5-1: rlbs1-1 -> vision track -> rlbs1-2.gen
+RMBS-SG-5-1: rmbs1-1 -> vision track -> rmbs1-2.gen
+RUBS-RT-5-1: rubs1-1 -> vision track -> rubs1-2.gen
+
+10 Ball Autos:
+
+Red Alliance:
+RLBSBS-BT-SG-10-1:
+    rlbsbs1-1 -> vision track -> rlbsbs1-2.gen -> vision track -> rlbsbs1-3.gen -> shoot
+    rlbsbs1-4 -> vision track -> rlbsbs1-5.gen -> turn 180 deg -> vision track -> rlbsbs1-6.gen -> vision track -> rlbsbs1-7
+
