@@ -43,7 +43,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /**
  * An example command that uses an example subsystem.
  */
-public class TestAuto extends SequentialCommandGroup {
+public class TestAuto extends AutoBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final DriveSubsystem drive;
 
@@ -96,8 +96,8 @@ public class TestAuto extends SequentialCommandGroup {
     forward = forward.transformBy(transform);
     backward = backward.transformBy(transform);
     
-    RamseteCommand forwardCommand = createRamseteCommand(forward);
-    RamseteCommand backwardCommand = createRamseteCommand(backward);
+    RamseteCommand forwardCommand = super.createRamseteCommand(forward, drive);
+    RamseteCommand backwardCommand = super.createRamseteCommand(backward, drive);
 
     /*super.addCommands(forwardCommand.deadlineWith(new InstantCommand(() -> shooter.shoot())).andThen(() -> drive.tankDriveVolts(0, 0)),
                backwardCommand.andThen(() -> drive.tankDrive(0, 0)),
@@ -112,41 +112,5 @@ public class TestAuto extends SequentialCommandGroup {
   }
 
   // Called when the command is initially scheduled.
-
-
-  public RamseteCommand createRamseteCommand(Trajectory trajectory) {
-    return new RamseteCommand(
-        trajectory,
-        drive::getPose,
-        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-        //Make new constants negative
-        new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                   DriveConstants.kvVoltSecondsPerMeter,
-                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics,
-        //Make counterpart method to return positive when going backwards
-        drive::getWheelSpeeds,
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        
-        drive::tankDriveVolts,
-        drive
-    ); 
-}
-
-public Trajectory generateTrajectory(TrajectoryConfig config, double[] x, double[] y, double[] x1, double[] y1) {
-    TrajectoryGenerator.ControlVectorList controlVectors = new TrajectoryGenerator.ControlVectorList();
-    ControlVector v = new ControlVector(x, y);
-    ControlVector v1 = new ControlVector(x1, y1);
-    controlVectors.add(v);
-    controlVectors.add(v1);
-
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        controlVectors,
-        config
-    );
-
-    return exampleTrajectory;
-}
 
 }
