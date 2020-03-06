@@ -106,6 +106,10 @@ public class DriveSubsystem extends SubsystemBase {
     return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocity(), getRightEncoderVelocity());
   }
 
+  public DifferentialDriveWheelSpeeds getWheelSpeedsReversed() {
+    return new DifferentialDriveWheelSpeeds(getLeftEncoderVelocityReversed(), getRightEncoderVelocityReversed());
+  }
+
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
@@ -167,9 +171,10 @@ public class DriveSubsystem extends SubsystemBase {
     return frontLeftEncoder;
   }
 
-  public double getRightEncoderVelocity()
+  public double getRightEncoderVelocityReversed()
   {
-    
+    double frontRightEncoder = frontLeft.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
+    return frontRightEncoder * -1;
   }
 
   public double getLeftEncoderVelocity()
