@@ -1,7 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 X,Y,Tangent X,Tangent Y,Fixed Theta,Name
 0.0,0.0,3.048,0.0,true,
 3.048,-3.048,0.0,-3.048,true,
+=======
+X,Y,Tangent X,Tangent Y,Fixed Theta,Name
+0.0,0.0,3.048,0.0,true,
+3.048,-3.048,0.0,-3.048,true,
+>>>>>>> 9c22dd7918fbd479014ac7103b359b198dda0cef
 =======
 X,Y,Tangent X,Tangent Y,Fixed Theta,Name
 15.975464612825062,-5.831844367206864,3.048,0.0,true,
