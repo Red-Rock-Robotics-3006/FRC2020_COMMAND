@@ -161,8 +161,20 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  public double getLeftEncoderVelocityReversed()
+  {
+    double frontLeftEncoder = frontRight.getSensorCollection().getIntegratedSensorPosition() * DriveConstants.kEncoderDistancePerPulse;
+    return frontLeftEncoder;
+  }
+
+  public double getRightEncoderVelocity()
+  {
+    
+  }
+
   public double getLeftEncoderVelocity()
   {
+    //For reversed left, call frontRight
     double frontLeftEncoder = frontLeft.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
     return frontLeftEncoder;
      // return (frontLeft.getSensorCollection().getQuadratureVelocity() + backLeft.getSensorCollection().getQuadratureVelocity())/2.0;
@@ -170,6 +182,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getRightEncoderVelocity()
   {
+    //For revsered right, call frontLeft
     double frontRightEncoder = frontRight.getSensorCollection().getIntegratedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
       return frontRightEncoder*-1;
      // return (frontRight.getSensorCollection().getQuadratureVelocity() + backRight.getSensorCollection().getQuadratureVelocity())/2.0;

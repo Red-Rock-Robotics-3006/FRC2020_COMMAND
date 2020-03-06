@@ -105,7 +105,7 @@ def main(config):
     cs = CameraServer.getInstance()
     power_cell_cam = UsbCamera('power_cell_cam', 2)
     power_cell_cam.setResolution(WIDTH, HEIGHT)
-    power_cell_cam.setExposureManual(25)
+    power_cell_cam.setExposureManual(50)
 
     tape_cam = UsbCamera('tape_cam', 0)
     tape_cam.setResolution(WIDTH, HEIGHT)
@@ -244,9 +244,9 @@ def main(config):
                 new_y = camera_robot_y + y_vec
                 angle_to_turn_power_cell_robot = - math.degrees(math.atan2(new_y,new_x))
 
-                cv2.putText(frame, str(new_x), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                cv2.putText(frame, str(new_y), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                cv2.putText(frame, str(dist_power_cell), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(frame, str(angle_to_turn_power_cell_robot), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                #cv2.putText(frame, str(new_y), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                #cv2.putText(frame, str(dist_power_cell), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
                 
         else:
@@ -288,9 +288,9 @@ def main(config):
                 new_y = camera_robot_y + y_vec
                 angle_to_turn_power_cell_robot = - math.degrees(math.atan2(new_y,new_x))
                 
-                cv2.putText(frame, str(new_x), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                cv2.putText(frame, str(new_y), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                cv2.putText(frame, str(dist_power_cell), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(frame, str(angle_to_turn_power_cell_robot), (100, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                #cv2.putText(frame, str(new_y), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+               # cv2.putText(frame, str(dist_power_cell), (100, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             elif (largest_box_area > 0 and cam_mode):
                 x,y,w,h = cv2.boundingRect(largest_contour)

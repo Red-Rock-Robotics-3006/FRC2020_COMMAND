@@ -1,0 +1,2 @@
+bls1.path
+bls2.gen
