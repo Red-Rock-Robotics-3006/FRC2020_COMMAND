@@ -4,5 +4,5 @@
   "maxAcceleration": 0.1,
   "wheelBase": 0.59,
   "gameName": "Infinite Recharge",
-  "outputDir": "Paths"
+  "outputDir": "Paths/output/output"
 }

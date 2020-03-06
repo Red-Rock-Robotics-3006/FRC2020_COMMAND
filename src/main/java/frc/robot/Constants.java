@@ -45,6 +45,10 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 2.38; //old was 3.03, 2.43
     public static final double kaVoltSecondsSquaredPerMeter = 0.367; //old was 0.697, .258
 
+    public static final double ksVoltsReversed = -0.24;
+    public static final double kvVoltSecondsPerMeterReversed = -2.38;
+    public static final double kaVoltSecondsSquaredPerMeterReversed = -0.367;
+
     public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
 
     public static final double kPDriveVel = .0735; //5.14, .319, .375

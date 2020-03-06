@@ -100,13 +100,20 @@ public class RobotContainer {
   private final VisionSubsystem vision = new VisionSubsystem();
   private final TestAuto bt = new TestAuto(vision, shooter, turret, storage, drive, intake);
 
-  private final BlueUpperShoot bus = new BlueUpperShoot(vision, drive, intake, storage, shooter, turret);
+  //private final BlueUpperShoot bus = new BlueUpperShoot(vision, drive, intake, storage, shooter, turret);
   //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
-  private final ShootAutoExample auto = new ShootAutoExample(vision, shooter, turret, storage, drive, intake);
+  private final BlueMiddleShoot bms = new BlueMiddleShoot(vision, shooter, turret, storage, drive, intake);
+  private final BlueShootNT bsnt = new BlueShootNT(vision, shooter, turret, storage, drive, intake);
+  private final BlueUpperShoot bus = new BlueUpperShoot(vision, shooter, turret, storage, drive, intake);
+
+  private final RedLowerShoot rls = new RedLowerShoot(vision, shooter, turret, storage, drive, intake);
+  private final RedMiddleShoot rms = new RedMiddleShoot(vision, shooter, turret, storage, drive, intake);
+  private final RedUpperShoot rus = new RedUpperShoot(vision, shooter, turret, storage, drive, intake);
+  //private final ShootAutoExample auto = new ShootAutoExample(vision, shooter, turret, storage, drive, intake);
 
   //private final EveryMotorCommand everyMotor = new EveryMotorCommand(storage, shooter, climber, intake, turret, colorWheel);
 
@@ -116,9 +123,12 @@ public class RobotContainer {
    drive.setDefaultCommand(
         new RunCommand(() -> 
             drive.drive(driver.getRawAxis(JoystickConstants.leftYAxis), driver.getRawAxis(JoystickConstants.rightYAxis)), drive));
-    chooser.setDefaultOption("Shoot Auto", auto);
+    chooser.setDefaultOption("Red Upper Shoot", rus);
     chooser.addOption("Blue Upper Shoot", bus);
-    chooser.addOption("blue test", bt);
+    chooser.addOption("Blue Middle Shoot", bms);
+    chooser.addOption("Blue Shoot NT", bsnt);
+    chooser.addOption("Red Lower Shoot", rls);
+    chooser.addOption("Red Middle Shoot", rms);
 
     Shuffleboard.getTab("Autonomous").add(chooser);
   }

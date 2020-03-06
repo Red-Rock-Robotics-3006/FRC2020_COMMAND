@@ -1,4 +1,4 @@
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.BlueShootCommands;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -31,11 +31,11 @@ import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class BlueUpperShoot extends SequentialCommandGroup {
+public class BlueShootNT extends SequentialCommandGroup {
 
     private DriveSubsystem drive;
 
-    public BlueUpperShoot(VisionSubsystem vision, DriveSubsystem drive, IntakeSubsystem intake, StorageSubsystem storage, ShooterSubsystem shooter, TurretSubsystem turret) {
+    public BlueShootNT(VisionSubsystem vision, DriveSubsystem drive, IntakeSubsystem intake, StorageSubsystem storage, ShooterSubsystem shooter, TurretSubsystem turret) {
 
         var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
@@ -65,7 +65,7 @@ public class BlueUpperShoot extends SequentialCommandGroup {
 
         Trajectory toShoot;
         try {
-            toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/bus1.wpilib.json"));
+            toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/Blue-NT-Shoot.wpilib.json"));
         } catch (IOException e) {
             e.printStackTrace();
             toShoot = null;
@@ -84,7 +84,7 @@ public class BlueUpperShoot extends SequentialCommandGroup {
 
         //Currently a 5 ball auto; if this doesn't work well, consider adding more dead reckoning
         super.addCommands(toShootCommand.andThen(() -> drive.tankDriveVolts(0, 0)),
-               new InstantCommand(() -> turret.turnToAbsoluteAngle(70)),
+               new InstantCommand(() -> turret.turnToAbsoluteAngle(-70)),
                new TapeTracking(vision, turret).deadlineWith(new ShootCommand(shooter, storage, intake, vision, turret))
         );
 
