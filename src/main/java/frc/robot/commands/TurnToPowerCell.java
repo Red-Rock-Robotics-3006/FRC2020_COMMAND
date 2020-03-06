@@ -77,7 +77,7 @@ public class TurnToPowerCell extends CommandBase {
     powerCellX = factor * (powerCellXRobot - powerCellYRobot * currentRotTan) + currentPos.getTranslation().getX();
     powerCellY = factor * (powerCellXRobot * currentRotTan + powerCellYRobot) + currentPos.getTranslation().getY();
 
-    this.targetAngle = currentPos.getRotation().getDegrees() - vision.getTargetAngle();
+    this.targetAngle = drive.getHeading() - vision.getTargetAngle();
    
   }
 
@@ -88,7 +88,7 @@ public class TurnToPowerCell extends CommandBase {
     //System.out.println("Target angle: " + targetAngle);
 
     currentPos = drive.getPose();
-    targetAngle = (180 / Math.PI) * Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX());
+   // targetAngle = (180 / Math.PI) * Math.atan2(powerCellY-currentPos.getTranslation().getY(), powerCellX - currentPos.getTranslation().getX());
 
     /*if (Math.abs(vision.getTargetAngle()) > 100) {
       double error = vision.getTargetAngle();
@@ -96,7 +96,8 @@ public class TurnToPowerCell extends CommandBase {
       drive.tankDrive(output, -output);
       System.out.println(output);
     } else {*/
-      System.out.println(targetAngle + " " + drive.getHeading());
+      System.out.println("Target: " + targetAngle + " Heading:" + drive.getHeading());
+      System.out.println("Power Cell X: " + powerCellX + " Power Cell Y: " + powerCellY);
       var targetWheelSpeeds = DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(targetSpeed, 0, Units.degreesToRadians(targetAngle - drive.getHeading())));
       var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
       var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
@@ -106,11 +107,8 @@ public class TurnToPowerCell extends CommandBase {
 
       double leftOutput = leftController.calculate(drive.getWheelSpeeds().leftMetersPerSecond, leftSpeedSetpoint) + leftFeedforward;
       double rightOutput = rightController.calculate(drive.getWheelSpeeds().rightMetersPerSecond, rightSpeedSetpoint) + rightFeedforward;
-
-      System.out.println("target angle: " + targetAngle);
-      System.out.println("difference: " + (drive.getHeading() - vision.getTargetAngle()));
     
-      drive.tankDrive(leftOutput, rightOutput);
+   // drive.tankDrive(leftOutput, rightOutput);
     //}
   
   }

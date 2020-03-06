@@ -64,7 +64,7 @@ public class ComplexAutoExample extends SequentialCommandGroup {
         Trajectory path2;
         try {
             path1 = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/output/r.wpilib.json"));
-        path2 = generateTrajectory(reverseConfig, new double[] {5.847, -.371}, new double[] {-3.915, .952}, new double[] {4.264, 1.2}, new double[] {-3.618, -0.396});
+            path2 = generateTrajectory(reverseConfig, new double[] {5.847, -.371}, new double[] {-3.915, .952}, new double[] {4.264, 1.2}, new double[] {-3.618, -0.396});
         } catch (IOException e) {
             e.printStackTrace();
             path1 = null;

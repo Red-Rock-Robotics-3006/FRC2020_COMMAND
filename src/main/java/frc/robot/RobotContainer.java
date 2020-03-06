@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -50,7 +52,10 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TapeTracking;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToPowerCell;
+import frc.robot.commands.TurretTurnCommand;
+import frc.robot.commands.AutoCommands.BlueUpperShoot;
 import frc.robot.commands.AutoCommands.ShootAutoExample;
+import frc.robot.commands.AutoCommands.TestAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ColorWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -83,22 +88,31 @@ import frc.robot.Constants.TurretConstants;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  SendableChooser<Command> chooser = new SendableChooser<>();
   private final DriveSubsystem drive = new DriveSubsystem();
   private final TurretSubsystem turret = new TurretSubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final StorageSubsystem storage = new StorageSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
-
   private final ClimberSubsystem climber = new ClimberSubsystem();
   //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
-
+  
   private final VisionSubsystem vision = new VisionSubsystem();
+  private final TestAuto bt = new TestAuto(vision, shooter, turret, storage, drive, intake);
 
+  //private final BlueUpperShoot bus = new BlueUpperShoot(vision, drive, intake, storage, shooter, turret);
   //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
+  private final BlueMiddleShoot bms = new BlueMiddleShoot(vision, shooter, turret, storage, drive, intake);
+  private final BlueShootNT bsnt = new BlueShootNT(vision, shooter, turret, storage, drive, intake);
+  private final BlueUpperShoot bus = new BlueUpperShoot(vision, shooter, turret, storage, drive, intake);
+
+  private final RedLowerShoot rls = new RedLowerShoot(vision, shooter, turret, storage, drive, intake);
+  private final RedMiddleShoot rms = new RedMiddleShoot(vision, shooter, turret, storage, drive, intake);
+  private final RedUpperShoot rus = new RedUpperShoot(vision, shooter, turret, storage, drive, intake);
   //private final ShootAutoExample auto = new ShootAutoExample(vision, shooter, turret, storage, drive, intake);
 
   //private final EveryMotorCommand everyMotor = new EveryMotorCommand(storage, shooter, climber, intake, turret, colorWheel);
@@ -109,7 +123,14 @@ public class RobotContainer {
    drive.setDefaultCommand(
         new RunCommand(() -> 
             drive.drive(driver.getRawAxis(JoystickConstants.leftYAxis), driver.getRawAxis(JoystickConstants.rightYAxis)), drive));
+    chooser.setDefaultOption("Red Upper Shoot", rus);
+    chooser.addOption("Blue Upper Shoot", bus);
+    chooser.addOption("Blue Middle Shoot", bms);
+    chooser.addOption("Blue Shoot NT", bsnt);
+    chooser.addOption("Red Lower Shoot", rls);
+    chooser.addOption("Red Middle Shoot", rms);
 
+    Shuffleboard.getTab("Autonomous").add(chooser);
   }
 
   private void configureButtonBindings() {
@@ -148,9 +169,14 @@ public class RobotContainer {
 
     new JoystickButton(driver, JoystickConstants.buttonLeftBumper)
        // .whenHeld(new PowerCellPickup(vision, drive, intake, storage, shooter, true));
-        .whenHeld(new TurnToPowerCell(.1, drive, vision));
-    
-    new Button(() -> driver.getRawAxis(JoystickConstants.rightTrigger) > .3)
+        .whenHeld(new TurnToPowerCell(0, drive, vision));
+        //.whenHeld(new TurnToAngle(20, 0 ,drive));
+
+   
+    new JoystickButton(mechJoystick, JoystickConstants.buttonLeftBumper)
+        .whenHeld(new TurretTurnCommand(turret, 10));
+        
+    new JoystickButton(driver, JoystickConstants.buttonRightBumper)
         .whenPressed(new InstantCommand(() -> drive.setMaxPower(1)))
         .whenReleased(new InstantCommand(() -> drive.setMaxPower(0.8)));
    
@@ -196,7 +222,7 @@ public class RobotContainer {
 /*
     Trajectory toShoot;
     try {
-        toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/rls1.wpilib.json"));
+        toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/blueStraight.wpilib.json"));
     } catch (IOException e) {
         e.printStackTrace(); 
         toShoot = null;
@@ -207,21 +233,21 @@ public class RobotContainer {
 
     RamseteCommand auto = new RamseteCommand(
         toShoot,
-        driveSubsystem::getPose,
+        drive::getPose,
         new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
         new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                    DriveConstants.kvVoltSecondsPerMeter,
                                    DriveConstants.kaVoltSecondsSquaredPerMeter),
         DriveConstants.kDriveKinematics,
-        driveSubsystem::getWheelSpeeds,
+        drive::getWheelSpeeds,
         new PIDController(DriveConstants.kPDriveVel, 0, 0),
         new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        driveSubsystem::tankDriveVolts,
-        driveSubsystem
+        drive::tankDriveVolts,
+        drive
     ); 
 */
       //return auto;
-      return null;
+      return chooser.getSelected();
   }
 
   public void resetGyro() {

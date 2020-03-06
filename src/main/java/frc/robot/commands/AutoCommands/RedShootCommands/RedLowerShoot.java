@@ -38,7 +38,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /**
  * An example command that uses an example subsystem.
  */
-public class ShootAutoExample extends SequentialCommandGroup {
+public class RedLowerShoot extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem drive;
 
@@ -47,7 +47,7 @@ public class ShootAutoExample extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootAutoExample(VisionSubsystem vision, ShooterSubsystem shooter, TurretSubsystem turret, StorageSubsystem storage, DriveSubsystem drive, IntakeSubsystem intake) {
+  public RedLowerShoot(VisionSubsystem vision, ShooterSubsystem shooter, TurretSubsystem turret, StorageSubsystem storage, DriveSubsystem drive, IntakeSubsystem intake) {
     this.drive = drive;
     addRequirements(vision, shooter, turret, storage, drive);
 
@@ -65,6 +65,7 @@ public class ShootAutoExample extends SequentialCommandGroup {
     RamseteCommand toShootCommand = createRamseteCommand(toShoot);
 
     super.addCommands(toShootCommand.deadlineWith(new InstantCommand(() -> shooter.shoot())).andThen(() -> drive.tankDriveVolts(0, 0)),
+               new InstantCommand(() -> turret.turnToAbsoluteAngle(-70)),
                new ShootCommand(shooter, storage, intake, vision, turret).alongWith(new TapeTracking(vision, turret))        
         );
 

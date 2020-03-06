@@ -18,31 +18,33 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TurretTurnCommand extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final TurretSubsystem turret;
-    private final VisionSubsystem vision;
     private boolean atAngle = false;
+    private double angleToTurn, targetAngle;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public TurretTurnCommand(TurretSubsystem turret, VisionSubsystem vision) {
+    public TurretTurnCommand(TurretSubsystem turret, double angleToTurn) {
     this.turret = turret;
-    this.vision = vision;
+    this.angleToTurn = angleToTurn;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turret, vision);
+    addRequirements(turret);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    atAngle = false;
+    targetAngle = turret.getAngle() + angleToTurn;
       
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turret.turnToAngle(vision.getAngleToTurn());
+   atAngle = turret.turnToAbsoluteAngle(targetAngle);
   }
 
   // Called once the command ends or is interrupted.
