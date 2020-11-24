@@ -12,3 +12,9 @@
 tables | are  
 ------------
 made | like
+
+### Language deploy devices 
+| Language | Deploy Device |
+| :----- | :---- |
+| Java | RoboRIO |
+| Python | Raspberry Pi |
