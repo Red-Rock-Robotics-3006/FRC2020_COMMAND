@@ -2,6 +2,7 @@
 
 ## Team Members:  
 * Anastasia Dunca - I like to code!
+* Hale Barber - I'm a self taught programmer
 
 
 
