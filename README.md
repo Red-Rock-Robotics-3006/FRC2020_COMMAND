@@ -2,7 +2,7 @@
 
 ## Team Members:  
 * Anastasia Dunca - I like to code!
-
+* Elias Sigman - I like it when I get what's going on - but I never do
 
 
 
