@@ -1,5 +1,9 @@
 ## This is the README file
 
+## Team Members:  
+* Anastasia Dunca - I like to code!
+* Hale Barber - I'm a self taught programmer
+
 ## Team members 
 * thing 1
 * thing 2   
