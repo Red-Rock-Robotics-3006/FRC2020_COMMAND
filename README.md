@@ -8,6 +8,7 @@
 * Anastasia Dunca - I like to code!
 * Elias Sigman - I like it when I get what's going on - but I never do
 * Hale Barber - I'm a self taught programmer
+* Hi this is Sevara/Jasmina
 
 ## Team members 
 * thing 1
@@ -18,8 +19,6 @@
 ## Welcome to FRC 2020!
 *Andy Martins
 
-## Team Members:  
-* Anastasia Dunca - I like to code!
 
 ## – you can use hashtags for headers and the more hashtags the smaller the header is
 * – bullet points
@@ -28,4 +27,10 @@ tables | are
 ------------
 made | like
 
-* Hi this is Sevara/Jasmina
+### Language deploy devices 
+| Language | Deploy Device |
+| :----- | :---- |
+| Java | RoboRIO |
+| Python | Raspberry Pi |
+
+
