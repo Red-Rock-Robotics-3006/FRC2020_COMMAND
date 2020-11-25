@@ -9,6 +9,7 @@
 * Elias Sigman - I like it when I get what's going on - but I never do
 * Hale Barber - I'm a self taught programmer
 * Hi this is Sevara/Jasmina
+* Max Hart - A very mysterious person
 
 ## Team members 
 * thing 1
