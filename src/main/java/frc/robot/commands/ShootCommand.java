@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 public class ShootCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
+  
   private ShooterSubsystem shooter;
   private StorageSubsystem storage;
   private IntakeSubsystem intake;

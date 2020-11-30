@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.print.DocFlavor.READER;
+import javax.swing.event.EventListenerList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -138,7 +139,6 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-
     //Turret bindings
     
     new JoystickButton(mechJoystick, JoystickConstants.buttonX)

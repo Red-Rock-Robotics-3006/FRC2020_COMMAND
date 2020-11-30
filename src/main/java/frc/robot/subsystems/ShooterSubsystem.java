@@ -36,11 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private double output = 0;
 
   public ShooterSubsystem() {
-   /*
-   super(new PIDController(ShooterConstants.KP, ShooterConstants.KI, ShooterConstants.KD));
-   super.getController().setTolerance(ShooterConstants.kShooterToleranceRPS);
-   super.setSetpoint(ShooterConstants.kShooterTargetRPS);
-   */
+    
   m_shooterMotor.configFactoryDefault();
   feeder.configFactoryDefault();
 
