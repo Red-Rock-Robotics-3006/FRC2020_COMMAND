@@ -14,17 +14,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.StorageConstants;
 
 public class StorageSubsystem extends SubsystemBase {
-  private WPI_TalonSRX conveyor = new WPI_TalonSRX(StorageConstants.kConveyorMotorPort);
-  private WPI_TalonSRX feeder = new WPI_TalonSRX(StorageConstants.kFeederMotorPort);
+  private WPI_TalonSRX this.conveyor = new WPI_TalonSRX(StorageConstants.kConveyorMotorPort);
+  private WPI_TalonSRX this.feeder = new WPI_TalonSRX(StorageConstants.kFeederMotorPort);
 
-  private boolean storageOrFeeder = true;
-  private boolean storageRunning = false;
+  private boolean this.storageOrFeeder = true;
+  private boolean this.storageRunning = false;
 
   public StorageSubsystem() {
-    conveyor.configFactoryDefault();
-    feeder.configFactoryDefault();
+    this.conveyor.configFactoryDefault();
+    this.feeder.configFactoryDefault();
 
-    conveyor.setInverted(true);
+    this.conveyor.setInverted(true);
   }
 
   @Override
@@ -34,22 +34,22 @@ public class StorageSubsystem extends SubsystemBase {
   
   public void runConveyor()
   {
-      conveyor.set(StorageConstants.kConveyorPower);
-      storageRunning = true;
+    this.conveyor.set(StorageConstants.kConveyorPower);
+    this.storageRunning = true;
   }
 
   public void setFeeder2(double power)
   {
-    feeder.set(power);
+    this.feeder.set(power);
   }
 
   public void setConveyor(double power)
   {
-    conveyor.set(power);
+    this.conveyor.set(power);
   }
 
   public void runFeeder() {
-    if (storageOrFeeder) {
+    if (this.storageOrFeeder) {
       feedToStorage();
     } else {
       feedToTurret();
@@ -57,32 +57,31 @@ public class StorageSubsystem extends SubsystemBase {
   }
 
   public void feedToStorage() {
-    feeder.set(StorageConstants.kFeederToStoragePower);
-    
+    this.feeder.set(StorageConstants.kFeederToStoragePower);
   }
 
   public void feedToTurret() {
-    feeder.set(StorageConstants.kFeederToTurretPower);
+    this.feeder.set(StorageConstants.kFeederToTurretPower);
   }
 
   public void setStorageOrTurret(boolean mode) {
-    storageOrFeeder = mode;
+    this.storageOrFeeder = mode;
     System.out.println(mode);
   }
 
   public boolean getStorageOrTurret() {
-    return storageOrFeeder;
+    return this.storageOrFeeder;
   }
 
   public void stop()
   {
-      conveyor.set(0);
-      feeder.set(0);
-      storageRunning = false;
+    this.conveyor.set(0);
+    this.feeder.set(0);
+    this.storageRunning = false;
   }
 
   public boolean isStorageRunning() {
-    return storageRunning;
+    return this.storageRunning;
   }
 
 }
