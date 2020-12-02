@@ -24,37 +24,37 @@ public class TurretSubsystem extends SubsystemBase {
     super.getController().setTolerance(TurretConstants.kTurretToleranceEPR);
     //super.getController().enableContinuousInput(-TurretConstants.kEncoderPulsesPerRev/2, TurretConstants.kEncoderPulsesPerRev/2);
     getController().setSetpoint(10);*/
-    turret.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    this.turret.getSensorCollection().setIntegratedSensorPosition(0, 0);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Turret angle", getAngle());
-   // System.out.println("Setpoint: " + getController().getSetpoint());
+    // System.out.println("Setpoint: " + getController().getSetpoint());
   }
   
   public double getAngle() 
   {
-      return turret.getSensorCollection().getIntegratedSensorPosition() * 360 / TurretConstants.kEncoderPulsesPerRev;
+    return this.turret.getSensorCollection().getIntegratedSensorPosition() * 360 / TurretConstants.kEncoderPulsesPerRev;
   }
   
   public void setTurret(double power)
   {
-    turret.set(power);
+    this.turret.set(power);
   }
   public void turn(boolean direction)
   {
-      double power = direction ? TurretConstants.kTurretPower : -1 * TurretConstants.kTurretPower;
-      turret.set(power);
+    double power = direction ? TurretConstants.kTurretPower : -1 * TurretConstants.kTurretPower;
+    this.turret.set(power);
   }
 
   public void set(double val) {
-    turret.set(val);
+    this.turret.set(val);
   }
 
   public void stop()
   {
-      turret.set(0);
+    this.turret.set(0);
   }
 
   public boolean reachedLimit()
