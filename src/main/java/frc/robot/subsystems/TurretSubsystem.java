@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TurretConstants;
 
 public class TurretSubsystem extends SubsystemBase {
-  private WPI_TalonFX this.turret = new WPI_TalonFX(TurretConstants.kTurretMotorPort);
+  private WPI_TalonFX turret = new WPI_TalonFX(TurretConstants.kTurretMotorPort);
 
   public TurretSubsystem() {
     /*
