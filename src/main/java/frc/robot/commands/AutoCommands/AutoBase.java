@@ -16,7 +16,6 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutoBase extends SequentialCommandGroup {
 
     public AutoBase() {
-
     }
 
     public RamseteCommand createRamseteCommand(Trajectory trajectory, DriveSubsystem drive) {
@@ -28,12 +27,12 @@ public class AutoBase extends SequentialCommandGroup {
             new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                        DriveConstants.kvVoltSecondsPerMeter,
                                        DriveConstants.kaVoltSecondsSquaredPerMeter),
+            //Next few lines are part of what is being returned
             DriveConstants.kDriveKinematics,
             //Make counterpart method to return positive when going backwards
             drive::getWheelSpeeds,
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            
             drive::tankDriveVolts,
             drive
         ); 
@@ -42,9 +41,11 @@ public class AutoBase extends SequentialCommandGroup {
     }
     
     public Trajectory generateTrajectory(TrajectoryConfig config, double[] x, double[] y, double[] x1, double[] y1) {
+        // creating two new control vectors to the control vector list.
         TrajectoryGenerator.ControlVectorList controlVectors = new TrajectoryGenerator.ControlVectorList();
         ControlVector v = new ControlVector(x, y);
         ControlVector v1 = new ControlVector(x1, y1);
+        //adding the two new control vectors
         controlVectors.add(v);
         controlVectors.add(v1);
     
