@@ -48,10 +48,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DriveSubsystem() {
     // Sets the distance per pulse for the encoders
-    frontLeft.configFactoryDefault();
-    frontRight.configFactoryDefault();
-    backLeft.configFactoryDefault();
-    backRight.configFactoryDefault();
+    this.frontLeft.configFactoryDefault();
+    this.frontRight.configFactoryDefault();
+    this.backLeft.configFactoryDefault();
+    this.backRight.configFactoryDefault();
 
     backLeft.follow(frontLeft);
     backRight.follow(frontRight);
@@ -79,17 +79,17 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
     m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderDistance(),
                       getRightEncoderDistance());
-   SmartDashboard.putNumber("Gyro", getHeading());
-   SmartDashboard.putNumber("PosX", getPose().getTranslation().getX());
-   SmartDashboard.putNumber("PosY", getPose().getTranslation().getY());
-   SmartDashboard.putNumber("Encoder Left", getLeftEncoderDistance());
-   SmartDashboard.putNumber("Encoder Right", getRightEncoderDistance());
+    SmartDashboard.putNumber("Gyro", getHeading());
+    SmartDashboard.putNumber("PosX", getPose().getTranslation().getX());
+    SmartDashboard.putNumber("PosY", getPose().getTranslation().getY());
+    SmartDashboard.putNumber("Encoder Left", getLeftEncoderDistance());
+    SmartDashboard.putNumber("Encoder Right", getRightEncoderDistance());
 
 
   }
 
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return this.m_odometry.getPoseMeters();
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

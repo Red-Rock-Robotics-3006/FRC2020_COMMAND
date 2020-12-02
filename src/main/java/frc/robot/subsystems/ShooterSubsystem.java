@@ -69,7 +69,6 @@ public class ShooterSubsystem extends SubsystemBase {
   //Have this run periodically while subsystem is instantiated
   @Override
   public void periodic() {
-
     //Create the PID loop
     double feedback = shooterPID.calculate(getRPS(), ShooterConstants.kShooterTargetRPS);
     double feedforward = m_shooterFeedForward.calculate(ShooterConstants.kShooterTargetRPS);
