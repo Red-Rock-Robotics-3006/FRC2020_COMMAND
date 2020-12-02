@@ -87,10 +87,10 @@ public class Blue10BallAuto extends SequentialCommandGroup {
 
         //Currently a 5 ball auto; if this doesn't work well, consider adding more dead reckoning
         super.addCommands(toBallCommand.andThen(() -> drive.tankDriveVolts(0, 0)),
-                    new PowerCellPickup(vision, drive, intake, storage, shooter, true),
-                    new PowerCellPickup(vision, drive, intake, storage, shooter, true),
-                    new TurnToAngle(0, 0, drive),
-                    lineUpCommand.andThen(() -> drive.tankDriveVolts(0, 0)),
+                    new PowerCellPickup(vision, this.drive, intake, storage, shooter, true),
+                    new PowerCellPickup(vision, this.drive, intake, storage, shooter, true),
+                    new TurnToAngle(0, 0, this.drive),
+                    lineUpCommand.andThen(() -> this.drive.tankDriveVolts(0, 0)),
                     new TapeTracking(vision, turret),
                     //new ShootCommand(shooter, storage, intake).withTimeout(4),
                     new PowerCellPickup(vision, drive, intake, storage, shooter, false)                    
@@ -101,17 +101,18 @@ public class Blue10BallAuto extends SequentialCommandGroup {
     public RamseteCommand createRamseteCommand(Trajectory trajectory) {
         return new RamseteCommand(
             trajectory,
-            drive::getPose,
+            this.drive::getPose,
             new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
             new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                        DriveConstants.kvVoltSecondsPerMeter,
                                        DriveConstants.kaVoltSecondsSquaredPerMeter),
+            //this is part of what is being returned                           
             DriveConstants.kDriveKinematics,
             drive::getWheelSpeeds,
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            drive::tankDriveVolts,
-            drive
+            this.drive::tankDriveVolts,
+            this.drive
         ); 
     }
 
