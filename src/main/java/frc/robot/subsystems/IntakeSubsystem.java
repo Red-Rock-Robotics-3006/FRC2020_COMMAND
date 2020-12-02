@@ -19,56 +19,62 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class IntakeSubsystem extends SubsystemBase 
 {
-  /**
-   * Creates a new ExampleSubsystem.
-   */
+  
+  //Instantiate the hardware parts
   WPI_TalonSRX intakeVictor = new WPI_TalonSRX(IntakeConstants.kIntakeMotorPort);
   Solenoid oneSolenoid = new Solenoid(IntakeConstants.kIntakeOneSolenoidPort);
   Solenoid twoSolenoid = new Solenoid(IntakeConstants.kIntakeTwoSolenoidPort);
 
   private boolean running, solenoidExtended = false;
 
-  public IntakeSubsystem()
-  {
-
-  }
+  public IntakeSubsystem() {}
 
   @Override
   public void periodic() 
   {
+    //Display intake stats on driver station
     SmartDashboard.putBoolean("Solenoid extended (T/F)", isExtended());
     SmartDashboard.putNumber("Intake wheels power", IntakeConstants.kIntakePower);
   }
   
+  //Extend the intake arm
   public void extend(boolean enabled)
   {
-       oneSolenoid.set(enabled);
-       twoSolenoid.set(enabled);
-       solenoidExtended = enabled;
+    this.oneSolenoid.set(enabled);
+    this.twoSolenoid.set(enabled);
+    this.solenoidExtended = enabled;
   }
 
+  //Set the intake motor to a speed
   public void setIntakeMotor(double power)
   {
-    intakeVictor.set(power);
+    this.intakeVictor.set(power);
   }
   
+  //Spin the intake wheels
   public void spin()
   {
-      intakeVictor.set(IntakeConstants.kIntakePower);
-      running = true;
+      this.intakeVictor.set(IntakeConstants.kIntakePower);
+      this.running = true;
   }
+
+  //Stop the intake
   public void stop()
   {
-      intakeVictor.set(0);
+      this.intakeVictor.set(0);
       extend(false);
-      running = false;
+      this.running = false;
   }
 
-  public boolean isRunning() {
-    return running;
+  //Check if the intake is running
+  public boolean isRunning() 
+  {
+    return this.running;
   }
 
-  public boolean isExtended() {
-    return solenoidExtended;
+  //Check if the intake is extended
+  public boolean isExtended() 
+  {
+    return this.solenoidExtended;
   }
 }
