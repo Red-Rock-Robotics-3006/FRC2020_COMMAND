@@ -23,12 +23,16 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
 
+  //TeleOp constants
   public static final class DriveConstants {
+
+    //Motor ports
     public static final int kLeftMotor1Port = 8;
     public static final int kLeftMotor2Port = 9;
     public static final int kRightMotor1Port = 10;
     public static final int kRightMotor2Port = 11;
   
+    //Encoder constants
     public static final double kTrackwidthMeters = .592;//0.5588;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
@@ -39,34 +43,33 @@ public final class Constants {
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR * 10.71);
 
+    //Gyro sensor constants
     public static final boolean kGyroReversed = true;
 
+    //Characterization constants
     public static final double ksVolts = 0.24; //old was 1.01, .229
     public static final double kvVoltSecondsPerMeter = 2.38; //old was 3.03, 2.43
     public static final double kaVoltSecondsSquaredPerMeter = 0.367; //old was 0.697, .258
-
     public static final double ksVoltsReversed = -0.24;
     public static final double kvVoltSecondsPerMeterReversed = -2.38;
     public static final double kaVoltSecondsSquaredPerMeterReversed = -0.367;
-
     public static final double kMetersPerRevolution = kWheelDiameterMeters * Math.PI; 
-
     public static final double kPDriveVel = .0735; //5.14, .319, .375
      
+    //PID constants
     public static final double kTurnP = 0;
     public static final double kTurnI = 0;
     public static final double kTurnD = 0;
-
     public static final double kTurnToleranceDeg = 5;
     public static final double kTurnRateToleranceDegPerS = 10;
-    
     public static final double kSearchTurnRate = 10;
-
     public static final double joystickGain = 0.5;
     
   }
 
+  //Autonomous Constants
   public static final class AutoConstants {
+    //Characterization constants
     public static final double kMaxSpeedMetersPerSecond = .7;
     public static final double kMaxAccelerationMetersPerSecondSquared = .3;
 
@@ -75,9 +78,9 @@ public final class Constants {
     public static final double kRamseteZeta = 0.7;
   }
 
-  public static final class JoystickConstants
-  {
-   // int buttonA = 1;
+  //Joystick and gamepad constants
+  public static final class JoystickConstants {
+    //Gamepad values
     public static final int buttonY = 4;
     public static final int buttonX = 3;
     public static final int buttonB = 2;
@@ -94,15 +97,15 @@ public final class Constants {
 
   }
 
-
-  public static final class IntakeConstants
-  {
+  //Intake subsystem constants
+  public static final class IntakeConstants {
     public static final int kIntakeMotorPort = 15;
     public static final int kIntakeOneSolenoidPort = 1;
     public static final int kIntakeTwoSolenoidPort = 2;
     public static final double kIntakePower = 0.6;
   }
 
+  //Turret subsystem constants
   public static final class TurretConstants {
     public static final int kTurretMotorPort = 19;
     public static final double kTurretPower = 0.15;
@@ -118,7 +121,10 @@ public final class Constants {
 
   }
 
+  //Storage subsystem constants
   public static final class StorageConstants {
+
+    //Conveyor and feeder constants
     public static final int kConveyorMotorPort = 13;
     public static final int kFeederMotorPort = 12;
     public static final double kConveyorPower = 0.35;
@@ -126,11 +132,15 @@ public final class Constants {
     public static final double kFeederToTurretPower = -0.4;
   }
 
+  //Shooter subsystem constants
   public static final class ShooterConstants {
+
+    //Feeder constants
     public static final int kFeederMotorPort = 16;
     public static final double kFeederUpPower = .4;
     public static final double kFeederDownPower = -.3;
     
+    //Shooter constants
     public static final int kShooterMotorPort = 1;
     public static final double kShooterPower = 0.62;
     public static final double KP = .01; //25.9, 6.05
@@ -145,7 +155,10 @@ public final class Constants {
   
   }
 
+  //Climber subsystem constants
   public static final class ClimberConstants {
+
+    //Climber and slide constants
     public static final int kClimberMotorPort = 17;
     public static final int kSpoolMotorPort = 20;
     public static final double kClimberUpPower = -0.7;
@@ -153,7 +166,10 @@ public final class Constants {
 	  public static final double kSlideMotorPower = 0.5;
   }
 
+  //Color wheel subsystem constants
   public static final class ColorWheelConstants {
+
+    //Sensor constants
     public static final int kColorWheelPort = 0;
 	  public static final int kColorSensorPort = 0;
     public static final double kColorWheelPower = 0.5;
