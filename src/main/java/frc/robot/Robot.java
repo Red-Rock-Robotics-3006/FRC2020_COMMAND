@@ -52,30 +52,30 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
 
- // private AHRS gyro = new AHRS();
+  //private AHRS gyro = new AHRS();
   //private WPI_VictorSPX motor1 = new WPI_VictorSPX(0);
   //private WPI_VictorSPX motor2 = new WPI_VictorSPX(1);
   //private WPI_TalonFX linearSlideMotor = new WPI_TalonFX(1);
   //ArrayList<TalonFX> instruments = new ArrayList<TalonFX>();
-  //private Orchestra orchestra = new Orchestra(instruments);
+  //private Orchestra orchestra = new Orchestra(this.instruments);
 
- // private DriveSubsystem drive = new DriveSubsystem();
+  //private DriveSubsystem drive = new DriveSubsystem();
 
- /* private Joystick joystick = new Joystick(0);
+  //private Joystick joystick = new Joystick(0);
 
-  private WPI_TalonSRX conveyor = new WPI_TalonSRX(13);
+  /*private WPI_TalonSRX conveyor = new WPI_TalonSRX(13);
   private WPI_TalonSRX feeder1 = new WPI_TalonSRX(12);
-  private WPI_TalonSRX feeder2 = new WPI_TalonSRX(16);
+  private WPI_TalonSRX feeder2 = new WPI_TalonSRX(16);*/
 
-  //private Solenoid intake1 = new Solenoid(1);
-  //private Solenoid intake2 = new Solenoid(2);
-  private Solenoid LED = new Solenoid(0);
+  /*private Solenoid intake1 = new Solenoid(1);
+  private Solenoid intake2 = new Solenoid(2);
+  private Solenoid LED = new Solenoid(0);*/
 
-  private WPI_TalonSRX intake = new WPI_TalonSRX(15);
+  //private WPI_TalonSRX intake = new WPI_TalonSRX(15);
 
-  private WPI_TalonFX falcon = new WPI_TalonFX(1);
+  //private WPI_TalonFX falcon = new WPI_TalonFX(1);
 
-  private WPI_TalonSRX climber = new WPI_TalonSRX(17);
+  //private WPI_TalonSRX climber = new WPI_TalonSRX(17);
 
   //private WPI_TalonSRX shooter = new WPI_TalonSRX(14);
 
@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
- // WPI_TalonFX shooter = new WPI_TalonFX(1);
+  //WPI_TalonFX shooter = new WPI_TalonFX(1);
   //Joystick joystick = new Joystick(0);
 
   @Override
@@ -93,10 +93,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     Timer.delay(3);
     m_robotContainer.resetGyro();
-    //drive.resetEncoders();
+    //this.drive.resetEncoders();
 
-    /*instruments.add(linearSlideMotor);
-    orchestra = new Orchestra(instruments);
+    /*this.instruments.add(this.linearSlideMotor);
+    orchestra = new Orchestra(this.instruments);
     String music = "/home/lvuser/deploy/rasputin.chrp";
     orchestra.loadMusic(music); */
    
@@ -122,11 +122,11 @@ public class Robot extends TimedRobot {
    * This function is called once each time the robot enters Disabled mode.
    */
   @Override
-  public void disabledInit() {
+    public void disabledInit() {
   }
 
   @Override
-  public void disabledPeriodic() {
+    public void disabledPeriodic() {
   }
 
   /**
@@ -149,11 +149,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    
-    //drive.arcadeDrive(.5, 0);
-   // shooter.set(.7);
-   
-   
+    //this.drive.arcadeDrive(.5, 0);
+    //this.shooter.set(.7);
   }
 
   @Override
@@ -162,7 +159,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-   /* if (m_autonomousCommand != null) {
+    /*if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }*/
   }
@@ -173,70 +170,67 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
    
-   /* //colorWheelSubsystem.getColor();
+    //this.colorWheelSubsystem.getColor();
 
-    //System.out.println("Touch: " + touch.get());
+    //System.out.println("Touch: " + this.touch.get());
     //orchestra.play();
-   if (joystick.getRawButton(JoystickConstants.buttonA)) {
+    /*if (this.joystick.getRawButton(JoystickConstants.buttonA)) {
     
-    // feeder1.set(StorageConstants.kFeederPower);
-    // feeder2.set(-0.45);
-     conveyor.set(-.2);
-     //falcon.set(-.4);
-    intake.set(.6);
-     System.out.println("f");
-    //shooter.set(.7);
-    if(joystick.getRawButton(JoystickConstants.buttonY)){
-      feeder1.set(-.5);
-      feeder2.set(-.45);
-      falcon.set(-.5);
+      this.feeder1.set(StorageConstants.kFeederPower);
+      this.feeder2.set(-0.45);
+      this.conveyor.set(-.2);
+      this.falcon.set(-.4);
+      this.intake.set(.6);
+      System.out.println("f");
+      this.shooter.set(.7);
+      if(this.joystick.getRawButton(JoystickConstants.buttonY)) {
+        this.feeder1.set(-.5);
+        this.feeder2.set(-.45);
+        this.falcon.set(-.5);
+      } else {
+        this.feeder1.set(ControlMode.PercentOutput, .2);
+        this.feeder2.set(0);
+        this.falcon.set(0);
+      }
+
     } else {
-      feeder1.set(ControlMode.PercentOutput, .2);
-      feeder2.set(0);
-      falcon.set(0);
-    }
+      this.feeder1.set(0);
+      this.feeder2.set(0);
+      this.conveyor.set(0);
+      this.falcon.set(0);
+      this.intake.set(0);
+      //this.feeder1.set(0);
+      //this.feeder2.set(0);
+      //this.shooter.set(0);
+    }*/
 
-   } else {
-     feeder1.set(0);
-     feeder2.set(0);
-     conveyor.set(0);
-     falcon.set(0);
-     intake.set(0);
-    // feeder1.set(0);
-    // feeder2.set(0);
-    // shooter.set(0);
-   }
+    /*if(this.joystick.getRawButton(JoystickConstants.buttonB)){
+      LED.set(true);
+    } else {
+      LED.set(false);
+    }*/
 
-   if(joystick.getRawButton(JoystickConstants.buttonB))
-   {
-      //LED.set(true);
-   }
-   else
-   {
-     //LED.set(false);
-   }
-
-
-   if(joystick.getRawButton(JoystickConstants.buttonX)){
-     climber.set(.2);
-   } else if (joystick.getRawButton(JoystickConstants.buttonA)){
-     climber.set(-.2);
-   } else {
-      climber.set(0);
-   }
+    
+    /*if(this.joystick.getRawButton(JoystickConstants.buttonX)){
+      this.climber.set(.2);
+    } else if (this.joystick.getRawButton(JoystickConstants.buttonA)){
+      this.climber.set(-.2);
+    } else {
+      this.climber.set(0);
+    }*/
+    
    
-   
-  // System.out.println("gyro X: " + gyro.getRawGyroX());
-   /*
-   System.out.println("gyro Y: " + gyro.getRawGyroY());
-   System.out.println("gyro Z"+ gyro.getRawGyroZ());
-   System.out.println("gyro Y Velocity"+ gyro.getVelocityX());
-   System.out.println("gyro X Velocity"+ gyro.getVelocityY());
-   System.out.println("gyro angle"+ gyro.getAngle());
-   System.out.println("gyro rate of rotation"+ gyro.getRate());
-   System.out.println("gyro acceleration X"+ gyro.getRawAccelX());
-   System.out.println("gyro accelaration Y" + gyro.get);
-   */
+    //System.out.println("this.gyro X: " + this.gyro.getRawGyroX());
+    /*
+    System.out.println("this.gyro Y: " + this.gyro.getRawGyroY());
+    System.out.println("this.gyro Z"+ this.gyro.getRawGyroZ());
+    System.out.println("this.gyro Y Velocity"+ this.gyro.getVelocityX());
+    System.out.println("this.gyro X Velocity"+ this.gyro.getVelocityY());
+    System.out.println("this.gyro angle"+ this.gyro.getAngle());
+    System.out.println("this.gyro rate of rotation"+ this.gyro.getRate());
+    System.out.println("this.gyro acceleration X"+ this.gyro.getRawAccelX());
+    System.out.println("this.gyro accelaration Y" + this.gyro.get);
+    */
 
   }
 
@@ -250,6 +244,6 @@ public class Robot extends TimedRobot {
    * This function is called periodically during test mode.
    */
   @Override
-  public void testPeriodic() {
+    public void testPeriodic() {
   }
 }
