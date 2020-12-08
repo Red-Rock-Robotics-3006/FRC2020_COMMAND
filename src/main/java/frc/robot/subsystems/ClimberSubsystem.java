@@ -32,11 +32,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setSlide(double power)
   {
-      slideMotor.set(power);
+      this.slideMotor.set(power);
   }
   public void setSpool(double power)
   {
-      spoolMotor.set(power);
+      this.spoolMotor.set(power);
   }
   public void climb() {
       this.spoolMotor.set(ClimberConstants.kClimberUpPower);
