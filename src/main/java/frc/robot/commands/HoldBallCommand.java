@@ -55,16 +55,17 @@ public class HoldBallCommand extends ParallelCommandGroup {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      if(!m_storageSubsystem.isStorageRunning())
+      if(!this.m_storageSubsystem.isStorageRunning())
       {
-        m_storageSubsystem.stop();
+        this.m_storageSubsystem.stop();
       }else{
         
       }
 
-      if(!m_shooterSubsystem.isShooterFeederRunning())
+      //If the shooter feeder is running, stop the shooter subsystem
+      if(!this.m_shooterSubsystem.isShooterFeederRunning())
       {
-        m_shooterSubsystem.stop();
+        this.m_shooterSubsystem.stop();
       }
 
   }
