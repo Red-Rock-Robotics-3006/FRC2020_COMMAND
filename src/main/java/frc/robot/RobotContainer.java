@@ -91,6 +91,7 @@ import frc.robot.Constants.TurretConstants;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -103,121 +104,120 @@ public class RobotContainer {
   //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
   
   private final VisionSubsystem vision = new VisionSubsystem();
-  private final TestAuto bt = new TestAuto(vision, shooter, turret, storage, drive, intake);
+  private final TestAuto bt = new TestAuto(this.vision, this.shooter, this.turret, this.storage, this.drive, this.intake);
 
-  //private final BlueUpperShoot bus = new BlueUpperShoot(vision, drive, intake, storage, shooter, turret);
-  //private final ColorWheelSubsystem colorWheel = new ColorWheelSubsystem();
+  //private final BlueUpperShoot bus = new BlueUpperShoot(this.vision, this.drive, this.intake, this.storage, this.shooter, this.turret);
+  //private final ColorWheelSubsystem this.colorWheel = new ColorWheelSubsystem();
 
   private final Joystick driver = new Joystick(0);
   private final Joystick mechJoystick = new Joystick(1);
 
-  private final BlueMiddleShoot bms = new BlueMiddleShoot(vision, drive, intake, storage, shooter, turret);
-  private final BlueShootNT bsnt = new BlueShootNT(vision, drive, intake, storage, shooter, turret);
-  private final BlueUpperShoot bus = new BlueUpperShoot(vision, drive, intake, storage, shooter, turret);
+  private final BlueMiddleShoot bms = new BlueMiddleShoot(this.vision, this.drive, this.intake, this.storage, this.shooter, this.turret);
+  private final BlueShootNT bsnt = new BlueShootNT(this.vision, this.drive, this.intake, this.storage, this.shooter, this.turret);
+  private final BlueUpperShoot bus = new BlueUpperShoot(this.vision, this.drive, this.intake, this.storage, this.shooter, this.turret);
 
-  private final RedLowerShoot rls = new RedLowerShoot(vision, shooter, turret, storage, drive, intake);
-  private final RedMiddleShoot rms = new RedMiddleShoot(vision, drive, intake, storage, shooter, turret);
-  private final RedUpperShoot rus = new RedUpperShoot(vision, drive, intake, storage, shooter, turret);
-  //private final ShootAutoExample auto = new ShootAutoExample(vision, shooter, turret, storage, drive, intake);
+  private final RedLowerShoot rls = new RedLowerShoot(this.vision, this.shooter, this.turret, this.storage, this.drive, this.intake);
+  private final RedMiddleShoot rms = new RedMiddleShoot(this.vision, this.drive, this.intake, this.storage, this.shooter, this.turret);
+  private final RedUpperShoot rus = new RedUpperShoot(this.vision, this.drive, this.intake, this.storage, this.shooter, this.turret);
+  //private final ShootAutoExample auto = new ShootAutoExample(this.vision, this.shooter, this.turret, this.storage, this.drive, this.intake);
 
-  //private final EveryMotorCommand everyMotor = new EveryMotorCommand(storage, shooter, climber, intake, turret, colorWheel);
+  //private final EveryMotorCommand everyMotor = new EveryMotorCommand(this.storage, this.shooter, this.climber, this.intake, this.turret, this.colorWheel);
 
   public RobotContainer() {
     configureButtonBindings();
-//DriveConstants.joystickGain * Math.pow(-0.8 * driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * driver.getRawAxis(JoystickConstants.leftYAxis)
-   drive.setDefaultCommand(
+//DriveConstants.joystickGain * Math.pow(-0.8 * this.driver.getRawAxis(JoystickConstants.leftYAxis), 3) + DriveConstants.joystickGain * -0.8 * this.driver.getRawAxis(JoystickConstants.leftYAxis)
+   this.drive.setDefaultCommand(
         new RunCommand(() -> 
-            drive.drive(driver.getRawAxis(JoystickConstants.leftYAxis), driver.getRawAxis(JoystickConstants.rightYAxis)), drive));
-    chooser.setDefaultOption("Red Upper Shoot", rus);
-    chooser.addOption("Blue Upper Shoot", bus);
-    chooser.addOption("Blue Middle Shoot", bms);
-    chooser.addOption("Blue Shoot NT", bsnt);
-    chooser.addOption("Red Lower Shoot", rls);
-    chooser.addOption("Red Middle Shoot", rms);
+            this.drive.drive(this.driver.getRawAxis(JoystickConstants.leftYAxis), this.driver.getRawAxis(JoystickConstants.rightYAxis)), this.drive));
+    this.chooser.setDefaultOption("Red Upper Shoot", rus);
+    this.chooser.addOption("Blue Upper Shoot", bus);
+    this.chooser.addOption("Blue Middle Shoot", bms);
+    this.chooser.addOption("Blue Shoot NT", bsnt);
+    this.chooser.addOption("Red Lower Shoot", rls);
+    this.chooser.addOption("Red Middle Shoot", rms);
 
-    Shuffleboard.getTab("Autonomous").add(chooser);
+    Shuffleboard.getTab("Autonomous").add(this.chooser);
   }
 
   private void configureButtonBindings() {
     //Turret bindings
     
-    new JoystickButton(mechJoystick, JoystickConstants.buttonX)
-        .whenPressed(new InstantCommand(() -> turret.turn(false)))
-        .whenReleased(new InstantCommand(() -> turret.stop()));
+    new JoystickButton(this.mechJoystick, JoystickConstants.buttonX)
+      .whenPressed(new InstantCommand(() -> this.turret.turn(false)))
+      .whenReleased(new InstantCommand(() -> this.turret.stop()));
 
-    new JoystickButton(mechJoystick, JoystickConstants.buttonB)
-        .whenPressed(new InstantCommand(() -> turret.turn(true)))
-        .whenReleased(new InstantCommand(() -> turret.stop()));
+    new JoystickButton(this.mechJoystick, JoystickConstants.buttonB)
+      .whenPressed(new InstantCommand(() -> this.turret.turn(true)))
+      .whenReleased(new InstantCommand(() -> this.turret.stop()));
      
     //Intake bindings
-    new Button(() -> driver.getRawAxis(JoystickConstants.leftTrigger) > .3)
-        .whileActiveOnce(new IntakeCommand(intake, storage, shooter));
+    new Button(() -> this.driver.getRawAxis(JoystickConstants.leftTrigger) > .3)
+      .whileActiveOnce(new IntakeCommand(this.intake, this.storage, this.shooter));
 
 
     //Shoot bindings
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
-        .whenHeld(new ShootCommand(shooter, storage, intake, vision, turret));
+    new Button(() -> this.mechJoystick.getRawAxis(JoystickConstants.rightTrigger) > .3)
+      .whenHeld(new ShootCommand(this.shooter, this.storage, this.intake, this.vision, this.turret));
 
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
-        .whenPressed(new InstantCommand(() -> {
-            storage.setStorageOrTurret(false);
-            shooter.runFeeder();
-            storage.runFeeder();
-            storage.runConveyor();
-        }))
-        .whenReleased(new InstantCommand(() -> {
-            storage.stop();
-            shooter.stopFeeder();
-            storage.setStorageOrTurret(true);
-        }));
+    new Button(() -> this.mechJoystick.getRawAxis(JoystickConstants.leftTrigger) > .3)
+      .whenPressed(new InstantCommand(() -> {
+        this.storage.setStorageOrTurret(false);
+        this.shooter.runFeeder();
+        this.storage.runFeeder();
+        this.storage.runConveyor();
+      }))
+      .whenReleased(new InstantCommand(() -> {
+        this.storage.stop();
+        this.shooter.stopFeeder();
+        this.storage.setStorageOrTurret(true);
+      }));
 
-    new JoystickButton(driver, JoystickConstants.buttonLeftBumper)
-       // .whenHeld(new PowerCellPickup(vision, drive, intake, storage, shooter, true));
-        .whenHeld(new TurnToPowerCell(0, drive, vision));
-        //.whenHeld(new TurnToAngle(20, 0 ,drive));
+    new JoystickButton(this.driver, JoystickConstants.buttonLeftBumper)
+      //.whenHeld(new PowerCellPickup(this.vision, this.drive, this.intake, this.storage, this.shooter, true));
+      .whenHeld(new TurnToPowerCell(0, this.drive, this.vision));
+      //.whenHeld(new TurnToAngle(20, 0 ,this.drive));
 
    
-    new JoystickButton(mechJoystick, JoystickConstants.buttonLeftBumper)
-        .whenHeld(new TurretTurnCommand(turret, 10));
+    new JoystickButton(this.mechJoystick, JoystickConstants.buttonLeftBumper)
+      .whenHeld(new TurretTurnCommand(this.turret, 10));
         
-    new JoystickButton(driver, JoystickConstants.buttonRightBumper)
-        .whenPressed(new InstantCommand(() -> drive.setMaxPower(1)))
-        .whenReleased(new InstantCommand(() -> drive.setMaxPower(0.8)));
+    new JoystickButton(this.driver, JoystickConstants.buttonRightBumper)
+      .whenPressed(new InstantCommand(() -> this.drive.setMaxPower(1)))
+      .whenReleased(new InstantCommand(() -> this.drive.setMaxPower(0.8)));
    
 
     //Climb bindings
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) < -.3)
-        .whenPressed(new InstantCommand(()->climber.extend()))
-        .whenReleased(new InstantCommand(()->climber.stopSlide()));
+    new Button(() -> this.mechJoystick.getRawAxis(JoystickConstants.leftYAxis) < -.3)
+      .whenPressed(new InstantCommand(()->this.climber.extend()))
+      .whenReleased(new InstantCommand(()->this.climber.stopSlide()));
 
-    new Button(() -> mechJoystick.getRawAxis(JoystickConstants.leftYAxis) > .3)
-        .whenPressed(new InstantCommand(()->climber.retract()))
-        .whenReleased(new InstantCommand(()->climber.stopSlide()));
+    new Button(() -> this.mechJoystick.getRawAxis(JoystickConstants.leftYAxis) > .3)
+      .whenPressed(new InstantCommand(()->this.climber.retract()))
+      .whenReleased(new InstantCommand(()->this.climber.stopSlide()));
 
-    new JoystickButton(mechJoystick, JoystickConstants.buttonA)
-        .whenPressed(new InstantCommand(()->climber.climb()))
-        .whenReleased(new InstantCommand(()->climber.stopSpool()));
+    new JoystickButton(this.mechJoystick, JoystickConstants.buttonA)
+      .whenPressed(new InstantCommand(()->this.climber.climb()))
+      .whenReleased(new InstantCommand(()->this.climber.stopSpool()));
 
-    new JoystickButton(driver, JoystickConstants.buttonA)
+    new JoystickButton(this.driver, JoystickConstants.buttonA)
+      .whenPressed(new InstantCommand(() -> this.vision.enableAllLEDs(true)))
+      .whenReleased(new InstantCommand(() -> this.vision.enableAllLEDs(false)));
 
-        .whenPressed(new InstantCommand(() -> vision.enableAllLEDs(true)))
-        .whenReleased(new InstantCommand(() -> vision.enableAllLEDs(false)));
+    new JoystickButton(this.driver, JoystickConstants.buttonX)
+      .whenPressed(new InstantCommand( () -> this.vision.setCamMode(true)))
+      .whenReleased(new InstantCommand( () -> this.vision.setCamMode(false)));
 
-    new JoystickButton(driver, JoystickConstants.buttonX)
-        .whenPressed(new InstantCommand( () -> vision.setCamMode(true)))
-        .whenReleased(new InstantCommand( () -> vision.setCamMode(false)));
-
-    new JoystickButton(mechJoystick, JoystickConstants.buttonRightBumper)
-        .whenHeld(new TapeTracking(vision, turret));
+    new JoystickButton(this.mechJoystick, JoystickConstants.buttonRightBumper)
+      .whenHeld(new TapeTracking(this.vision, this.turret));
 
 
     //Color bindings
-   /* new JoystickButton(mechJoystick, JoystickConstants.buttonY)
-        .toggleWhenPressed(new ColorWheelCommand(colorWheel));
-    new JoystickButton(mechJoystick,JoystickConstants.buttonRightBumper)
-        .whenPressed(new InstantCommand(()->colorWheel.spinAmount(4)));
-    new JoystickButton(mechJoystick,JoystickConstants.buttonLeftBumper)
-        .whenPressed(new InstantCommand(()->colorWheel.spinToColor(""))); //need to get target color
+    /*new JoystickButton(this.mechJoystick, JoystickConstants.buttonY)
+      .toggleWhenPressed(new ColorWheelCommand(this.colorWheel));
+    new JoystickButton(this.mechJoystick,JoystickConstants.buttonRightBumper)
+      .whenPressed(new InstantCommand(()->this.colorWheel.spinAmount(4)));
+    new JoystickButton(this.mechJoystick,JoystickConstants.buttonLeftBumper)
+      .whenPressed(new InstantCommand(()->this.colorWheel.spinToColor(""))); //need to get target color
 */
   }
   
@@ -226,35 +226,35 @@ public class RobotContainer {
 /*
     Trajectory toShoot;
     try {
-        toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/blueStraight.wpilib.json"));
+      toShoot = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/PathWeaver/Paths/output/blueStraight.wpilib.json"));
     } catch (IOException e) {
-        e.printStackTrace(); 
-        toShoot = null;
+      e.printStackTrace(); 
+      toShoot = null;
     }
 
-    var transform = drive.getPose().minus(toShoot.getInitialPose());
+    var transform = this.drive.getPose().minus(toShoot.getInitialPose());
     toShoot = toShoot.transformBy(transform);
 
     RamseteCommand auto = new RamseteCommand(
-        toShoot,
-        drive::getPose,
-        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                   DriveConstants.kvVoltSecondsPerMeter,
-                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics,
-        drive::getWheelSpeeds,
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        drive::tankDriveVolts,
-        drive
+      toShoot,
+      this.drive::getPose,
+      new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+      new SimpleMotorFeedforward(DriveConstants.ksVolts,
+      DriveConstants.kvVoltSecondsPerMeter,
+      DriveConstants.kaVoltSecondsSquaredPerMeter),
+      DriveConstants.kDriveKinematics,
+      this.drive::getWheelSpeeds,
+      new PIDController(DriveConstants.kPDriveVel, 0, 0),
+      new PIDController(DriveConstants.kPDriveVel, 0, 0),
+      this.drive::tankDriveVolts,
+      this.drive
     ); 
 */
       //return auto;
-      return chooser.getSelected();
+      return this.chooser.getSelected();
   }
 
   public void resetGyro() {
-      drive.zeroHeading();
+    this.drive.zeroHeading();
   }
 }
